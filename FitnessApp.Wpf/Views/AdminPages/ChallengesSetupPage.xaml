@@ -199,7 +199,7 @@
                     <!--  Challenge Item Template  -->
                     <ListBox.ItemTemplate>
 
-                        <DataTemplate DataType="{x:Type models:ChallengeModel}">
+                        <DataTemplate DataType="{x:Type models:Challenge}">
 
                             <materialDesign:Card
                                 Width="500"

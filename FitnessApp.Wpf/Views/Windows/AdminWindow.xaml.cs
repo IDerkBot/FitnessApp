@@ -4,6 +4,7 @@ using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.Windows
 {
@@ -97,7 +98,7 @@ namespace FitnessApp.Windows
 
         private void ControlUpdateNewAdminPasswordGrid(int accountID)
         {
-            if (Database.IsNewAdmin(accountID))
+            if (App.Database.IsNewAdmin(accountID))
             {
                 UpdateNewAdminPasswordGrid.Visibility = Visibility.Visible;
 
@@ -122,16 +123,16 @@ namespace FitnessApp.Windows
             else if (NewPasswordTextBox.Password.Length < 7)
                 AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
 
-            else if (Database.EncryptPassword(OldPasswordTextBox.Password) != signedInAdmin.Password)
+            else if (App.Database.EncryptPassword(OldPasswordTextBox.Password) != signedInAdmin.Password)
                 AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
 
             else
             {
                 // Update signedInAdmin User Model
-                signedInAdmin.Password = Database.EncryptPassword(NewPasswordTextBox.Password);
+                signedInAdmin.Password = App.Database.EncryptPassword(NewPasswordTextBox.Password);
 
                 // Update Admin's Password in database
-                Database.UpdateAdminPassword(signedInAdmin);
+                App.Database.UpdateAdminPassword(signedInAdmin);
 
                 // Confirmation Message
                 AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");

@@ -1,5 +1,4 @@
 ﻿using FitnessApp.Models;
-using FitnessApp.SqlServer;
 using FitnessApp.ViewModels;
 using FitnessApp.Windows;
 using Microsoft.Win32;
@@ -7,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FitnessApp.DataAccessLayer;
+using FitnessApp.Wpf;
 using FitnessApp.Wpf.ViewModels;
 
 namespace FitnessApp.AdminWindowPages
@@ -16,7 +16,7 @@ namespace FitnessApp.AdminWindowPages
     /// </summary>
     public partial class ChallengesSetupPage : Page
     {
-        private ImageModel challengePhoto = new ImageModel();
+        // private ImageModel challengePhoto = new ImageModel();
 
         public ChallengesSetupPage()
         {
@@ -45,7 +45,7 @@ namespace FitnessApp.AdminWindowPages
             Challenge chosenChallenge = (Challenge)AllChallengesListBox.Items[selectedChallengeIndex];
 
             // Delete Challenge From Database
-            Database.DeleteChallenge(chosenChallenge.Id);
+            App.Database.DeleteChallenge(chosenChallenge.Id);
 
             // Refresh Challenges
             LoadAllChallenges();
@@ -67,7 +67,7 @@ namespace FitnessApp.AdminWindowPages
         private void LoadWorkoutTypeComboBox()
         {
             // Get All Workouts From Database
-            WorkoutTypeComboBox.ItemsSource = Database.GetAllWorkouts();
+            WorkoutTypeComboBox.ItemsSource = App.Database.GetAllWorkouts();
         }
 
         private void ChallengeDialogBoxAddButton_Click(object sender, RoutedEventArgs e)
@@ -91,13 +91,13 @@ namespace FitnessApp.AdminWindowPages
             else
             {
                 // Add Challenge to databse
-                Database.AddNewChallenge(challengePhoto.ByteArray,
-                                                 ChallengeNameTextBox.Text,
-                                                 ChallengeDescriptionTextBox.Text,
-                                                 int.Parse(ChallengeTargetMinutesTextBox.Text),
-                                                 ChallengeRewardTextBox.Text,
-                                                 ChallengeDueDatePicker.SelectedDate,
-                                                 Database.GetWorkoutID(WorkoutTypeComboBox.Text));
+                // App.Database.AddNewChallenge(challengePhoto.ByteArray,
+                //                                  ChallengeNameTextBox.Text,
+                //                                  ChallengeDescriptionTextBox.Text,
+                //                                  int.Parse(ChallengeTargetMinutesTextBox.Text),
+                //                                  ChallengeRewardTextBox.Text,
+                //                                  ChallengeDueDatePicker.SelectedDate,
+                //                                  App.Database.GetWorkoutID(WorkoutTypeComboBox.Text));
 
                 AddChallengeDialogBox.Visibility = Visibility.Collapsed;
                 DialogBox.IsOpen = false;
@@ -130,10 +130,10 @@ namespace FitnessApp.AdminWindowPages
 
             if (browsePhotoDialog.ShowDialog() == true)
             {
-                challengePhoto = new ImageModel(browsePhotoDialog.FileName);
-
-                // Confirmation Message
-                AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Photo added successfully");
+                // challengePhoto = new ImageModel(browsePhotoDialog.FileName);
+                //
+                // // Confirmation Message
+                // AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Photo added successfully");
             }
         }
 
@@ -145,7 +145,7 @@ namespace FitnessApp.AdminWindowPages
             WorkoutTypeComboBox.SelectedIndex = -1;
             ChallengeTargetMinutesTextBox.Text = "";
             ChallengeRewardTextBox.Text = "";
-            challengePhoto = new ImageModel();
+            // challengePhoto = new ImageModel();
         }
     }
 }

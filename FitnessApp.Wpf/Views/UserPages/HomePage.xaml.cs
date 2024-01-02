@@ -1,5 +1,4 @@
 ﻿using FitnessApp.Models;
-using FitnessApp.SqlServer;
 using FitnessApp.ViewModels;
 using FitnessApp.Windows;
 using LiveCharts;
@@ -13,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using FitnessApp.Wpf;
 using FitnessApp.Wpf.ViewModels;
 
 namespace FitnessApp.UserWindowPages
@@ -37,8 +37,8 @@ namespace FitnessApp.UserWindowPages
             LoadMotivationalQuoteCard();
             LoadCaloriesCard();
 
-            FoodComboBox.ItemsSource = Database.GetAllFood();
-            WorkoutsComboBox.ItemsSource = Database.GetAllWorkouts();
+            FoodComboBox.ItemsSource = App.Database.GetAllFood();
+            WorkoutsComboBox.ItemsSource = App.Database.GetAllWorkouts();
 
         }
 
@@ -69,22 +69,22 @@ namespace FitnessApp.UserWindowPages
                 new LineSeries
                 {
                     Title = "Weight",
-                    Values = Database.GetWeightValues(UserWindow.signedInUser.Id).AsChartValues(),
+                    Values = App.Database.GetWeightValues(UserWindow.signedInUser.Id).AsChartValues(),
                 },
 
-                new LineSeries
-                {
-                    Title = "Target Weight",
-                    Values = Enumerable.Repeat(UserWindow.signedInUser.TargetWeight, 10).AsChartValues(),
-                    PointGeometry = null,
-                    Fill = Brushes.Transparent,
-                    Stroke = Brushes.Red,
-                    StrokeDashArray = new DoubleCollection {3},
-                }
+                // new LineSeries
+                // {
+                //     Title = "Target Weight",
+                //     Values = Enumerable.Repeat(UserWindow.signedInUser.TargetWeight, 10).AsChartValues(),
+                //     PointGeometry = null,
+                //     Fill = Brushes.Transparent,
+                //     Stroke = Brushes.Red,
+                //     StrokeDashArray = new DoubleCollection {3},
+                // }
                 
             };
 
-            Labels = Database.GetWeightDateValues(UserWindow.signedInUser.Id);
+            Labels = App.Database.GetWeightDateValues(UserWindow.signedInUser.Id);
             YFormatter = value => value.ToString() + " kg";
 
             // Setting Data context for Weight Chart
@@ -93,11 +93,12 @@ namespace FitnessApp.UserWindowPages
 
         private double CalculateIdealWeight()
         {
-            if (UserWindow.signedInUser.Gender == "Male")
-                return (UserWindow.signedInUser.Height - 100) + ((UserWindow.signedInUser.Height - 100) * 0.10);
-
-            else
-                return (UserWindow.signedInUser.Height - 100) + ((UserWindow.signedInUser.Height - 100) * 0.15);
+            // if (UserWindow.signedInUser.Gender == "Male")
+            //     return (UserWindow.signedInUser.Height - 100) + ((UserWindow.signedInUser.Height - 100) * 0.10);
+            //
+            // else
+            //     return (UserWindow.signedInUser.Height - 100) + ((UserWindow.signedInUser.Height - 100) * 0.15);
+            return 0;
         }
 
         private void DecimalNumbersOnlyFieldValidation(object sender, TextCompositionEventArgs e)
@@ -114,10 +115,10 @@ namespace FitnessApp.UserWindowPages
             else
             {
                 // Update User Model Weight Porperty with the latest weight
-                UserWindow.signedInUser.Weight = double.Parse(TodaysWeightTextBox.Text);
+                // UserWindow.signedInUser.Weight = double.Parse(TodaysWeightTextBox.Text);
 
                 // Update Weight in Database
-                Database.AddNewWeight(double.Parse(TodaysWeightTextBox.Text), UserWindow.signedInUser.Id);
+                App.Database.AddNewWeight(double.Parse(TodaysWeightTextBox.Text), UserWindow.signedInUser.Id);
 
                 // Update User Weight Line Series:
                 // Add one value and remove another to keep the number of values 10
@@ -152,9 +153,9 @@ namespace FitnessApp.UserWindowPages
         public void LoadTotalWeightLostCard()
         {
 
-            double totalWeightLostPerWeek  = Database.GetTotalWeightLostPerDuration(UserWindow.signedInUser.Id, "WEEK");
-            double totalWeightLostPerMonth = Database.GetTotalWeightLostPerDuration(UserWindow.signedInUser.Id, "MONTH");
-            double totalWeightLostPerYear  = Database.GetTotalWeightLostPerDuration(UserWindow.signedInUser.Id, "YEAR");
+            double totalWeightLostPerWeek  = App.Database.GetTotalWeightLostPerDuration(UserWindow.signedInUser.Id, "WEEK");
+            double totalWeightLostPerMonth = App.Database.GetTotalWeightLostPerDuration(UserWindow.signedInUser.Id, "MONTH");
+            double totalWeightLostPerYear  = App.Database.GetTotalWeightLostPerDuration(UserWindow.signedInUser.Id, "YEAR");
 
 
             // Set Colours
@@ -184,9 +185,9 @@ namespace FitnessApp.UserWindowPages
         public void LoadAverageWeightLostCard()
         {
 
-            double averageWeightLostPerWeek  = Database.GetAverageWeightLostPerDuration(UserWindow.signedInUser.Id, "WEEK");
-            double averageWeightLostPerMonth = Database.GetAverageWeightLostPerDuration(UserWindow.signedInUser.Id, "MONTH");
-            double averageWeightLostPerYear  = Database.GetAverageWeightLostPerDuration(UserWindow.signedInUser.Id, "YEAR");
+            double averageWeightLostPerWeek  = App.Database.GetAverageWeightLostPerDuration(UserWindow.signedInUser.Id, "WEEK");
+            double averageWeightLostPerMonth = App.Database.GetAverageWeightLostPerDuration(UserWindow.signedInUser.Id, "MONTH");
+            double averageWeightLostPerYear  = App.Database.GetAverageWeightLostPerDuration(UserWindow.signedInUser.Id, "YEAR");
 
 
             // Set Colours
@@ -241,9 +242,9 @@ namespace FitnessApp.UserWindowPages
             ToggleButton toggleButton = sender as ToggleButton;
             int selectedChallengeIndex = UncompletedJoinedChallengesListBox.Items.IndexOf(toggleButton.DataContext);
 
-            ChallengeModel currentChallenge = (ChallengeModel)UncompletedJoinedChallengesListBox.Items[selectedChallengeIndex];
+            Challenge currentChallenge = (Challenge)UncompletedJoinedChallengesListBox.Items[selectedChallengeIndex];
 
-            Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
+            App.Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
 
             // Reloading Data context for JoinedChallengesListBox
             ChallengesViewModel joinedChallengesDataContext = new ChallengesViewModel();
@@ -256,10 +257,10 @@ namespace FitnessApp.UserWindowPages
 
         private void ControlNoChallengesCard(ChallengesViewModel challengesViewModel)
         {
-            if (challengesViewModel.UncompletedJoinedChallengeModels.Count > 0)
-                NoChallengesCard.Visibility = Visibility.Collapsed;
-            else
-                NoChallengesCard.Visibility = Visibility.Visible;
+            // if (challengesViewModel.UncompletedJoinedChallengeModels.Count > 0)
+            //     NoChallengesCard.Visibility = Visibility.Collapsed;
+            // else
+            //     NoChallengesCard.Visibility = Visibility.Visible;
         }
 
         private void CompletedChallengeButton_Click(object sender, RoutedEventArgs e)
@@ -267,9 +268,9 @@ namespace FitnessApp.UserWindowPages
             Button button = sender as Button;
             int selectedChallengeIndex = CompletedJoinedChallengesListBox.Items.IndexOf(button.DataContext);
 
-            ChallengeModel currentChallenge = (ChallengeModel)CompletedJoinedChallengesListBox.Items[selectedChallengeIndex];
+            Challenge currentChallenge = (Challenge)CompletedJoinedChallengesListBox.Items[selectedChallengeIndex];
 
-            Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
+            App.Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
 
             LoadJoinedChallengesCards();
         }
@@ -281,7 +282,7 @@ namespace FitnessApp.UserWindowPages
 
         public void LoadJoinedPlanCard()
         {
-            bool checkJoinedInPlan = Database.IsInPlan(UserWindow.signedInUser.Id);
+            bool checkJoinedInPlan = App.Database.IsInPlan(UserWindow.signedInUser.Id);
 
             NoPlanCard.Visibility = Visibility.Visible;
             JoinedPlanCard.Visibility = Visibility.Visible;
@@ -291,7 +292,7 @@ namespace FitnessApp.UserWindowPages
             {
                 NoPlanCard.Visibility = Visibility.Collapsed;
 
-                int planDayNum = Database.GetJoinedPlanDayNumber(UserWindow.signedInUser.Id);
+                int planDayNum = App.Database.GetJoinedPlanDayNumber(UserWindow.signedInUser.Id);
 
                 if (planDayNum > 30)
                     JoinedPlanCard.Visibility = Visibility.Collapsed;
@@ -300,21 +301,21 @@ namespace FitnessApp.UserWindowPages
                     PlanCompletedCard.Visibility = Visibility.Collapsed;
 
                     // Load Header
-                    string planName = Database.GetJoinedPlanName(UserWindow.signedInUser.Id).ToString();
+                    string planName = App.Database.GetJoinedPlanName(UserWindow.signedInUser.Id).ToString();
                     PlanHeaderTextBlock.Text = planName + " | Day #" + planDayNum;
-                    Database.UpdatePlanDayNumber(UserWindow.signedInUser.Id, planDayNum);
+                    App.Database.UpdatePlanDayNumber(UserWindow.signedInUser.Id, planDayNum);
 
                     // Load CheckBoxes
-                    BreakfastCheckBox.IsChecked = Database.GetDayBreakfastStatus(UserWindow.signedInUser.Id);
-                    LunchCheckBox    .IsChecked = Database.GetDayLunchStatus(UserWindow.signedInUser.Id);
-                    DinnerCheckBox   .IsChecked = Database.GetDayDinnerStatus(UserWindow.signedInUser.Id);
-                    WorkoutsCheckBox .IsChecked = Database.GetDayWorkoutStatus(UserWindow.signedInUser.Id);
+                    BreakfastCheckBox.IsChecked = App.Database.GetDayBreakfastStatus(UserWindow.signedInUser.Id);
+                    LunchCheckBox    .IsChecked = App.Database.GetDayLunchStatus(UserWindow.signedInUser.Id);
+                    DinnerCheckBox   .IsChecked = App.Database.GetDayDinnerStatus(UserWindow.signedInUser.Id);
+                    WorkoutsCheckBox .IsChecked = App.Database.GetDayWorkoutStatus(UserWindow.signedInUser.Id);
 
                     // Load Descriptions
-                    BreakfastDescriptionTextBlock.Text = Database.GetDayBreakfastDescription(UserWindow.signedInUser.Id);
-                    LunchDescriptionTextBlock    .Text = Database.GetDayLunchDescription(UserWindow.signedInUser.Id);
-                    DinnerDescriptionTextBlock   .Text = Database.GetDayDinnerDescription(UserWindow.signedInUser.Id);
-                    WorkoutsDescriptionTextBlock .Text = Database.GetDayWorkoutDescription(UserWindow.signedInUser.Id);
+                    BreakfastDescriptionTextBlock.Text = App.Database.GetDayBreakfastDescription(UserWindow.signedInUser.Id);
+                    LunchDescriptionTextBlock    .Text = App.Database.GetDayLunchDescription(UserWindow.signedInUser.Id);
+                    DinnerDescriptionTextBlock   .Text = App.Database.GetDayDinnerDescription(UserWindow.signedInUser.Id);
+                    WorkoutsDescriptionTextBlock .Text = App.Database.GetDayWorkoutDescription(UserWindow.signedInUser.Id);
 
                     // Load Progress Bar
                     PlanProgressBar.Value = planDayNum;
@@ -334,19 +335,19 @@ namespace FitnessApp.UserWindowPages
             switch (currentCheckBox.Name)
             {
                 case "BreakfastCheckBox":
-                    Database.UpdateDayBreakfastStatus(true, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayBreakfastStatus(true, UserWindow.signedInUser.Id);
                     break;
 
                 case "LunchCheckBox":
-                    Database.UpdateDayLunchStatus(true, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayLunchStatus(true, UserWindow.signedInUser.Id);
                     break;
 
                 case "DinnerCheckBox":
-                    Database.UpdateDayDinnerStatus(true, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayDinnerStatus(true, UserWindow.signedInUser.Id);
                     break;
 
                 case "WorkoutsCheckBox":
-                    Database.UpdateDayWorkoutStatus(true, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayWorkoutStatus(true, UserWindow.signedInUser.Id);
                     break;
             }
         }
@@ -358,19 +359,19 @@ namespace FitnessApp.UserWindowPages
             switch (currentCheckBox.Name)
             {
                 case "BreakfastCheckBox":
-                    Database.UpdateDayBreakfastStatus(false, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayBreakfastStatus(false, UserWindow.signedInUser.Id);
                     break;
 
                 case "LunchCheckBox":
-                    Database.UpdateDayLunchStatus(false, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayLunchStatus(false, UserWindow.signedInUser.Id);
                     break;
 
                 case "DinnerCheckBox":
-                    Database.UpdateDayDinnerStatus(false, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayDinnerStatus(false, UserWindow.signedInUser.Id);
                     break;
 
                 case "WorkoutsCheckBox":
-                    Database.UpdateDayWorkoutStatus(false, UserWindow.signedInUser.Id);
+                    App.Database.UpdateDayWorkoutStatus(false, UserWindow.signedInUser.Id);
                     break;
             }
         }
@@ -382,7 +383,7 @@ namespace FitnessApp.UserWindowPages
 
         private void DismissPlanButton_Click(object sender, RoutedEventArgs e)
         {
-            Database.UnjoinPlan(UserWindow.signedInUser.Id);
+            App.Database.UnjoinPlan(UserWindow.signedInUser.Id);
             LoadJoinedPlanCard();
 
             UserWindow.PlansPageObject.LoadAllPlansCards();
@@ -398,7 +399,7 @@ namespace FitnessApp.UserWindowPages
 
         private void LoadMotivationalQuoteCard()
         {
-            MotiationalQuoteTextBlock.Text = Database.GetMotivationalQuote();
+            MotiationalQuoteTextBlock.Text = App.Database.GetMotivationalQuote();
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -415,9 +416,9 @@ namespace FitnessApp.UserWindowPages
         public void LoadCaloriesCard()
         {
 
-            double caloiresGained = Database.GetCaloriesGainedToday(UserWindow.signedInUser.Id);
+            double caloiresGained = App.Database.GetCaloriesGainedToday(UserWindow.signedInUser.Id);
             double caloriesNeeded = CalculateCaloriedNeeded();
-            double caloriesLost   = Database.GetCaloriesLostToday(UserWindow.signedInUser.Id);
+            double caloriesLost   = App.Database.GetCaloriesLostToday(UserWindow.signedInUser.Id);
 
             CaloriesGainedTextBlock.Text = caloiresGained.ToString();
             CaloriesNeededTextBlock.Text = caloriesNeeded.ToString();
@@ -457,15 +458,15 @@ namespace FitnessApp.UserWindowPages
         private double CalculateCaloriedNeeded()
         {
 
-            if (UserWindow.signedInUser.Gender == "Male")
-                return  66 + (13.7 * UserWindow.signedInUser.Weight)
-                           + (1.8  * UserWindow.signedInUser.Height)
-                           - (4.7  * UserWindow.signedInUser.Age);
-            else
-                return 665 + (9.6  * UserWindow.signedInUser.Weight)
-                           + (1.8  * UserWindow.signedInUser.Height)
-                           - (4.7  * UserWindow.signedInUser.Age);
-
+            // if (UserWindow.signedInUser.Gender == "Male")
+            //     return  66 + (13.7 * UserWindow.signedInUser.Weight)
+            //                + (1.8  * UserWindow.signedInUser.Height)
+            //                - (4.7  * UserWindow.signedInUser.Age);
+            // else
+            //     return 665 + (9.6  * UserWindow.signedInUser.Weight)
+            //                + (1.8  * UserWindow.signedInUser.Height)
+            //                - (4.7  * UserWindow.signedInUser.Age);
+            return 0;
         }
 
         ///////////////////////////////////////////////////////////
@@ -505,7 +506,7 @@ namespace FitnessApp.UserWindowPages
 
             else
             {
-                Database.AddFood(FoodComboBox.Text, double.Parse(FoodQuantityTextBox.Text), UserWindow.signedInUser.Id);
+                App.Database.AddFood(FoodComboBox.Text, double.Parse(FoodQuantityTextBox.Text), UserWindow.signedInUser.Id);
                 AddFoodDialogBox.Visibility = Visibility.Collapsed;
                 DialogBox.IsOpen = false;
 
@@ -530,12 +531,12 @@ namespace FitnessApp.UserWindowPages
 
             else
             {
-                Database.AddWorkout(WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text), UserWindow.signedInUser);
+                App.Database.AddWorkout(WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text), UserWindow.signedInUser);
                 AddWorkoutDialogBox.Visibility = Visibility.Collapsed;
                 DialogBox.IsOpen = false;
 
                 // Update Progress of the Challenges having the same type as the entered workout
-                Database.UpdateChallengesProgress(UserWindow.signedInUser.Id, WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text));
+                App.Database.UpdateChallengesProgress(UserWindow.signedInUser.Id, WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text));
 
                 // Refresh Challenges card
                 LoadJoinedChallengesCards();

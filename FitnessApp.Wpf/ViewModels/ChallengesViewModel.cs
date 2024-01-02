@@ -14,13 +14,13 @@ namespace FitnessApp.Wpf.ViewModels
 
         public void AllChallengesViewModel(int accountID)
         {
-            allChallenges = Database.GetAllChallenges(accountID);
+            allChallenges = App.Database.GetAllChallenges(accountID);
         }
 
         public void JoinedChallengesViewModel(int accountID)
         {
 
-            List<Challenge> joinedChallenges = Database.GetJoinedChallenges(accountID);
+            List<Challenge> joinedChallenges = App.Database.GetJoinedChallenges(accountID);
 
             foreach (var item in joinedChallenges)
             {

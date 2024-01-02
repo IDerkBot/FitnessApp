@@ -1,5 +1,8 @@
-﻿namespace FitnessApp.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace FitnessApp.Models;
+
+[Table("Admin")]
 public class Admin
 {
     public int Id { get; set; }

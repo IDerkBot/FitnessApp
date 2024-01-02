@@ -29,7 +29,7 @@
                     <!--  Challenge Item Template  -->
                     <ListBox.ItemTemplate>
 
-                        <DataTemplate DataType="{x:Type models:DayModel}">
+                        <DataTemplate DataType="{x:Type models:Day}">
 
                             <materialDesign:Card
                                 Grid.Row="0"
@@ -156,7 +156,7 @@
                 <!--  Challenge Item Template  -->
                 <ListBox.ItemTemplate>
 
-                    <DataTemplate DataType="{x:Type models:PlanModel}">
+                    <DataTemplate DataType="{x:Type models:Plan}">
 
                         <materialDesign:Card Background="{StaticResource MaterialDesignBackground}">
 

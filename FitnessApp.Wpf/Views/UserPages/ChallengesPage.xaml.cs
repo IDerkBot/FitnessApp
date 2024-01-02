@@ -1,10 +1,10 @@
 ﻿using FitnessApp.Models;
-using FitnessApp.SqlServer;
 using FitnessApp.ViewModels;
 using FitnessApp.Windows;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using FitnessApp.Wpf;
 using FitnessApp.Wpf.ViewModels;
 
 namespace FitnessApp.UserWindowPages
@@ -37,9 +37,9 @@ namespace FitnessApp.UserWindowPages
             ToggleButton toggleButton = sender as ToggleButton;
             int selectedChallengeIndex = ChallengesListBox.Items.IndexOf(toggleButton.DataContext);
 
-            ChallengeModel currentChallenge = (ChallengeModel) ChallengesListBox.Items[selectedChallengeIndex];
+            Challenge currentChallenge = (Challenge) ChallengesListBox.Items[selectedChallengeIndex];
 
-            Database.JoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
+            App.Database.JoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
 
             // Rrefresh Joined Challenges Cards in Home Page 
             UserWindow.HomePageObject.LoadJoinedChallengesCards();
@@ -51,9 +51,9 @@ namespace FitnessApp.UserWindowPages
             ToggleButton toggleButton = sender as ToggleButton;
             int selectedChallengeIndex = ChallengesListBox.Items.IndexOf(toggleButton.DataContext);
 
-            ChallengeModel currentChallenge = (ChallengeModel) ChallengesListBox.Items[selectedChallengeIndex];
+            Challenge currentChallenge = (Challenge) ChallengesListBox.Items[selectedChallengeIndex];
 
-            Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
+            App.Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
 
             // Rrefresh Joined Challenges Cards in Home Page 
             UserWindow.HomePageObject.LoadJoinedChallengesCards();

@@ -25,27 +25,27 @@ namespace FitnessApp.Windows
         public UserWindow(int signedInUserID)
         {
             InitializeComponent();
-            UserWindowObject = this;
-
-            // Initialize User Model
-            signedInUser = new User(signedInUserID);
-
-            // Initialize DataContext with signedInUser Model
-            DataContext = signedInUser;
-
-            // Initialize UserWindowPages Objects
-            HomePageObject               = new HomePage();
-            ChallengesPageObject         = new ChallengesPage();
-            PlansPageObject              = new PlansPage();
-            CaloriesCalculatorPageObject = new CaloriesCalculatorPage();
-            SettingsPageObject           = new SettingsPage();
-
-            // Initialize Listbox Selected Index
-            UserWindowPagesListBox.SelectedIndex = 0;
-
-            // Intialize MessagesQueue and Assign it to MessagesSnackbar's MessageQueue
-            var MessagesQueue = new SnackbarMessageQueue(System.TimeSpan.FromMilliseconds(2000));
-            MessagesSnackbar.MessageQueue = MessagesQueue;
+            // UserWindowObject = this;
+            //
+            // // Initialize User Model
+            // signedInUser = new User(signedInUserID);
+            //
+            // // Initialize DataContext with signedInUser Model
+            // DataContext = signedInUser;
+            //
+            // // Initialize UserWindowPages Objects
+            // HomePageObject               = new HomePage();
+            // ChallengesPageObject         = new ChallengesPage();
+            // PlansPageObject              = new PlansPage();
+            // CaloriesCalculatorPageObject = new CaloriesCalculatorPage();
+            // SettingsPageObject           = new SettingsPage();
+            //
+            // // Initialize Listbox Selected Index
+            // UserWindowPagesListBox.SelectedIndex = 0;
+            //
+            // // Intialize MessagesQueue and Assign it to MessagesSnackbar's MessageQueue
+            // var MessagesQueue = new SnackbarMessageQueue(System.TimeSpan.FromMilliseconds(2000));
+            // MessagesSnackbar.MessageQueue = MessagesQueue;
         }
 
         private void UserWindowPagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

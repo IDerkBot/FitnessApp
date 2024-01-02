@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FitnessApp.DataAccessLayer;
 using FitnessApp.ViewModels;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.AdminWindowPages
 {
@@ -44,7 +45,7 @@ namespace FitnessApp.AdminWindowPages
                 new ColumnSeries
                 {
                     Title = "Rating",
-                    Values = Database.GetAppRatingValues().AsChartValues()
+                    Values = App.Database.GetAppRatingValues().AsChartValues()
                 }
             };
             Labels = new List<string> { "1", "2", "3", "4", "5" };
@@ -55,7 +56,7 @@ namespace FitnessApp.AdminWindowPages
 
         private void LoadAppUsersNumber()
         {
-            AppUsersNumberTextBlock.Text = Database.GetAppUsersNumber().ToString();
+            AppUsersNumberTextBlock.Text = App.Database.GetAppUsersNumber().ToString();
         }
 
         private void DeleteFeedbackButton_Click(object sender, RoutedEventArgs e)
@@ -64,7 +65,7 @@ namespace FitnessApp.AdminWindowPages
             int selectedFeedbackIndex = FeedbacksListBox.Items.IndexOf(deleteFeedbackButton.DataContext);
 
             Feedback chosenFeedback = (Feedback)FeedbacksListBox.Items[selectedFeedbackIndex];
-            Database.DeleteFeedback(chosenFeedback.Message);
+            App.Database.DeleteFeedback(chosenFeedback.Message);
 
             FeedbacksListBox.DataContext = null;
             FeedbacksListBox.DataContext = new FeedbacksViewModel();
@@ -88,11 +89,11 @@ namespace FitnessApp.AdminWindowPages
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Invalid E-mail");
 
             // Check Email not used before
-            else if (Database.IsEmailTaken(NewAdminEmailTextBox.Text))
+            else if (App.Database.IsEmailTaken(NewAdminEmailTextBox.Text))
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
             else
             {
-                Database.AddNewAdmin(FirstNameTextBox.Text, LastNameTextBox.Text, NewAdminEmailTextBox.Text);
+                App.Database.AddNewAdmin(FirstNameTextBox.Text, LastNameTextBox.Text, NewAdminEmailTextBox.Text);
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Admin Added Succesfully");
             }
         }
@@ -120,13 +121,13 @@ namespace FitnessApp.AdminWindowPages
             User chosenUser = (User)DeleteUserListBox.Items[selectedUserIndex];
 
             // Delete Challenge From Database
-            Database.DeleteUser(chosenUser.Id);
+            App.Database.DeleteUser(chosenUser.Id);
 
             // Refresh Listbox and Number of users
             DeleteUserListBox.DataContext = null;
             UserViewModel deletedUserDataContext = new UserViewModel(UserSearchTextBox.Text);
             DeleteUserListBox.DataContext = deletedUserDataContext;
-            AppUsersNumberTextBlock.Text = Database.GetAppUsersNumber().ToString();
+            AppUsersNumberTextBlock.Text = App.Database.GetAppUsersNumber().ToString();
 
             // Refresh Feedbacks and Rating Chart
             FeedbacksListBox.DataContext = null;

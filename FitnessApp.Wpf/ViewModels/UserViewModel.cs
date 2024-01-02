@@ -1,6 +1,7 @@
 ﻿using FitnessApp.Models;
 using System.Collections.Generic;
 using FitnessApp.DataAccessLayer;
+using FitnessApp.Wpf;
 
 
 namespace FitnessApp.ViewModels
@@ -12,7 +13,7 @@ namespace FitnessApp.ViewModels
 
         public UserViewModel(string userNameOrEmail)
         {
-            userModels = Database.SearchForUser(userNameOrEmail);
+            userModels = App.Database.SearchForUser(userNameOrEmail);
         }
 
 

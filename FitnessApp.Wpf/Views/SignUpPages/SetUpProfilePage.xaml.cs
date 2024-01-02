@@ -1,11 +1,11 @@
 ﻿using System;
 using FitnessApp.Models;
-using FitnessApp.SqlServer;
 using FitnessApp.Windows;
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.SignUpPages
 {
@@ -14,7 +14,7 @@ namespace FitnessApp.SignUpPages
     /// </summary>
     public partial class SetUpProfilePage : Page
     {
-        private ImageModel profilePhoto = new ImageModel();
+        // private ImageModel profilePhoto = new ImageModel();
 
         public SetUpProfilePage()
         {
@@ -41,23 +41,23 @@ namespace FitnessApp.SignUpPages
                 if (SigningWindow.SignUpPageObject.BirthDatePicker.SelectedDate != null)
                     date = (DateTime)SigningWindow.SignUpPageObject.BirthDatePicker.SelectedDate;
                 // Signing up
-                Database.AddUser(profilePhoto.ByteArray,
-                                 SigningWindow.SignUpPageObject.FirstNameTextBox.Text,
-                                 SigningWindow.SignUpPageObject.LastNameTextBox.Text,
-                                 SigningWindow.SignUpPageObject.EmailTextBox.Text,
-                                 SigningWindow.SignUpPageObject.Password,
-                                 SigningWindow.SignUpPageObject.GenderComboBox.Text,
-                                 date,
-                                 double.Parse(WeightTextBox.Text),
-                                 double.Parse(HeightTextBox.Text),
-                                 double.Parse(TargetWeightTextBox.Text),
-                                 double.Parse(KilosToLosePerWeekTextBox.Text),
-                                 double.Parse(WorkoutsPerWeekTextBox.Text),
-                                 double.Parse(WorkoutHoursPerDayTextBox.Text));
+                // App.Database.AddUser(profilePhoto.ByteArray,
+                //                  SigningWindow.SignUpPageObject.FirstNameTextBox.Text,
+                //                  SigningWindow.SignUpPageObject.LastNameTextBox.Text,
+                //                  SigningWindow.SignUpPageObject.EmailTextBox.Text,
+                //                  SigningWindow.SignUpPageObject.Password,
+                //                  SigningWindow.SignUpPageObject.GenderComboBox.Text,
+                //                  date,
+                //                  double.Parse(WeightTextBox.Text),
+                //                  double.Parse(HeightTextBox.Text),
+                //                  double.Parse(TargetWeightTextBox.Text),
+                //                  double.Parse(KilosToLosePerWeekTextBox.Text),
+                //                  double.Parse(WorkoutsPerWeekTextBox.Text),
+                //                  double.Parse(WorkoutHoursPerDayTextBox.Text));
 
-                UserWindow UserWindowTemp = new UserWindow(Database.AccountId);
-                SigningWindow.SigningWindowObject.Close();
-                UserWindowTemp.Show();
+                // UserWindow UserWindowTemp = new UserWindow(App.Database.AccountId);
+                // SigningWindow.SigningWindowObject.Close();
+                // UserWindowTemp.Show();
             }
         }
 
@@ -73,8 +73,8 @@ namespace FitnessApp.SignUpPages
 
             if (browsePhotoDialog.ShowDialog() == true)
             {
-                profilePhoto = new ImageModel(browsePhotoDialog.FileName);
-                UserProfilePhoto.ImageSource = profilePhoto.Source;
+                // profilePhoto = new ImageModel(browsePhotoDialog.FileName);
+                // UserProfilePhoto.ImageSource = profilePhoto.Source;
             }
         }
 

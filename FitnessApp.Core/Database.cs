@@ -1,195 +1,87 @@
-﻿using System.Net.Mail;
-using System.Security.Cryptography;
-using System.Text;
+﻿using FitnessApp.DataAccessLayer;
 using FitnessApp.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
-namespace FitnessApp.DataAccessLayer;
+namespace FitnessApp.Core;
 
-public static class Database
+public class Database
 {
-    // [IMPORTANT] Add your server name to ServerDetails Class.
-    private static readonly ApplicationDatabaseContext _database = new();
+    #region Variables
 
-    public static int AccountId { get; set; }
+    protected readonly ApplicationContext Context;
+    public int AccountId { get; set; }
 
-    public static string AccountType { get; set; }
+    public string AccountType { get; set; }
 
-    ///////////////////////////// Helper Functions /////////////////////////////
+    #endregion
 
-    public static string EncryptPassword(string password)
+    #region Constructor
+
+    public Database()
     {
-        string hash = "f0le@rn";
-        byte[] data = Encoding.UTF8.GetBytes(password);
-        using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
-        {
-            byte[] keys = md5.ComputeHash(Encoding.UTF8.GetBytes(hash));
-            string encryptedPassword;
-            using (TripleDESCryptoServiceProvider triDes = new TripleDESCryptoServiceProvider())
-            {
-                triDes.Key = keys;
-                triDes.Mode = CipherMode.ECB;
-                triDes.Padding = PaddingMode.PKCS7;
-                ICryptoTransform transform = triDes.CreateEncryptor();
-                byte[] results = transform.TransformFinalBlock(data, 0, data.Length);
-                encryptedPassword = Convert.ToBase64String(results, 0, results.Length);
-            }
+        var builder = new ConfigurationBuilder();
+        builder.SetBasePath(Directory.GetCurrentDirectory());
+        builder.AddJsonFile("AppSettings.json");
 
-            return encryptedPassword;
-        }
+        var config = builder.Build();
+        var connectionString = config.GetConnectionString("TestConnection");
+        
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+        optionsBuilder.LogTo(message => System.Diagnostics.Debug.WriteLine(message));
+        
+        var options = optionsBuilder.UseSqlServer(connectionString).Options;
+        
+        Context = new ApplicationContext(options);
     }
 
-    private static string GenerateRandomPassword()
-    {
-        const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder res = new StringBuilder();
-        Random rnd = new Random();
-        int length = 7;
-        while (0 < length--)
-        {
-            res.Append(valid[rnd.Next(valid.Length)]);
-        }
+    #endregion
 
-        return res.ToString();
+    #region Methods
+
+    #region Users
+
+    public bool IsUserFound(string login, string password)
+    {
+        return Context.Users.Any(user => user.Login == login && user.Password == password);
     }
-
-    private static void SendUserEmail(string email, string name)
+    
+    public bool IsEmailTaken(string email)
     {
-        MailMessage message = new MailMessage();
-
-        // Reciever's Email
-        message.To.Add(email);
-
-        // Email Subject
-        message.Subject = "Welcome To FitnessApp";
-
-        // Sender's Email
-        message.From = new MailAddress("fitness.weightlossapp@gmail.com", "Fitness App");
-
-        // Email Body
-        message.IsBodyHtml = true;
-        string htmlBody = "<body>" +
-                          "<img src=https://bit.ly/2PI1mx4>" +
-                          "<p style=\"float: left; \">" +
-                          "<img src=https://bit.ly/2STDZ62 height=\"100px\" width=\"100px\" hspace=\"5\" style=\"border - right: 1px solid black;\">" +
-                          "</p> " +
-                          "<p style=\"padding: 20px; \"> " +
-                          " <font size=\"5px\" color=\"#0F88A8\">" +
-                          "<b> Welcome " + name + " , </b>" +
-                          "</font>" +
-                          "<br>" +
-                          "Thank you for choosing FitnessApp!" +
-                          "<br> <br> " +
-                          "Ready for <b>RESHAPING</b> &#9889;" +
-                          "<br><br>" +
-                          " <font size=\"2 px\">" +
-                          "feel free to contact us  &#9786; " +
-                          ",<br> " +
-                          "<a href=\"fitness.weightlossapp @gmail.com\">" +
-                          "fitness.weightlossapp@gmail.com</font>" +
-                          "</p>" +
-                          "</div>" +
-                          "</body>";
-        message.Body = htmlBody;
-
-
-        SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-        smtp.EnableSsl = true;
-        smtp.Credentials = new System.Net.NetworkCredential("fitness.weightlossapp@gmail.com", "m3leshyFitness21");
-        smtp.Send(message);
+        return Context.Persons.Any(x => x.Email == email);
     }
-
-    public static void SendAdminEmail(string email, string randomPassword)
+    
+    public void AddUser(User user)
     {
-        MailMessage message = new MailMessage();
-        // Reciever's Email
-        message.To.Add(email);
-
-        // Email Subject
-        message.Subject = "Welcome To FitnessApp";
-
-        // Sender's Email
-        message.From = new MailAddress("fitness.weightlossapp@gmail.com", "Fitness App");
-
-        // Email Body
-        message.IsBodyHtml = true;
-        string htmlBody = "<body>" +
-                          "<img src=https://bit.ly/2PI1mx4> " +
-                          "<p style=\"float: left; \">" +
-                          "<img src=https://bit.ly/2STDZ62 height=\"100px\" width=\"100px\" hspace=\"5\" style=\"border - right: 1px solid black;\">" +
-                          "</p> " +
-                          "<p style=\"padding: 20px; \">  " +
-                          "<font size=\"5px\" color=\"#0F88A8\">" +
-                          "<b> Welcome  </b>" +
-                          "</font>" +
-                          "<br>" +
-                          "<b> We are so grateful for having you ! &#9786; </b>" +
-                          "<br> <br>" +
-                          "<font size =\"3px\"> Please change your password as soon as possible : </font> " +
-                          randomPassword +
-                          "<br> <br> <br>" +
-                          "<em>Best regards,</em>" +
-                          "<br>FitnessApp Team </p>" +
-                          "</div> " +
-                          "</body>";
-
-        message.Body = htmlBody;
-
-
-        SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-        smtp.EnableSsl = true;
-        smtp.Credentials = new System.Net.NetworkCredential("fitness.weightlossapp@gmail.com", "m3leshyFitness21");
-        smtp.Send(message);
-    }
-
-    ///////////////////////////// User Functions /////////////////////////////
-
-    public static bool IsUserFound(string email, string password)
-    {
-        return _database.User.Any(user => user.Email == email && user.Password == password);
-    }
-
-
-    public static bool IsEmailTaken(string email)
-    {
-        return _database.User.Any(x => x.Email == email);
-    }
-
-    public static void AddUser(byte[] profilePhoto,
-        string firstName, string lastName,
-        string email, string password,
-        string gender, DateTime birthDate,
-        double weight, double height,
-        double targetWeight, double kilosToLosePerWeek,
-        double workoutsPerWeek, double workoutHoursPerDay)
-    {
-        _database.User.Add(new User
-        {
-            FirstName = firstName,
-            LastName = lastName,
-            Email = email,
-            Password = password,
-            Gender = gender,
-            BirthDate = birthDate,
-            Weight = weight,
-            Height = height,
-            TargetWeight = targetWeight,
-            KilosToLosePerWeek = kilosToLosePerWeek,
-            WorkoutsPerWeek = workoutsPerWeek,
-            WorkoutHoursPerDay = workoutHoursPerDay
-        });
-        _database.SaveChanges();
+        Context.Users.Add(user);
+        Context.SaveChanges();
 
         // Sending email to gmails only
-        if (email.Contains("gmail"))
-            SendUserEmail(email, firstName + " " + lastName);
+        // if (email.Contains("gmail"))
+        //     SendUserEmail(email, firstName + " " + lastName);
     }
-
-    public static User? GetUserData(int userId)
+    
+    public void AddUser(string login, string password, byte access = 0)
     {
-        return _database.User.FirstOrDefault(x => x.Id == userId);
-    }
+        Context.Users.Add(new User
+        {
+            Login = login,
+            Password = password,
+            Access = access
+        });
+        Context.SaveChanges();
 
-    public static void UpdateUserProfile(User currentUser)
+        // Sending email to gmails only
+        // if (email.Contains("gmail"))
+        //     SendUserEmail(email, firstName + " " + lastName);
+    }
+    
+    public User? GetUserData(int userId)
+    {
+        return Context.Users.FirstOrDefault(x => x.Id == userId);
+    }
+    
+    public  void UpdateUserProfile(User currentUser)
     {
         // connection.Open();
         //
@@ -226,7 +118,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateUserAccount(User currentUser)
+    public  void UpdateUserAccount(User currentUser)
     {
         // connection.Open();
         //
@@ -246,7 +138,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateUserPassword(User currentUser)
+    public  void UpdateUserPassword(User currentUser)
     {
         // connection.Open();
         //
@@ -262,7 +154,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void SaveFeedback(int userID, int rating, string feedback)
+    public  void SaveFeedback(int userID, int rating, string feedback)
     {
         // connection.Open();
         //
@@ -278,9 +170,11 @@ public static class Database
         // connection.Close();
     }
 
-    ///////////////////////////// Challenges Functions /////////////////////////////
+    #endregion
+    
+    #region Challenges
 
-    public static List<Challenge> GetAllChallenges(int accountId)
+    public  List<Challenge> GetAllChallenges(int accountId)
     {
         // // Remove All Overdue Challenges before reading data
         // RemoveOverdueChallenges();
@@ -325,7 +219,7 @@ public static class Database
         return null;
     }
 
-    public static List<Challenge> GetJoinedChallenges(int accountID)
+    public  List<Challenge> GetJoinedChallenges(int accountID)
     {
         // // Remove All Overdue Challenges before reading data
         // RemoveOverdueChallenges();
@@ -365,7 +259,7 @@ public static class Database
         return null;
     }
 
-    public static void JoinChallenge(int accountID, int ChallengeID)
+    public  void JoinChallenge(int accountID, int ChallengeID)
     {
         // connection.Open();
         // query = "INSERT INTO [JoinedChallenge] " +
@@ -378,7 +272,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UnjoinChallenge(int accountID, int ChallengeID)
+    public  void UnjoinChallenge(int accountID, int ChallengeID)
     {
         // connection.Open();
         // query = "DELETE [JoinedChallenge] " +
@@ -391,7 +285,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void RemoveOverdueChallenges()
+    public  void RemoveOverdueChallenges()
     {
         // connection.Open();
         //
@@ -412,7 +306,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateChallengesProgress(int accountID, string workout, double duration)
+    public  void UpdateChallengesProgress(int accountID, string workout, double duration)
     {
         // connection.Open();
         //
@@ -435,10 +329,11 @@ public static class Database
         // connection.Close();
     }
 
+    #endregion
 
-    ///////////////////////////// Plans Functions /////////////////////////////
+    #region Plans
 
-    public static List<Plan> GetPlans(int accountID)
+    public  List<Plan> GetPlans(int accountID)
     {
         // connection.Open();
         // query = "SELECT [Plan].*,[User].PK_UserID " +
@@ -479,7 +374,7 @@ public static class Database
         return null;
     }
 
-    public static List<Day> GetPlanDays(int planID)
+    public  List<Day> GetPlanDays(int planID)
     {
         // connection.Open();
         // query = "SELECT * FROM [Day] " +
@@ -510,7 +405,7 @@ public static class Database
         return null;
     }
 
-    public static bool IsInPlan(int accountID)
+    public  bool IsInPlan(int accountID)
     {
         // connection.Open();
         // query = "SELECT FK_User_PlanID " +
@@ -532,7 +427,7 @@ public static class Database
         return false;
     }
 
-    public static void JoinPlan(int accountID, int planID)
+    public  void JoinPlan(int accountID, int planID)
     {
         // connection.Open();
         // query = "UPDATE [User] " +
@@ -552,7 +447,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UnjoinPlan(int accountID)
+    public  void UnjoinPlan(int accountID)
     {
         // connection.Open();
         // query = "UPDATE [User] " +
@@ -572,11 +467,9 @@ public static class Database
         // connection.Close();
     }
 
+    #region Joined Plan
 
-    ///////////////////////////// Joined Plan Functions /////////////////////////////
-
-
-    public static int GetJoinedPlanID(int accountID)
+    public  int GetJoinedPlanID(int accountID)
     {
         // connection.Open();
         //
@@ -594,7 +487,7 @@ public static class Database
         return 0;
     }
 
-    public static string GetJoinedPlanName(int accountID)
+    public  string GetJoinedPlanName(int accountID)
     {
         // connection.Open();
         //
@@ -613,7 +506,7 @@ public static class Database
         return null;
     }
 
-    public static int GetJoinedPlanDayNumber(int accountID)
+    public  int GetJoinedPlanDayNumber(int accountID)
     {
         // connection.Open();
         //
@@ -633,7 +526,7 @@ public static class Database
     }
 
 
-    public static string GetDayBreakfastDescription(int accountID)
+    public  string GetDayBreakfastDescription(int accountID)
     {
         // connection.Open();
         //
@@ -654,7 +547,7 @@ public static class Database
         return null;
     }
 
-    public static string GetDayLunchDescription(int accountID)
+    public  string GetDayLunchDescription(int accountID)
     {
         // connection.Open();
         //
@@ -675,7 +568,7 @@ public static class Database
         return null;
     }
 
-    public static string GetDayDinnerDescription(int accountID)
+    public  string GetDayDinnerDescription(int accountID)
     {
         // connection.Open();
         //
@@ -696,7 +589,7 @@ public static class Database
         return null;
     }
 
-    public static string GetDayWorkoutDescription(int accountID)
+    public  string GetDayWorkoutDescription(int accountID)
     {
         // connection.Open();
         //
@@ -718,7 +611,7 @@ public static class Database
     }
 
 
-    public static bool GetDayBreakfastStatus(int accountID)
+    public  bool GetDayBreakfastStatus(int accountID)
     {
         // connection.Open();
         //
@@ -739,7 +632,7 @@ public static class Database
         return false;
     }
 
-    public static bool GetDayLunchStatus(int accountID)
+    public  bool GetDayLunchStatus(int accountID)
     {
         // connection.Open();
         //
@@ -760,7 +653,7 @@ public static class Database
         return false;
     }
 
-    public static bool GetDayDinnerStatus(int accountID)
+    public  bool GetDayDinnerStatus(int accountID)
     {
         // connection.Open();
         //
@@ -781,7 +674,7 @@ public static class Database
         return false;
     }
 
-    public static bool GetDayWorkoutStatus(int accountID)
+    public  bool GetDayWorkoutStatus(int accountID)
     {
         // connection.Open();
         //
@@ -803,7 +696,7 @@ public static class Database
     }
 
 
-    public static void UpdatePlanDayNumber(int accountID, int dayNumber)
+    public  void UpdatePlanDayNumber(int accountID, int dayNumber)
     {
         // connection.Open();
         //
@@ -834,7 +727,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateDayBreakfastStatus(bool checkedBreakfast, int accountID)
+    public  void UpdateDayBreakfastStatus(bool checkedBreakfast, int accountID)
     {
         // connection.Open();
         //
@@ -850,7 +743,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateDayLunchStatus(bool checkedLunch, int accountID)
+    public  void UpdateDayLunchStatus(bool checkedLunch, int accountID)
     {
         // connection.Open();
         //
@@ -866,7 +759,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateDayDinnerStatus(bool checkedDinner, int accountID)
+    public  void UpdateDayDinnerStatus(bool checkedDinner, int accountID)
     {
         // connection.Open();
         //
@@ -882,7 +775,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateDayWorkoutStatus(bool checkedWorkout, int accountID)
+    public  void UpdateDayWorkoutStatus(bool checkedWorkout, int accountID)
     {
         // int planDay = GetJoinedPlanDayNumber(accountID);
         //
@@ -900,10 +793,33 @@ public static class Database
         // connection.Close();
     }
 
+    #endregion
+    
+    #endregion
+
+    #region Persons
+
+    public void AddPerson(Person person)
+    {
+        Context.Persons.Add(person);
+        Context.SaveChanges();
+    }
+    
+    public void AddPerson(string firstName, string lastName)
+    {
+        Context.Persons.Add(new Person
+        {
+            FirstName = firstName,
+            LastName = lastName,
+        });
+        Context.SaveChanges();
+    }
+
+    #endregion
 
     ///////////////////////////// Weight Functions /////////////////////////////
 
-    public static List<double> GetWeightValues(int accountID)
+    public  List<double> GetWeightValues(int accountID)
     {
         // List<double> weightValues = new List<double>();
         //
@@ -931,7 +847,7 @@ public static class Database
         return null;
     }
 
-    public static List<string> GetWeightDateValues(int accountID)
+    public  List<string> GetWeightDateValues(int accountID)
     {
         // List<string> dateValues = new List<string>();
         //
@@ -960,7 +876,7 @@ public static class Database
         return null;
     }
 
-    public static void AddNewWeight(double NewWeight, int accountID)
+    public  void AddNewWeight(double NewWeight, int accountID)
     {
         // connection.Open();
         //
@@ -974,7 +890,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static double GetTotalWeightLostPerDuration(int accountID, string duration)
+    public  double GetTotalWeightLostPerDuration(int accountID, string duration)
     {
         // double weightLost = 0;
         // List<double> weights = new List<double>();
@@ -1008,7 +924,7 @@ public static class Database
         return 0;
     }
 
-    public static double GetAverageWeightLostPerDuration(int accountID, string duration)
+    public  double GetAverageWeightLostPerDuration(int accountID, string duration)
     {
         // double weightLost = 0;
         // List<double> weights = new List<double>();
@@ -1044,7 +960,7 @@ public static class Database
 
     ///////////////////////////// Motivational Quote Functions /////////////////////////////
 
-    public static string GetMotivationalQuote()
+    public  string GetMotivationalQuote()
     {
         // connection.Open();
         //
@@ -1065,7 +981,7 @@ public static class Database
 
     ///////////////////////////// Calories Functions /////////////////////////////
 
-    public static double GetCaloriesGainedToday(int accountID)
+    public  double GetCaloriesGainedToday(int accountID)
     {
         // double caloriesGained = 0;
         //
@@ -1088,7 +1004,7 @@ public static class Database
         return 0;
     }
 
-    public static double GetCaloriesLostToday(int accountID)
+    public  double GetCaloriesLostToday(int accountID)
     {
         // double caloriesLost = 0;
         //
@@ -1114,7 +1030,7 @@ public static class Database
 
     ///////////////////////////// Food/Workout Functions /////////////////////////////
 
-    public static List<String> GetAllFood()
+    public  List<String> GetAllFood()
     {
         // List<String> food = new List<string>();
         //
@@ -1137,7 +1053,7 @@ public static class Database
         return null;
     }
 
-    public static List<String> GetAllWorkouts()
+    public  List<String> GetAllWorkouts()
     {
         // List<String> workouts = new List<string>();
         //
@@ -1160,7 +1076,7 @@ public static class Database
     }
 
 
-    public static int GetFoodID(string foodName)
+    public  int GetFoodID(string foodName)
     {
         // connection.Open();
         //
@@ -1178,7 +1094,7 @@ public static class Database
         return 0;
     }
 
-    public static int GetWorkoutID(string workoutName)
+    public  int GetWorkoutID(string workoutName)
     {
         // connection.Open();
         //
@@ -1197,7 +1113,7 @@ public static class Database
     }
 
 
-    public static void AddFood(string foodName, double quantity, int accountID)
+    public  void AddFood(string foodName, double quantity, int accountID)
     {
         // int foodID = GetFoodID(foodName);
         // double totalCaloriesGained = 0;
@@ -1239,7 +1155,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void AddWorkout(string workoutName, double duration, User currentUser)
+    public  void AddWorkout(string workoutName, double duration, User currentUser)
     {
         // int workoutID = GetWorkoutID(workoutName);
         // double totalCaloriesLost = 0;
@@ -1275,7 +1191,7 @@ public static class Database
     ///////////////////////////// Admin Functions /////////////////////////////
 
 
-    public static Admin GetAdminData(int adminID)
+    public  Admin GetAdminData(int adminID)
     {
         // Admin currentAdmin = new Admin();
         //
@@ -1301,7 +1217,7 @@ public static class Database
         return null;
     }
 
-    public static void UpdateAdminAccount(Admin currentAdmin)
+    public  void UpdateAdminAccount(Admin currentAdmin)
     {
         // connection.Open();
         //
@@ -1321,7 +1237,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void UpdateAdminPassword(Admin currentAdmin)
+    public  void UpdateAdminPassword(Admin currentAdmin)
     {
         // connection.Open();
         //
@@ -1339,7 +1255,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void AddNewAdmin(string firstName, string lastName, string email)
+    public  void AddNewAdmin(string firstName, string lastName, string email)
     {
         // connection.Open();
         //
@@ -1365,7 +1281,7 @@ public static class Database
         //     SendAdminEmail(email, password);
     }
 
-    public static List<int> GetAppRatingValues()
+    public  List<int>? GetAppRatingValues()
     {
         // connection.Open();
         //
@@ -1389,7 +1305,7 @@ public static class Database
         return null;
     }
 
-    public static List<Feedback> GetFeedbacks()
+    public  List<Feedback> GetFeedbacks()
     {
         return null;
         // List<Feedback> allFeedbacks = new List<Feedback>();
@@ -1422,7 +1338,7 @@ public static class Database
         // return allFeedbacks;
     }
 
-    public static void DeleteFeedback(string feedbackBody)
+    public  void DeleteFeedback(string feedbackBody)
     {
         // connection.Open();
         //
@@ -1436,7 +1352,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static int GetAppUsersNumber()
+    public  int GetAppUsersNumber()
     {
         // connection.Open();
         //
@@ -1452,7 +1368,7 @@ public static class Database
         return 0;
     }
 
-    public static bool IsNewAdmin(int accountID)
+    public  bool IsNewAdmin(int accountID)
     {
         // connection.Open();
         //
@@ -1477,7 +1393,7 @@ public static class Database
     }
 
 
-    public static void AddNewChallenge(byte[] photo, string name, string description, int targetMinutes,
+    public  void AddNewChallenge(byte[] photo, string name, string description, int targetMinutes,
         string reward, DateTime? dueDate, int workoutID)
     {
         // connection.Open();
@@ -1504,7 +1420,7 @@ public static class Database
         // connection.Close();
     }
 
-    public static void DeleteChallenge(int challengeID)
+    public  void DeleteChallenge(int challengeID)
     {
         // connection.Open();
         //
@@ -1527,9 +1443,8 @@ public static class Database
         //
         // connection.Close();
     }
-
-
-    public static List<User> SearchForUser(string search)
+    
+    public  List<User> SearchForUser(string search)
     {
         return null;
         // List<User> allUsers = new List<User>();
@@ -1568,7 +1483,7 @@ public static class Database
         // return allUsers;
     }
 
-    public static void DeleteUser(int accountID)
+    public  void DeleteUser(int accountID)
     {
         // connection.Open();
         //
@@ -1621,5 +1536,136 @@ public static class Database
         //
         //
         // connection.Close();
+    }
+    
+    #endregion
+    
+    ///////////////////////////// Helper Functions /////////////////////////////
+
+    public  string EncryptPassword(string password)
+    {
+        // string hash = "f0le@rn";
+        // byte[] data = Encoding.UTF8.GetBytes(password);
+        // using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
+        // {
+        //     byte[] keys = md5.ComputeHash(Encoding.UTF8.GetBytes(hash));
+        //     string encryptedPassword;
+        //     using (TripleDESCryptoServiceProvider triDes = new TripleDESCryptoServiceProvider())
+        //     {
+        //         triDes.Key = keys;
+        //         triDes.Mode = CipherMode.ECB;
+        //         triDes.Padding = PaddingMode.PKCS7;
+        //         ICryptoTransform transform = triDes.CreateEncryptor();
+        //         byte[] results = transform.TransformFinalBlock(data, 0, data.Length);
+        //         encryptedPassword = Convert.ToBase64String(results, 0, results.Length);
+        //     }
+        //
+        //     return encryptedPassword;
+        // }
+        return null;
+    }
+    
+    private  string GenerateRandomPassword()
+    {
+        // const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        // StringBuilder res = new StringBuilder();
+        // Random rnd = new Random();
+        // int length = 7;
+        // while (0 < length--)
+        // {
+        //     res.Append(valid[rnd.Next(valid.Length)]);
+        // }
+        //
+        // return res.ToString();
+        return null;
+    }
+    
+    private void SendUserEmail(string email, string name)
+    {
+        // MailMessage message = new MailMessage();
+        //
+        // // Reciever's Email
+        // message.To.Add(email);
+        //
+        // // Email Subject
+        // message.Subject = "Welcome To FitnessApp";
+        //
+        // // Sender's Email
+        // message.From = new MailAddress("fitness.weightlossapp@gmail.com", "Fitness App");
+        //
+        // // Email Body
+        // message.IsBodyHtml = true;
+        // string htmlBody = "<body>" +
+        //                   "<img src=https://bit.ly/2PI1mx4>" +
+        //                   "<p style=\"float: left; \">" +
+        //                   "<img src=https://bit.ly/2STDZ62 height=\"100px\" width=\"100px\" hspace=\"5\" style=\"border - right: 1px solid black;\">" +
+        //                   "</p> " +
+        //                   "<p style=\"padding: 20px; \"> " +
+        //                   " <font size=\"5px\" color=\"#0F88A8\">" +
+        //                   "<b> Welcome " + name + " , </b>" +
+        //                   "</font>" +
+        //                   "<br>" +
+        //                   "Thank you for choosing FitnessApp!" +
+        //                   "<br> <br> " +
+        //                   "Ready for <b>RESHAPING</b> &#9889;" +
+        //                   "<br><br>" +
+        //                   " <font size=\"2 px\">" +
+        //                   "feel free to contact us  &#9786; " +
+        //                   ",<br> " +
+        //                   "<a href=\"fitness.weightlossapp @gmail.com\">" +
+        //                   "fitness.weightlossapp@gmail.com</font>" +
+        //                   "</p>" +
+        //                   "</div>" +
+        //                   "</body>";
+        // message.Body = htmlBody;
+        //
+        //
+        // SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+        // smtp.EnableSsl = true;
+        // smtp.Credentials = new System.Net.NetworkCredential("fitness.weightlossapp@gmail.com", "m3leshyFitness21");
+        // smtp.Send(message);
+    }
+    
+    public  void SendAdminEmail(string email, string randomPassword)
+    {
+        // MailMessage message = new MailMessage();
+        // // Reciever's Email
+        // message.To.Add(email);
+        //
+        // // Email Subject
+        // message.Subject = "Welcome To FitnessApp";
+        //
+        // // Sender's Email
+        // message.From = new MailAddress("fitness.weightlossapp@gmail.com", "Fitness App");
+        //
+        // // Email Body
+        // message.IsBodyHtml = true;
+        // string htmlBody = "<body>" +
+        //                   "<img src=https://bit.ly/2PI1mx4> " +
+        //                   "<p style=\"float: left; \">" +
+        //                   "<img src=https://bit.ly/2STDZ62 height=\"100px\" width=\"100px\" hspace=\"5\" style=\"border - right: 1px solid black;\">" +
+        //                   "</p> " +
+        //                   "<p style=\"padding: 20px; \">  " +
+        //                   "<font size=\"5px\" color=\"#0F88A8\">" +
+        //                   "<b> Welcome  </b>" +
+        //                   "</font>" +
+        //                   "<br>" +
+        //                   "<b> We are so grateful for having you ! &#9786; </b>" +
+        //                   "<br> <br>" +
+        //                   "<font size =\"3px\"> Please change your password as soon as possible : </font> " +
+        //                   randomPassword +
+        //                   "<br> <br> <br>" +
+        //                   "<em>Best regards,</em>" +
+        //                   "<br>FitnessApp Team </p>" +
+        //                   "</div> " +
+        //                   "</body>";
+        //
+        // message.Body = htmlBody;
+        //
+        //
+        // SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+        // smtp.EnableSsl = true;
+        // smtp.Credentials = new System.Net.NetworkCredential("fitness.weightlossapp@gmail.com", "m3leshyFitness21");
+        // smtp.Send(message);
     }
 }

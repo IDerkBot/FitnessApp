@@ -2,8 +2,7 @@
     x:Class="FitnessApp.Wpf.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:FitnessApp.Wpf"
-    StartupUri="/Views/Windows/SigningWindow.xaml">
+    xmlns:local="clr-namespace:FitnessApp.Wpf">
     <Application.Resources>
         <ResourceDictionary>
             <!--  Fonts Resources  -->

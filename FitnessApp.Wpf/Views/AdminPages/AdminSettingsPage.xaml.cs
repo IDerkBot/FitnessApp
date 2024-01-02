@@ -1,6 +1,7 @@
 ﻿using FitnessApp.Windows;
 using System.Windows.Controls;
 using FitnessApp.DataAccessLayer;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.AdminWindowPages
 {
@@ -76,7 +77,7 @@ namespace FitnessApp.AdminWindowPages
             // Check Email/Username Availability
             else if (EmailTextBox.Text != AdminWindow.signedInAdmin.Email)
             {
-                if (Database.IsEmailTaken(EmailTextBox.Text))
+                if (App.Database.IsEmailTaken(EmailTextBox.Text))
                     AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
             }
 
@@ -89,7 +90,7 @@ namespace FitnessApp.AdminWindowPages
                 AdminWindow.signedInAdmin.Email     = EmailTextBox.Text;
 
                 // Update User's Account in database
-                Database.UpdateAdminAccount(AdminWindow.signedInAdmin);
+                App.Database.UpdateAdminAccount(AdminWindow.signedInAdmin);
 
                 // Refresh UserWindow DataContext
                 AdminWindow.AdminWindowObject.DataContext = null;
@@ -118,16 +119,16 @@ namespace FitnessApp.AdminWindowPages
             else if (NewPasswordTextBox.Password.Length < 7)
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
 
-            else if (Database.EncryptPassword(OldPasswordTextBox.Password) != AdminWindow.signedInAdmin.Password)
+            else if (App.Database.EncryptPassword(OldPasswordTextBox.Password) != AdminWindow.signedInAdmin.Password)
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
 
             else
             {
                 // Update signedInAdmin User Model
-                AdminWindow.signedInAdmin.Password = Database.EncryptPassword(NewPasswordTextBox.Password);
+                AdminWindow.signedInAdmin.Password = App.Database.EncryptPassword(NewPasswordTextBox.Password);
 
                 // Update Admin's Password in database
-                Database.UpdateAdminPassword(AdminWindow.signedInAdmin);
+                App.Database.UpdateAdminPassword(AdminWindow.signedInAdmin);
 
                 // Confirmation Message
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");

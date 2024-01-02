@@ -1,6 +1,7 @@
 ﻿using FitnessApp.Models;
 using System.Collections.Generic;
 using FitnessApp.DataAccessLayer;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.ViewModels
 {
@@ -11,7 +12,7 @@ namespace FitnessApp.ViewModels
 
         public PlansViewModel(int accountID)
         {
-            planModels = Database.GetPlans(accountID);
+            planModels = App.Database.GetPlans(accountID);
         }
 
         public List<Plan> Plans

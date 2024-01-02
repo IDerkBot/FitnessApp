@@ -1,7 +1,11 @@
-﻿namespace FitnessApp.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace FitnessApp.Models;
+
+[Table("Day")]
 public class Day
 {
+    public int Id { get; set; }
     public int DayNumber { get; set; }
 
     public string BreakfastDescription { get; set; }

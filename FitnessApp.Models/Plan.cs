@@ -1,5 +1,8 @@
-﻿namespace FitnessApp.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace FitnessApp.Models;
+
+[Table("Plan")]
 public class Plan
 {
     private string _duration;

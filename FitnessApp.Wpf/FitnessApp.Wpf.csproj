@@ -6,12 +6,18 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
+        <StartupObject>FitnessApp.Wpf.App</StartupObject>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
       <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
       <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -76,8 +82,29 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FitnessApp.Core\FitnessApp.Core.csproj" />
       <ProjectReference Include="..\FitnessApp.DataAccessLayer\FitnessApp.DataAccessLayer.csproj" />
       <ProjectReference Include="..\FitnessApp.Models\FitnessApp.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="AppSettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Resource Include="Resources\Images\AccountCircleDefaultIcon.png" />
+      <Resource Include="Resources\Images\BG.jpg" />
+      <Resource Include="Resources\Images\LoginHeader.jpg" />
+      <Resource Include="Resources\Images\Logo.png" />
+      <Resource Include="Resources\Images\No-Image.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ViewModels\AdminPages\" />
+      <Folder Include="ViewModels\UserPages\" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,8 @@
-﻿namespace FitnessApp.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace FitnessApp.Models;
+
+[Table("Challenge")]
 public class Challenge
 {
     public int Id { get; set; }

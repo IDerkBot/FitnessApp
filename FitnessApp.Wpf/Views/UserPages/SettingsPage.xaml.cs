@@ -1,9 +1,9 @@
 ﻿using FitnessApp.Models;
-using FitnessApp.SqlServer;
 using FitnessApp.Windows;
 using Microsoft.Win32;
 using System.Windows.Controls;
 using System.Windows.Input;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.UserWindowPages
 {
@@ -71,7 +71,7 @@ namespace FitnessApp.UserWindowPages
 
         }
 
-        private ImageModel currentProfilePhoto;
+        private Image currentProfilePhoto;
 
         private void UpdateUserProfilePhotoButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -83,8 +83,8 @@ namespace FitnessApp.UserWindowPages
 
             if (browsePhotoDialog.ShowDialog() == true)
             {
-                currentProfilePhoto = new ImageModel(browsePhotoDialog.FileName);
-                UserProfilePhoto.ImageSource = currentProfilePhoto.Source;
+                // currentProfilePhoto = new Image(browsePhotoDialog.FileName);
+                // UserProfilePhoto.ImageSource = currentProfilePhoto.Source;
             }
 
         }
@@ -120,17 +120,17 @@ namespace FitnessApp.UserWindowPages
             else
             {
                 // Update signedInUser User Model
-                if (currentProfilePhoto != null) // Check if profile photo is updated
-                    UserWindow.signedInUser.ProfilePhoto   = currentProfilePhoto;
-                UserWindow.signedInUser.Weight             = double.Parse(WeightTextBox            .Text);
-                UserWindow.signedInUser.Height             = double.Parse(HeightTextBox            .Text);
-                UserWindow.signedInUser.TargetWeight       = double.Parse(TargetWeightTextBox      .Text);
-                UserWindow.signedInUser.KilosToLosePerWeek = double.Parse(KilosToLosePerWeekTextBox.Text);
-                UserWindow.signedInUser.WorkoutsPerWeek    = double.Parse(WorkoutsPerWeekTextBox   .Text);
-                UserWindow.signedInUser.WorkoutHoursPerDay = double.Parse(WorkoutHoursPerDayTextBox.Text);
+                // if (currentProfilePhoto != null) // Check if profile photo is updated
+                //     UserWindow.signedInUser.ProfilePhoto   = currentProfilePhoto;
+                // UserWindow.signedInUser.Weight             = double.Parse(WeightTextBox            .Text);
+                // UserWindow.signedInUser.Height             = double.Parse(HeightTextBox            .Text);
+                // UserWindow.signedInUser.TargetWeight       = double.Parse(TargetWeightTextBox      .Text);
+                // UserWindow.signedInUser.KilosToLosePerWeek = double.Parse(KilosToLosePerWeekTextBox.Text);
+                // UserWindow.signedInUser.WorkoutsPerWeek    = double.Parse(WorkoutsPerWeekTextBox   .Text);
+                // UserWindow.signedInUser.WorkoutHoursPerDay = double.Parse(WorkoutHoursPerDayTextBox.Text);
 
                 // Update User's Profile in database
-                Database.UpdateUserProfile(UserWindow.signedInUser);
+                App.Database.UpdateUserProfile(UserWindow.signedInUser);
 
                 // Refresh UserWindow DataContext
                 UserWindow.UserWindowObject.DataContext = null;
@@ -169,28 +169,28 @@ namespace FitnessApp.UserWindowPages
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Invalid E-mail");
 
             // Check Email Availability
-            else if (EmailTextBox.Text != UserWindow.signedInUser.Email)
-            {
-                if (Database.IsEmailTaken(EmailTextBox.Text))
-                    UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
-            }
+            // else if (EmailTextBox.Text != UserWindow.signedInUser.Email)
+            // {
+            //     if (App.Database.IsEmailTaken(EmailTextBox.Text))
+            //         UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
+            // }
 
             else
             {
                 // Update signedInUser User Model
-                UserWindow.signedInUser.FirstName = FirstNameTextBox.Text;
-                UserWindow.signedInUser.LastName = LastNameTextBox.Text;
-                UserWindow.signedInUser.Email = EmailTextBox.Text;
-
-                // Update User's Account in database
-                Database.UpdateUserAccount(UserWindow.signedInUser);
-
-                // Refresh UserWindow DataContext
-                UserWindow.UserWindowObject.DataContext = null;
-                UserWindow.UserWindowObject.DataContext = UserWindow.signedInUser;
-
-                // Confirmation Message
-                UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Account Updated!");
+                // UserWindow.signedInUser.FirstName = FirstNameTextBox.Text;
+                // UserWindow.signedInUser.LastName = LastNameTextBox.Text;
+                // UserWindow.signedInUser.Email = EmailTextBox.Text;
+                //
+                // // Update User's Account in database
+                // App.Database.UpdateUserAccount(UserWindow.signedInUser);
+                //
+                // // Refresh UserWindow DataContext
+                // UserWindow.UserWindowObject.DataContext = null;
+                // UserWindow.UserWindowObject.DataContext = UserWindow.signedInUser;
+                //
+                // // Confirmation Message
+                // UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Account Updated!");
             }
         }
 
@@ -211,16 +211,16 @@ namespace FitnessApp.UserWindowPages
             else if (NewPasswordTextBox.Password.Length < 7)
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
 
-            else if (Database.EncryptPassword(OldPasswordTextBox.Password) != UserWindow.signedInUser.Password)
+            else if (App.Database.EncryptPassword(OldPasswordTextBox.Password) != UserWindow.signedInUser.Password)
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
 
             else
             {
                 // Update signedInUser User Model
-                UserWindow.signedInUser.Password = Database.EncryptPassword(NewPasswordTextBox.Password);
+                UserWindow.signedInUser.Password = App.Database.EncryptPassword(NewPasswordTextBox.Password);
 
                 // Update User's Password in database
-                Database.UpdateUserPassword(UserWindow.signedInUser);
+                App.Database.UpdateUserPassword(UserWindow.signedInUser);
 
                 // Confirmation Message
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");
@@ -229,10 +229,10 @@ namespace FitnessApp.UserWindowPages
 
         private void SubmitFeedbackButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Database.SaveFeedback(UserWindow.signedInUser.Id, RatingBar.Value , FeedbackTextBox.Text);
-
-            // Confirmation Message
-            UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Thank you for your feedback!");
+            // App.Database.SaveFeedback(UserWindow.signedInUser.Id, RatingBar.Value , FeedbackTextBox.Text);
+            //
+            // // Confirmation Message
+            // UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Thank you for your feedback!");
         }
 
     }
