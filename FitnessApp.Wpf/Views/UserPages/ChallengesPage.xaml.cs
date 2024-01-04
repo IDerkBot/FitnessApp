@@ -27,7 +27,7 @@ namespace FitnessApp.UserWindowPages
         {
             // Setting Data context for ChallengesListBox
             ChallengesViewModel challengesDataContext = new ChallengesViewModel();
-            challengesDataContext.AllChallengesViewModel(UserWindow.signedInUser.Id);
+            challengesDataContext.AllChallengesViewModel(UserWindow.SignedInUser.Id);
             DataContext = challengesDataContext;
         }
 
@@ -39,7 +39,7 @@ namespace FitnessApp.UserWindowPages
 
             Challenge currentChallenge = (Challenge) ChallengesListBox.Items[selectedChallengeIndex];
 
-            App.Database.JoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
+            App.Database.JoinChallenge(UserWindow.SignedInUser.Id, currentChallenge.Id);
 
             // Rrefresh Joined Challenges Cards in Home Page 
             UserWindow.HomePageObject.LoadJoinedChallengesCards();
@@ -53,7 +53,7 @@ namespace FitnessApp.UserWindowPages
 
             Challenge currentChallenge = (Challenge) ChallengesListBox.Items[selectedChallengeIndex];
 
-            App.Database.UnjoinChallenge(UserWindow.signedInUser.Id, currentChallenge.Id);
+            App.Database.UnjoinChallenge(UserWindow.SignedInUser.Id, currentChallenge.Id);
 
             // Rrefresh Joined Challenges Cards in Home Page 
             UserWindow.HomePageObject.LoadJoinedChallengesCards();

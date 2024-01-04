@@ -22,7 +22,7 @@ public class UserViewModel : ObservableObject
     public UserViewModel()
     {
         // Initialize User Model
-        SignedInUser = App.Database.GetUserData(App.Database.AccountId);
+        SignedInUser = App.Database.GetUserById(App.Database.AccountId);
 
         // Initialize UserWindowPages Objects
         HomePageObject = new HomePage();
@@ -30,13 +30,6 @@ public class UserViewModel : ObservableObject
         PlansPageObject = new PlansPage();
         CaloriesCalculatorPageObject = new CaloriesCalculatorPage();
         SettingsPageObject = new SettingsPage();
-
-        // // Initialize Listbox Selected Index
-        // UserWindowPagesListBox.SelectedIndex = 0;
-        //
-        // // Intialize MessagesQueue and Assign it to MessagesSnackbar's MessageQueue
-        // var MessagesQueue = new SnackbarMessageQueue(System.TimeSpan.FromMilliseconds(2000));
-        // MessagesSnackbar.MessageQueue = MessagesQueue;
     }
 
     private void UserWindowPagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

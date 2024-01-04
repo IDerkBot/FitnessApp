@@ -8,7 +8,7 @@ namespace FitnessApp.ViewModels
     class DaysViewModel
     {
        
-        private List<Day> _days;
+        private List<DayInPlan> _days;
 
         public DaysViewModel(int planID)
         {
@@ -17,7 +17,7 @@ namespace FitnessApp.ViewModels
             Days = App.Database.GetPlanDays(planID);
         }
 
-        public List<Day> Days
+        public List<DayInPlan> Days
         {
             get => _days;
             set => _days = value;

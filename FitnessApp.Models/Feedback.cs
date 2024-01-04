@@ -6,11 +6,10 @@ namespace FitnessApp.Models;
 public class Feedback
 {
     public int Id { get; set; }
-    public string FirstName { get; set; }
 
-    public string LastName { get; set; }
-
-    public string FullName => FirstName + " " + LastName;
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
 
     public string Message { get; set; }
+    public int Rating { get; set; }
 }

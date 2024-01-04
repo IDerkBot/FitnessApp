@@ -14,7 +14,7 @@ namespace FitnessApp.Windows
     public partial class AdminWindow : Window
     {
         public static AdminWindow AdminWindowObject;
-        public static Admin signedInAdmin;
+        public static User signedInAdmin;
 
 
         // Declare AdminWindowPages Objects
@@ -28,7 +28,7 @@ namespace FitnessApp.Windows
             InitializeComponent();
             AdminWindowObject = this;
 
-            signedInAdmin = new Admin(signedInAdminID);
+            signedInAdmin = new User(signedInAdminID);
 
             // Initialize DataContext with signedInAdmin Model
             DataContext = signedInAdmin;

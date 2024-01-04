@@ -22,7 +22,7 @@ namespace FitnessApp.UserWindowPages
 
         public void LoadAllPlansCards()
         {
-            PlansListBox.DataContext = new PlansViewModel(UserWindow.signedInUser.Id);
+            PlansListBox.DataContext = new PlansViewModel(UserWindow.SignedInUser.Id);
         }
 
 
@@ -43,10 +43,10 @@ namespace FitnessApp.UserWindowPages
             int selectedPlanIndex = PlansListBox.Items.IndexOf(toggleButton.DataContext);
             Plan currentPlan = (Plan)PlansListBox.Items[selectedPlanIndex];
 
-            if (App.Database.IsInPlan(UserWindow.signedInUser.Id))
+            if (App.Database.IsInPlan(UserWindow.SignedInUser.Id))
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("You are currently in a plan. Please unjoin it first.");
             else
-                App.Database.JoinPlan(UserWindow.signedInUser.Id, currentPlan.Id);
+                App.Database.JoinPlan(UserWindow.SignedInUser.Id, currentPlan.Id);
 
             LoadAllPlansCards();
 
@@ -60,7 +60,7 @@ namespace FitnessApp.UserWindowPages
             int selectedPlanIndex = PlansListBox.Items.IndexOf(toggleButton.DataContext);
             Plan currentPlan = (Plan)PlansListBox.Items[selectedPlanIndex];
 
-            App.Database.UnjoinPlan(UserWindow.signedInUser.Id);
+            App.Database.UnjoinPlan(UserWindow.SignedInUser.Id);
 
             LoadAllPlansCards();
 

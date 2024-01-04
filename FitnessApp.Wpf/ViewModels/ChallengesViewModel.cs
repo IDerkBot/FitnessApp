@@ -6,31 +6,30 @@ namespace FitnessApp.Wpf.ViewModels
     class ChallengesViewModel
     {
         private List<Challenge> allChallenges;
-        private List<Challenge> uncompletedJoinedChallenges = new List<Challenge>();
-        private List<Challenge> completedJoinedChallenges = new List<Challenge>();
+        private readonly List<JoinedChallenge> uncompletedJoinedChallenges = new();
+        private readonly List<JoinedChallenge> completedJoinedChallenges = new();
 
 
         public ChallengesViewModel() { }
 
         public void AllChallengesViewModel(int accountID)
         {
-            allChallenges = App.Database.GetAllChallenges(accountID);
+            allChallenges = App.Database.GetChallengesByUserId(accountID).ToList();
         }
 
         public void JoinedChallengesViewModel(int accountID)
         {
 
-            List<Challenge> joinedChallenges = App.Database.GetJoinedChallenges(accountID);
+            List<JoinedChallenge> joinedChallenges = App.Database.GetJoinedChallenges(accountID);
 
             foreach (var item in joinedChallenges)
             {
                 // Classify Challenges
-                if (item.Progress < item.TargetMinutes)
+                if (item.Progress < item.Challenge.TargetMinutes)
                     uncompletedJoinedChallenges.Add(item);
                 else
                     completedJoinedChallenges.Add(item);
             }
-
         }
 
         public List<Challenge> AllChallenges
@@ -39,13 +38,13 @@ namespace FitnessApp.Wpf.ViewModels
             set { }
         }
 
-        public List<Challenge> UncompletedJoinedChallenges
+        public List<JoinedChallenge> UncompletedJoinedChallenges
         {
             get => uncompletedJoinedChallenges;
             set { }
         }
 
-        public List<Challenge> CompletedJoinedChallenges
+        public List<JoinedChallenge> CompletedJoinedChallenges
         {
             get => completedJoinedChallenges;
             set { }

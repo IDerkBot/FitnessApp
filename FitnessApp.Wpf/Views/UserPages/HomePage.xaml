@@ -200,7 +200,7 @@
 
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis
-                                            Title="Kiolgrams"
+                                            Title="Kilograms"
                                             LabelFormatter="{Binding YFormatter}"
                                             MinValue="0" />
                                     </lvc:CartesianChart.AxisY>

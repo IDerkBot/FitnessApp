@@ -80,7 +80,7 @@ public class SigningViewModel : ObservableObject
 
     private void OnSignInCommandExecuted()
     {
-        bool isAccountFound = App.Database.IsUserFound(Login, Password);
+        bool isAccountFound = App.Database.IsUserExists(Login, Password);
 
         if (isAccountFound)
         {

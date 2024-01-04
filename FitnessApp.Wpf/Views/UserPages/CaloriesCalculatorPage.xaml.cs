@@ -15,7 +15,7 @@ namespace FitnessApp.UserWindowPages
             UserWindow.CaloriesCalculatorPageObject = this;
 
             // Initialize DataContext with signedInUser Model
-            DataContext = UserWindow.signedInUser;
+            DataContext = UserWindow.SignedInUser;
         }
 
         private void CalculateButton_Click(object sender, System.Windows.RoutedEventArgs e)

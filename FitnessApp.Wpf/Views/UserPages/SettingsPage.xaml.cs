@@ -24,7 +24,7 @@ namespace FitnessApp.UserWindowPages
             ProfileExpander.IsExpanded = true;
 
             // Initialize DataContext with signedInUser Model
-            DataContext = UserWindow.signedInUser;
+            DataContext = UserWindow.SignedInUser;
         }
 
 
@@ -130,18 +130,18 @@ namespace FitnessApp.UserWindowPages
                 // UserWindow.signedInUser.WorkoutHoursPerDay = double.Parse(WorkoutHoursPerDayTextBox.Text);
 
                 // Update User's Profile in database
-                App.Database.UpdateUserProfile(UserWindow.signedInUser);
+                App.Database.UpdatePersonProfile(UserWindow.SignedInUser);
 
                 // Refresh UserWindow DataContext
                 UserWindow.UserWindowObject.DataContext = null;
-                UserWindow.UserWindowObject.DataContext = UserWindow.signedInUser;
+                UserWindow.UserWindowObject.DataContext = UserWindow.SignedInUser;
 
                 // Refresh CaloriesCalculatorPage DataContext
                 UserWindow.CaloriesCalculatorPageObject.DataContext = null;
-                UserWindow.CaloriesCalculatorPageObject.DataContext = UserWindow.signedInUser;
+                UserWindow.CaloriesCalculatorPageObject.DataContext = UserWindow.SignedInUser;
 
-                // Refresh Weight and Calories Cards in Home Page
-                UserWindow.HomePageObject.WeightChart.DataContext = null;
+                // TODO Refresh Weight and Calories Cards in Home Page
+                // UserWindow.HomePageObject.WeightChart.DataContext = null;
                 UserWindow.HomePageObject.LoadWeightChart();
                 UserWindow.HomePageObject.LoadTotalWeightLostCard();
                 UserWindow.HomePageObject.LoadAverageWeightLostCard();
@@ -211,16 +211,16 @@ namespace FitnessApp.UserWindowPages
             else if (NewPasswordTextBox.Password.Length < 7)
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
 
-            else if (App.Database.EncryptPassword(OldPasswordTextBox.Password) != UserWindow.signedInUser.Password)
+            else if (App.Database.EncryptPassword(OldPasswordTextBox.Password) != UserWindow.SignedInUser.Password)
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
 
             else
             {
                 // Update signedInUser User Model
-                UserWindow.signedInUser.Password = App.Database.EncryptPassword(NewPasswordTextBox.Password);
+                UserWindow.SignedInUser.Password = App.Database.EncryptPassword(NewPasswordTextBox.Password);
 
                 // Update User's Password in database
-                App.Database.UpdateUserPassword(UserWindow.signedInUser);
+                App.Database.UpdateUserPassword(UserWindow.SignedInUser);
 
                 // Confirmation Message
                 UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");

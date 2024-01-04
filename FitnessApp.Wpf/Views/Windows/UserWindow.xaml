@@ -11,9 +11,7 @@
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
     <Grid>
-
         <materialDesign:DrawerHost x:Name="SideMenuDrawer" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 
             <!--  Side Menu  -->
@@ -55,14 +53,10 @@
                         <Grid Grid.Column="0" Margin="-10,0,0,0">
                             <Ellipse Width="100" Height="100">
                                 <Ellipse.Fill>
-                                    <ImageBrush
-                                        x:Name="UserProfilePhoto"
-                                        ImageSource="{Binding ProfilePhoto.Source}"
-                                        Stretch="UniformToFill" />
+                                    <ImageBrush ImageSource="{Binding ProfilePhoto.Source}" Stretch="UniformToFill" />
                                 </Ellipse.Fill>
                             </Ellipse>
                             <Button
-                                x:Name="UserProfilePhotoButton"
                                 Width="80"
                                 Height="80"
                                 Opacity="0"
@@ -84,7 +78,6 @@
                     <!--  Full name and User name  -->
                     <StackPanel Grid.Row="3" Grid.Column="1">
                         <TextBlock
-                            x:Name="FullNameTextBlock"
                             FontFamily="{StaticResource ProductSans}"
                             FontWeight="Bold"
                             FontSize="18"
@@ -92,7 +85,6 @@
                             Text="{Binding FullName}" />
 
                         <TextBlock
-                            x:Name="EmailTextBlock"
                             FontFamily="{StaticResource ProductSans}"
                             FontWeight="Light"
                             FontSize="14"
@@ -129,10 +121,9 @@
                                 <TextBlock
                                     x:Name="HomeTextBlock"
                                     Grid.Column="3"
+                                    Text="Home"
                                     FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15">
-                                    Home
-                                </TextBlock>
+                                    FontSize="15" />
 
                             </Grid>
                         </ListBoxItem>
@@ -157,10 +148,9 @@
                                 <TextBlock
                                     x:Name="ChallengesTextBlock"
                                     Grid.Column="3"
+                                    Text="Challenges"
                                     FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15">
-                                    Challenges
-                                </TextBlock>
+                                    FontSize="15" />
 
                             </Grid>
                         </ListBoxItem>
@@ -185,10 +175,9 @@
                                 <TextBlock
                                     x:Name="FitnessPlansTextBlock"
                                     Grid.Column="3"
+                                    Text="Fitness Plans"
                                     FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15">
-                                    Fitness Plans
-                                </TextBlock>
+                                    FontSize="15" />
 
                             </Grid>
                         </ListBoxItem>
@@ -213,10 +202,9 @@
                                 <TextBlock
                                     x:Name="CaloriesCalculatorTextBlock"
                                     Grid.Column="3"
+                                    Text="Calories Calculator"
                                     FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15">
-                                    Calories Calculator
-                                </TextBlock>
+                                    FontSize="15" />
 
                             </Grid>
                         </ListBoxItem>
@@ -241,10 +229,9 @@
                                 <TextBlock
                                     x:Name="SettingsTextBlock"
                                     Grid.Column="3"
+                                    Text="Settings"
                                     FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15">
-                                    Settings
-                                </TextBlock>
+                                    FontSize="15" />
 
                             </Grid>
                         </ListBoxItem>
@@ -253,8 +240,8 @@
 
                     <!--  Logout Button  -->
                     <ListBox
-                        x:Name="LogoutListBox"
                         Grid.Row="9"
+                        Grid.Column="0"
                         Grid.ColumnSpan="3"
                         SelectionChanged="LogoutListBox_SelectionChanged">
 
@@ -272,12 +259,10 @@
                                 <materialDesign:PackIcon Grid.Column="1" Kind="LogoutVariant" />
 
                                 <TextBlock
-                                    x:Name="LogoutButton"
                                     Grid.Column="3"
+                                    Text="Logout"
                                     FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15">
-                                    Logout
-                                </TextBlock>
+                                    FontSize="15" />
 
                             </Grid>
                         </ListBoxItem>

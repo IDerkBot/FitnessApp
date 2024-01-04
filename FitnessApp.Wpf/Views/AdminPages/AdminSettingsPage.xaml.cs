@@ -75,31 +75,31 @@ namespace FitnessApp.AdminWindowPages
                 AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Invalid E-mail");
 
             // Check Email/Username Availability
-            else if (EmailTextBox.Text != AdminWindow.signedInAdmin.Email)
-            {
-                if (App.Database.IsEmailTaken(EmailTextBox.Text))
-                    AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
-            }
-
-            else
-            {
-
-                // Update signedInUser User Model
-                AdminWindow.signedInAdmin.FirstName = FirstNameTextBox.Text;
-                AdminWindow.signedInAdmin.LastName  = LastNameTextBox.Text;
-                AdminWindow.signedInAdmin.Email     = EmailTextBox.Text;
-
-                // Update User's Account in database
-                App.Database.UpdateAdminAccount(AdminWindow.signedInAdmin);
-
-                // Refresh UserWindow DataContext
-                AdminWindow.AdminWindowObject.DataContext = null;
-                AdminWindow.AdminWindowObject.DataContext = AdminWindow.signedInAdmin;
-
-                // Confirmation Message
-                AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Account Updated!");
-
-            }
+            // else if (EmailTextBox.Text != AdminWindow.signedInAdmin.Email)
+            // {
+            //     if (App.Database.IsEmailTaken(EmailTextBox.Text))
+            //         AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
+            // }
+            //
+            // else
+            // {
+            //
+            //     // Update signedInUser User Model-
+            //     AdminWindow.signedInAdmin.FirstName = FirstNameTextBox.Text;
+            //     AdminWindow.signedInAdmin.LastName  = LastNameTextBox.Text;
+            //     AdminWindow.signedInAdmin.Email     = EmailTextBox.Text;
+            //
+            //     // Update User's Account in database
+            //     App.Database.UpdateAdminAccount(AdminWindow.signedInAdmin);
+            //
+            //     // Refresh UserWindow DataContext
+            //     AdminWindow.AdminWindowObject.DataContext = null;
+            //     AdminWindow.AdminWindowObject.DataContext = AdminWindow.signedInAdmin;
+            //
+            //     // Confirmation Message
+            //     AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Account Updated!");
+            //
+            // }
         }
 
         private void UpdatePasswordButton_Click(object sender, System.Windows.RoutedEventArgs e)

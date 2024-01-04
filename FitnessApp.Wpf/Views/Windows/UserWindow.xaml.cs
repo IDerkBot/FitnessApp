@@ -14,7 +14,7 @@ namespace FitnessApp.Windows
     public partial class UserWindow : Window
     {
         public static UserWindow UserWindowObject;
-        public static User signedInUser;
+        public static User? SignedInUser;
         public static Person? CurrentPerson;
 
         // Declare UserWindowPages Objects
@@ -30,12 +30,12 @@ namespace FitnessApp.Windows
             UserWindowObject = this;
             int signedInUserID = 1;
             // Initialize User Model
-            signedInUser = new User(signedInUserID);
+            SignedInUser = App.Database.GetUserById(signedInUserID);
 
             CurrentPerson = App.Database.GetPerson(signedInUserID);
             
             // Initialize DataContext with signedInUser Model
-            DataContext = signedInUser;
+            DataContext = SignedInUser;
             
             // Initialize UserWindowPages Objects
             HomePageObject               = new HomePage();

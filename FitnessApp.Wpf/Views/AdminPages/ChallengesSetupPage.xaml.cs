@@ -67,7 +67,7 @@ namespace FitnessApp.AdminWindowPages
         private void LoadWorkoutTypeComboBox()
         {
             // Get All Workouts From Database
-            WorkoutTypeComboBox.ItemsSource = App.Database.GetAllWorkouts();
+            WorkoutTypeComboBox.ItemsSource = App.Database.GetWorkouts();
         }
 
         private void ChallengeDialogBoxAddButton_Click(object sender, RoutedEventArgs e)

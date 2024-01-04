@@ -13,7 +13,7 @@ namespace FitnessApp.ViewModels
 
         public UserViewModel(string userNameOrEmail)
         {
-            userModels = App.Database.SearchForUser(userNameOrEmail);
+            userModels = App.Database.SearchForUser(userNameOrEmail).ToList();
         }
 
 
