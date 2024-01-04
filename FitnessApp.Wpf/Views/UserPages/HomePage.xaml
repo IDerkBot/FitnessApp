@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="FitnessApp.UserWindowPages.HomePage"
+    x:Class="FitnessApp.Wpf.Views.UserPages.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,6 +7,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:models="clr-namespace:FitnessApp.Models;assembly=FitnessApp.Models"
+    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.UserPages"
+    d:DataContext="{d:DesignInstance vm:HomeViewModel}"
     mc:Ignorable="d">
 
     <materialDesign:DialogHost x:Name="DialogBox">
@@ -39,8 +41,8 @@
                         Margin="0,10,0,0"
                         materialDesign:HintAssist.Hint="Quantity (grams)"
                         FontFamily="{StaticResource Roboto}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
 
@@ -50,8 +52,8 @@
                             FontFamily="{StaticResource ProductSans}"
                             FontSize="14"
                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Click="DialogBoxAddFoodButton_Click">
+                            Style="{StaticResource MaterialDesignFlatButton}">
+                            <!--  Click="DialogBoxAddFoodButton_Click"  -->
                             Add
                         </Button>
 
@@ -61,8 +63,8 @@
                             FontFamily="{StaticResource ProductSans}"
                             FontSize="14"
                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Click="DialogBoxCancelButton_Click">
+                            Style="{StaticResource MaterialDesignFlatButton}">
+                            <!--  Click="DialogBoxCancelButton_Click"  -->
                             Cancel
                         </Button>
 
@@ -93,8 +95,8 @@
                         Margin="0,10,0,0"
                         materialDesign:HintAssist.Hint="Duration (minuites)"
                         FontFamily="{StaticResource Roboto}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
 
@@ -104,8 +106,8 @@
                             FontFamily="{StaticResource ProductSans}"
                             FontSize="14"
                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Click="DialogBoxAddWorkoutButton_Click">
+                            Style="{StaticResource MaterialDesignFlatButton}">
+                            <!--  Click="DialogBoxAddWorkoutButton_Click"  -->
                             Add
                         </Button>
 
@@ -115,8 +117,8 @@
                             FontFamily="{StaticResource ProductSans}"
                             FontSize="14"
                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Click="DialogBoxCancelButton_Click">
+                            Style="{StaticResource MaterialDesignFlatButton}">
+                            <!--  Click="DialogBoxCancelButton_Click"  -->
                             Cancel
                         </Button>
 
@@ -189,7 +191,6 @@
 
 
                                 <lvc:CartesianChart
-                                    x:Name="WeightChart"
                                     Grid.Row="3"
                                     Grid.Column="1"
                                     Width="440"
@@ -223,20 +224,20 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBox
-                                        x:Name="TodaysWeightTextBox"
                                         Grid.Column="0"
                                         materialDesign:HintAssist.Hint="Today's Weight in kg"
+                                        Text="{Binding TodayWeightValue}"
                                         FontFamily="{StaticResource Roboto}"
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                        PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
                                     <Button
                                         x:Name="SaveWeightButton"
                                         Grid.Column="2"
                                         FontFamily="{StaticResource ProductSans}"
                                         FontSize="12"
-                                        Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Click="SaveWeightButton_Click">
+                                        Style="{StaticResource MaterialDesignRaisedButton}">
+                                        <!--  Click="SaveWeightButton_Click"  -->
                                         Save
                                     </Button>
                                 </Grid>
@@ -289,11 +290,10 @@
                                     <StackPanel Grid.Column="0">
 
                                         <TextBlock
-                                            x:Name="WeightLostPerWeekTextBlock"
-                                            FontFamily="{StaticResource ProductSans}"
-                                            Foreground="{StaticResource PrimaryHueMidBrush}"
+                                            Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
+                                            Text="{Binding TotalWeightLostPerWeek}"
                                             TextAlignment="Center" />
 
                                         <TextBlock
@@ -317,11 +317,11 @@
                                     <StackPanel Grid.Column="2">
 
                                         <TextBlock
-                                            x:Name="WeightLostPerMonthTextBlock"
                                             FontFamily="{StaticResource ProductSans}"
-                                            Foreground="{StaticResource PrimaryHueMidBrush}"
+                                            Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
+                                            Text="{Binding TotalWeightLostPerMonth}"
                                             TextAlignment="Center" />
 
                                         <TextBlock
@@ -342,14 +342,14 @@
                                         </Separator.LayoutTransform>
                                     </Separator>
 
-                                    <StackPanel Grid.Column="5">
+                                    <StackPanel Grid.Column="4">
 
                                         <TextBlock
-                                            x:Name="WeightLostPerYearTextBlock"
                                             FontFamily="{StaticResource ProductSans}"
-                                            Foreground="{StaticResource PrimaryHueMidBrush}"
+                                            Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
+                                            Text="{Binding TotalWeightLostPerYear}"
                                             TextAlignment="Center" />
 
                                         <TextBlock
@@ -413,11 +413,11 @@
                                     <StackPanel Grid.Column="0">
 
                                         <TextBlock
-                                            x:Name="AverageWeightLostPerWeekTextBlock"
                                             FontFamily="{StaticResource ProductSans}"
-                                            Foreground="{StaticResource PrimaryHueMidBrush}"
+                                            Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
+                                            Text="{Binding AverageWeightLostPerWeek}"
                                             TextAlignment="Center" />
 
                                         <TextBlock
@@ -441,10 +441,10 @@
                                     <StackPanel Grid.Column="2">
 
                                         <TextBlock
-                                            x:Name="AverageWeightLostPerMonthTextBlock"
                                             FontFamily="{StaticResource ProductSans}"
-                                            Foreground="{StaticResource PrimaryHueMidBrush}"
+                                            Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
+                                            Text="{Binding AverageWeightLostPerMonth}"
                                             FontSize="28"
                                             TextAlignment="Center" />
 
@@ -466,13 +466,13 @@
                                         </Separator.LayoutTransform>
                                     </Separator>
 
-                                    <StackPanel Grid.Column="5">
+                                    <StackPanel Grid.Column="4">
 
                                         <TextBlock
-                                            x:Name="AverageWeightLostPerYearTextBlock"
                                             FontFamily="{StaticResource ProductSans}"
-                                            Foreground="{StaticResource PrimaryHueMidBrush}"
+                                            Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
+                                            Text="{Binding AverageWeightLostPerYear}"
                                             FontSize="28"
                                             TextAlignment="Center" />
 
@@ -539,8 +539,8 @@
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                                 ToolTip="Unjoin Challenge"
                                                 IsChecked="{Binding IsJoined}"
-                                                Style="{StaticResource MaterialDesignActionToggleButton}"
-                                                Unchecked="UnjoinChallengeButton_Unchecked">
+                                                Style="{StaticResource MaterialDesignActionToggleButton}">
+                                                <!--  Unchecked="UnjoinChallengeButton_Unchecked"  -->
                                                 <materialDesign:PackIcon Kind="Add" />
                                             </ToggleButton>
 
@@ -700,8 +700,8 @@
                                         FontFamily="{StaticResource ProductSans}"
                                         FontSize="14"
                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        Click="JoinChallengeButton_Click">
+                                        Style="{StaticResource MaterialDesignFlatButton}">
+                                        <!--  Click="JoinChallengeButton_Click"  -->
                                         Join a Challenge
                                     </Button>
 
@@ -764,8 +764,8 @@
                                                     FontFamily="{StaticResource ProductSans}"
                                                     FontSize="18"
                                                     Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                    Style="{StaticResource MaterialDesignFlatButton}"
-                                                    Click="CompletedChallengeButton_Click">
+                                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                                    <!--  Click="CompletedChallengeButton_Click"  -->
                                                     Completed
                                                 </Button>
                                             </StackPanel>
@@ -852,9 +852,9 @@
                                             <CheckBox
                                                 x:Name="BreakfastCheckBox"
                                                 Grid.Column="2"
-                                                Style="{StaticResource MaterialDesignCheckBox}"
-                                                Checked="DayItemCheckBox_Checked"
-                                                Unchecked="DayItemCheckBox_Unchecked" />
+                                                Style="{StaticResource MaterialDesignCheckBox}" />
+                                            <!--  Checked="DayItemCheckBox_Checked"  -->
+                                            <!--  Unchecked="DayItemCheckBox_Unchecked"  -->
 
                                         </Grid>
 
@@ -883,9 +883,9 @@
                                             <CheckBox
                                                 x:Name="LunchCheckBox"
                                                 Grid.Column="2"
-                                                Style="{StaticResource MaterialDesignCheckBox}"
-                                                Checked="DayItemCheckBox_Checked"
-                                                Unchecked="DayItemCheckBox_Unchecked" />
+                                                Style="{StaticResource MaterialDesignCheckBox}" />
+                                            <!--  Checked="DayItemCheckBox_Checked"  -->
+                                            <!--  Unchecked="DayItemCheckBox_Unchecked"  -->
 
                                         </Grid>
 
@@ -914,9 +914,9 @@
                                             <CheckBox
                                                 x:Name="DinnerCheckBox"
                                                 Grid.Column="2"
-                                                Style="{StaticResource MaterialDesignCheckBox}"
-                                                Checked="DayItemCheckBox_Checked"
-                                                Unchecked="DayItemCheckBox_Unchecked" />
+                                                Style="{StaticResource MaterialDesignCheckBox}" />
+                                            <!--  Checked="DayItemCheckBox_Checked"  -->
+                                            <!--  Unchecked="DayItemCheckBox_Unchecked"  -->
 
                                         </Grid>
 
@@ -945,9 +945,9 @@
                                             <CheckBox
                                                 x:Name="WorkoutsCheckBox"
                                                 Grid.Column="2"
-                                                Style="{StaticResource MaterialDesignCheckBox}"
-                                                Checked="DayItemCheckBox_Checked"
-                                                Unchecked="DayItemCheckBox_Unchecked" />
+                                                Style="{StaticResource MaterialDesignCheckBox}" />
+                                            <!--  Checked="DayItemCheckBox_Checked"  -->
+                                            <!--  Unchecked="DayItemCheckBox_Unchecked"  -->
 
                                         </Grid>
 
@@ -1011,8 +1011,8 @@
                                         FontFamily="{StaticResource ProductSans}"
                                         FontSize="14"
                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        Click="DismissPlanButton_Click">
+                                        Style="{StaticResource MaterialDesignFlatButton}">
+                                        <!--  Click="DismissPlanButton_Click"  -->
                                         Dismiss
                                     </Button>
 
@@ -1069,8 +1069,8 @@
                                         FontFamily="{StaticResource ProductSans}"
                                         FontSize="14"
                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        Click="JoinPlanButton_Click">
+                                        Style="{StaticResource MaterialDesignFlatButton}">
+                                        <!--  Click="JoinPlanButton_Click"  -->
                                         Join a plan
                                     </Button>
 
@@ -1290,17 +1290,13 @@
 
                 <StackPanel>
 
-                    <Button
-                        x:Name="AddFoodButton"
-                        ToolTip="Add Food"
-                        Click="AddFoodButton_Click">
+                    <Button ToolTip="Add Food">
+                        <!--  Click="AddFoodButton_Click"  -->
                         <materialDesign:PackIcon Kind="FoodApple" />
                     </Button>
 
-                    <Button
-                        x:Name="AddWorkoutButton"
-                        ToolTip="Add a Workout"
-                        Click="AddWorkoutButton_Click">
+                    <Button ToolTip="Add a Workout">
+                        <!--  Click="AddWorkoutButton_Click"  -->
                         <materialDesign:PackIcon Kind="RunFast" />
                     </Button>
 

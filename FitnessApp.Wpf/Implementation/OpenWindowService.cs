@@ -2,9 +2,10 @@
 using FitnessApp.AdminWindowPages;
 using FitnessApp.Core;
 using FitnessApp.SignUpPages;
-using FitnessApp.UserWindowPages;
 using FitnessApp.Windows;
 using FitnessApp.Wpf.Views.SignUpPages;
+using FitnessApp.Wpf.Views.UserPages;
+using FitnessApp.Wpf.Views.Windows;
 
 namespace FitnessApp.Wpf.Implementation;
 

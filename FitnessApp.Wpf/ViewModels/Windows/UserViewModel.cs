@@ -1,113 +1,247 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using FitnessApp.Core;
 using FitnessApp.Models;
-using FitnessApp.UserWindowPages;
-using FitnessApp.Windows;
+using FitnessApp.Wpf.ViewModels.UserPages;
 
 namespace FitnessApp.Wpf.ViewModels.Windows;
 
 public class UserViewModel : ObservableObject
 {
-    public static User? SignedInUser;
+    #region Private Properties
 
-    // Declare UserWindowPages Objects
-    public static HomePage HomePageObject;
-    public static ChallengesPage ChallengesPageObject;
-    public static PlansPage PlansPageObject;
-    public static CaloriesCalculatorPage CaloriesCalculatorPageObject;
-    public static SettingsPage SettingsPageObject;
+    private readonly IOpenView _openView;
+    private static User _signedInUser = null!;
 
-    public UserViewModel()
+    #endregion
+
+    #region Properties
+
+    #region CurrentPerson : Person - Профиль пользователя
+
+    private Person _currentPerson;
+
+    /// <summary> Профиль пользователя </summary>
+    public Person CurrentPerson
     {
+        get => _currentPerson;
+        set => SetProperty(ref _currentPerson, value);
+    }
+
+    #endregion Person
+
+    #region CaloriesCalculatorVm : CaloriesCalculatorViewModel - View Model для калькулятора калорий
+
+    private CaloriesCalculatorViewModel _caloriesCalculatorVm;
+
+    /// <summary> View Model для калькулятора калорий </summary>
+    public CaloriesCalculatorViewModel CaloriesCalculatorVm
+    {
+        get => _caloriesCalculatorVm;
+        set => SetProperty(ref _caloriesCalculatorVm, value);
+    }
+
+    #endregion CaloriesCalculatorVm
+
+    #region ChallengesVm : ChallengesViewModel - ViewModel для челенжей
+
+    private ChallengesViewModel _challengesVm;
+
+    /// <summary> ViewModel для челенжей </summary>
+    public ChallengesViewModel ChallengesVm
+    {
+        get => _challengesVm;
+        set => SetProperty(ref _challengesVm, value);
+    }
+
+    #endregion ChallengesVm
+
+    #region HomeVm : HomeViewModel - View Model для домашней части
+
+    private HomeViewModel _homeVm;
+
+    /// <summary> View Model для домашней части </summary>
+    public HomeViewModel HomeVm
+    {
+        get => _homeVm;
+        set => SetProperty(ref _homeVm, value);
+    }
+
+    #endregion HomeVm
+
+    #region PlansVm : PlansViewModel - Description
+
+    private PlansViewModel _plansVm;
+
+    /// <summary> Description </summary>
+    public PlansViewModel PlansVm
+    {
+        get => _plansVm;
+        set => SetProperty(ref _plansVm, value);
+    }
+
+    #endregion PlansVm
+
+    #region SettingsVm : SettingsViewModel - Description
+
+    private SettingsViewModel _settingsVm;
+
+    /// <summary> Description </summary>
+    public SettingsViewModel SettingsVm
+    {
+        get => _settingsVm;
+        set => SetProperty(ref _settingsVm, value);
+    }
+
+    #endregion SettingsVm
+
+    #region CurrentContext : ObservableObject - Корректная ViewModel
+
+    private ObservableObject _currentContext;
+
+    /// <summary> Корректная ViewModel </summary>
+    public ObservableObject CurrentContext
+    {
+        get => _currentContext;
+        set => SetProperty(ref _currentContext, value);
+    }
+
+    #endregion CurrentContext
+
+    #endregion
+
+    #region Commands
+
+    #region MoveOnHomeCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand MoveOnHomeCommand { get; set; }
+
+    private void OnMoveOnHomeCommandExecuted()
+    {
+        _openView.OpenHomeView();
+        CurrentContext = HomeVm;
+    }
+
+    private bool CanMoveOnHomeCommandExecute() => true;
+
+    #endregion MoveOnHome
+
+    #region MoveOnChallengesCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand MoveOnChallengesCommand { get; set; }
+
+    private void OnMoveOnChallengesCommandExecuted()
+    {
+        _openView.OpenChallengesView();
+        CurrentContext = ChallengesVm;
+    }
+
+    private bool CanMoveOnChallengesCommandExecute() => true;
+
+    #endregion MoveOnChallenges
+
+    #region MoveOnCaloriesCalculatorCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand MoveOnCaloriesCalculatorCommand { get; set; }
+
+    private void OnMoveOnCaloriesCalculatorCommandExecuted()
+    {
+        _openView.OpenCaloriesCalculatorView();
+        CurrentContext = CaloriesCalculatorVm;
+    }
+
+    private bool CanMoveOnCaloriesCalculatorCommandExecute() => true;
+
+    #endregion MoveOnCaloriesCalculator
+
+    #region MoveOnPlansCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand MoveOnPlansCommand { get; set; }
+
+    private void OnMoveOnPlansCommandExecuted()
+    {
+        _openView.OpenPlansView();
+        CurrentContext = PlansVm;
+    }
+
+    private bool CanMoveOnPlansCommandExecute() => true;
+
+    #endregion MoveOnPlans
+
+    #region MoveOnSettingsCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand MoveOnSettingsCommand { get; set; }
+
+    private void OnMoveOnSettingsCommandExecuted()
+    {
+        _openView.OpenSettingsView();
+        CurrentContext = SettingsVm;
+    }
+
+    private bool CanMoveOnSettingsCommandExecute() => true;
+
+    #endregion MoveOnSettings
+
+    #region LogoutCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand LogoutCommand { get; set; }
+
+    private void OnLogoutCommandExecuted()
+    {
+    }
+
+    private bool CanLogoutCommandExecute() => true;
+
+    #endregion Logout
+
+    #region LoadedCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand LoadedCommand { get; set; }
+
+    private void OnLoadedCommandExecuted()
+    {
+        MoveOnHomeCommand.Execute(null);
+    }
+
+    private bool CanLoadedCommandExecute() => true;
+
+    #endregion Loaded
+
+    #endregion
+
+    public UserViewModel(IOpenView openView)
+    {
+        _openView = openView;
+
+        LoadedCommand = new RelayCommand(OnLoadedCommandExecuted, CanLoadedCommandExecute);
+        MoveOnHomeCommand = new RelayCommand(OnMoveOnHomeCommandExecuted, CanMoveOnHomeCommandExecute);
+        MoveOnChallengesCommand =
+            new RelayCommand(OnMoveOnChallengesCommandExecuted, CanMoveOnChallengesCommandExecute);
+        MoveOnCaloriesCalculatorCommand = new RelayCommand(OnMoveOnCaloriesCalculatorCommandExecuted,
+            CanMoveOnCaloriesCalculatorCommandExecute);
+        MoveOnPlansCommand = new RelayCommand(OnMoveOnPlansCommandExecuted, CanMoveOnPlansCommandExecute);
+        MoveOnSettingsCommand = new RelayCommand(OnMoveOnSettingsCommandExecuted, CanMoveOnSettingsCommandExecute);
+        LogoutCommand = new RelayCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
+
         // Initialize User Model
-        SignedInUser = App.Database.GetUserById(App.Database.AccountId);
+        _signedInUser = App.Database.GetUserById(App.Database.AccountId)!;
+        CurrentPerson = App.Database.GetPersonByUserId(_signedInUser.Id)!;
 
-        // Initialize UserWindowPages Objects
-        HomePageObject = new HomePage();
-        ChallengesPageObject = new ChallengesPage();
-        PlansPageObject = new PlansPage();
-        CaloriesCalculatorPageObject = new CaloriesCalculatorPage();
-        SettingsPageObject = new SettingsPage();
-    }
-
-    private void UserWindowPagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // // Close Side Menu Drawer
-        // SideMenuDrawer.IsLeftDrawerOpen = false;
-        //
-        // // Navigate to the selected Page and Highlight the chosen Item
-        // switch (UserWindowPagesListBox.SelectedIndex)
-        // {
-        //     case 0:
-        //         UserWindowPagesFrame.NavigationService.Navigate(HomePageObject);
-        //         HighlightItem(HomeTextBlock, HomeIcon);
-        //         break;
-        //
-        //     case 1:
-        //         UserWindowPagesFrame.NavigationService.Navigate(ChallengesPageObject);
-        //         HighlightItem(ChallengesTextBlock, ChallengesIcon);
-        //         break;
-        //
-        //     case 2:
-        //         UserWindowPagesFrame.NavigationService.Navigate(PlansPageObject);
-        //         HighlightItem(FitnessPlansTextBlock, FitnessPlansIcon);
-        //         break;
-        //
-        //     case 3:
-        //         UserWindowPagesFrame.NavigationService.Navigate(CaloriesCalculatorPageObject);
-        //         HighlightItem(CaloriesCalculatorTextBlock, CaloriesCalculatorIcon);
-        //         break;
-        //
-        //     case 4:
-        //         HighlightItem(SettingsTextBlock, SettingsIcon);
-        //         UserWindowPagesFrame.NavigationService.Navigate(SettingsPageObject);
-        //         break;
-        // }
-    }
-
-    public void HighlightItem(TextBlock pageTextBlock, MaterialDesignThemes.Wpf.PackIcon pageIcon)
-    {
-        // // Set all Items' Foreground to Black 
-        //
-        // // Home Item
-        // HomeTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-        // HomeIcon.Foreground = new SolidColorBrush(Colors.Black);
-        //
-        // // Challenges Item
-        // ChallengesTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-        // ChallengesIcon.Foreground = new SolidColorBrush(Colors.Black);
-        //
-        // // Fitness Plans Item
-        // FitnessPlansTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-        // FitnessPlansIcon.Foreground = new SolidColorBrush(Colors.Black);
-        //
-        // // Calories Calculator Item
-        // CaloriesCalculatorTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-        // CaloriesCalculatorIcon.Foreground = new SolidColorBrush(Colors.Black);
-        //
-        // // Settings Item
-        // SettingsTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-        // SettingsIcon.Foreground = new SolidColorBrush(Colors.Black);
-        //
-        //
-        // // Highlight the required Item only and Change Page Header
-        // pageTextBlock.Foreground = (Brush)Application.Current.Resources["PrimaryHueMidBrush"];
-        // pageIcon.Foreground = (Brush)Application.Current.Resources["PrimaryHueMidBrush"];
-        // PageHeaderTextBlock.Text = pageTextBlock.Text;
-    }
-
-
-    private void UserProfilePhotoButton_Click(object sender, RoutedEventArgs e)
-    {
-        // UserWindowPagesListBox.SelectedIndex = 4;
-    }
-
-    private void LogoutListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // SigningWindow SigningWindowTemp = new SigningWindow();
-        // Close();
-        // SigningWindowTemp.Show();
+        // Initialize View Models
+        HomeVm = new HomeViewModel(CurrentPerson);
+        ChallengesVm = new ChallengesViewModel(CurrentPerson);
+        PlansVm = new PlansViewModel(CurrentPerson);
+        CaloriesCalculatorVm = new CaloriesCalculatorViewModel(CurrentPerson);
+        SettingsVm = new SettingsViewModel(CurrentPerson);
     }
 }

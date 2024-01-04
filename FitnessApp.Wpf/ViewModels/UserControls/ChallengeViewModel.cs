@@ -1,26 +1,25 @@
-﻿using FitnessApp.DataAccessLayer;
-using FitnessApp.Models;
+﻿using FitnessApp.Models;
 
-namespace FitnessApp.Wpf.ViewModels
+namespace FitnessApp.Wpf.ViewModels.UserControls
 {
-    class ChallengesViewModel
+    class ChallengeViewModel
     {
         private List<Challenge> allChallenges;
         private readonly List<JoinedChallenge> uncompletedJoinedChallenges = new();
         private readonly List<JoinedChallenge> completedJoinedChallenges = new();
 
 
-        public ChallengesViewModel() { }
+        public ChallengeViewModel() { }
 
-        public void AllChallengesViewModel(int accountID)
+        public void AllChallengesViewModel(int accountId)
         {
-            allChallenges = App.Database.GetChallengesByUserId(accountID).ToList();
+            allChallenges = App.Database.GetChallengesByUserId(accountId).ToList();
         }
 
-        public void JoinedChallengesViewModel(int accountID)
+        public void JoinedChallengesViewModel(int accountId)
         {
 
-            List<JoinedChallenge> joinedChallenges = App.Database.GetJoinedChallenges(accountID);
+            List<JoinedChallenge> joinedChallenges = App.Database.GetJoinedChallenges(accountId);
 
             foreach (var item in joinedChallenges)
             {

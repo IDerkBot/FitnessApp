@@ -889,7 +889,7 @@ public class Database
         Context.SaveChanges();
     }
 
-    public Person? GetPerson(int userId)
+    public Person? GetPersonByUserId(int userId)
     {
         return Context.Persons.FirstOrDefault(x => x.User.Id == userId);
     }
@@ -1203,7 +1203,7 @@ public class Database
         //
         //
         // return Math.Round(weightLost, 2);
-        return 0;
+        return 50;
     }
 
     public double GetAverageWeightLostPerDuration(int accountId, string duration)

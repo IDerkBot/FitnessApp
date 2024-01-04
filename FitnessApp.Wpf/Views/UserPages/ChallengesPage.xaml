@@ -1,11 +1,13 @@
 ﻿<Page
-    x:Class="FitnessApp.UserWindowPages.ChallengesPage"
+    x:Class="FitnessApp.Wpf.Views.UserPages.ChallengesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.UserPages"
     xmlns:models="clr-namespace:FitnessApp.Models;assembly=FitnessApp.Models"
+    d:DataContext="{d:DesignInstance vm:ChallengesViewModel}"
     mc:Ignorable="d">
 
     <Grid Margin="15,0" HorizontalAlignment="Center">
@@ -67,24 +69,32 @@
                                 Source="{Binding Photo.Source}"
                                 Stretch="UniformToFill" />
 
+                            <Button Content="Join in chellenge" Command="{Binding JoinChallengeCommand}" />
+
                             <!--  Join Button  -->
-                            <ToggleButton
-                                x:Name="JoinChallengeButton"
+                            <Button
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Width="50"
-                                Height="50"
-                                Margin="0,0,16,-20"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                ToolTip="Join Challenge"
-                                IsChecked="{Binding IsJoined}"
-                                Style="{StaticResource MaterialDesignActionToggleButton}"
-                                Checked="JoinChallengeButton_Checked"
-                                Unchecked="JoinChallengeButton_Unchecked">
-                                <materialDesign:PackIcon Kind="Add" />
-                            </ToggleButton>
+                                Content="Join Challenge"
+                                Command="{Binding JoinChallengeCommand}" />
+
+                            <!--  <ToggleButton  -->
+                            <!--  x:Name="JoinChallengeButton"  -->
+                            <!--  Grid.Row="0"  -->
+                            <!--  Grid.Column="1"  -->
+                            <!--  Width="50"  -->
+                            <!--  Height="50"  -->
+                            <!--  Margin="0,0,16,-20"  -->
+                            <!--  HorizontalAlignment="Right"  -->
+                            <!--  VerticalAlignment="Bottom"  -->
+                            <!--  materialDesign:ShadowAssist.ShadowDepth="Depth2"  -->
+                            <!--  ToolTip="Join Challenge"  -->
+                            <!--  IsChecked="{Binding IsJoined}"  -->
+                            <!--  Style="{StaticResource MaterialDesignActionToggleButton}"  -->
+                            <!--  Checked="JoinChallengeButton_Checked"  -->
+                            <!--  Unchecked="JoinChallengeButton_Unchecked">  -->
+                            <!--     <materialDesign:PackIcon Kind="Add" /> -->
+                            <!-- </ToggleButton> -->
 
                             <!--  Challenge Name  -->
                             <TextBlock

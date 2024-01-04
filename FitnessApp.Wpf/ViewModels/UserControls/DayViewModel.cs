@@ -1,16 +1,13 @@
 ﻿using FitnessApp.Models;
-using System.Collections.Generic;
-using FitnessApp.DataAccessLayer;
-using FitnessApp.Wpf;
 
-namespace FitnessApp.ViewModels
+namespace FitnessApp.Wpf.ViewModels.UserControls
 {
-    class DaysViewModel
+    class DayViewModel
     {
        
         private List<DayInPlan> _days;
 
-        public DaysViewModel(int planID)
+        public DayViewModel(int planID)
         {
             //Initialize 30 Days of Plan of ID: planNumber + 1 in Days Array
 

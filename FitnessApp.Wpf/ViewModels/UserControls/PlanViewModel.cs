@@ -1,16 +1,13 @@
 ﻿using FitnessApp.Models;
-using System.Collections.Generic;
-using FitnessApp.DataAccessLayer;
-using FitnessApp.Wpf;
 
-namespace FitnessApp.ViewModels
+namespace FitnessApp.Wpf.ViewModels.UserControls
 {
-    class PlansViewModel
+    class PlanViewModel
     {
        
         private List<Plan> planModels;
 
-        public PlansViewModel(int accountID)
+        public PlanViewModel(int accountID)
         {
             planModels = App.Database.GetPlans(accountID);
         }

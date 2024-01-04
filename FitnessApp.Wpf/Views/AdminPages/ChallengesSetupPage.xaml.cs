@@ -1,5 +1,4 @@
 ﻿using FitnessApp.Models;
-using FitnessApp.ViewModels;
 using FitnessApp.Windows;
 using Microsoft.Win32;
 using System.Windows;
@@ -8,6 +7,7 @@ using System.Windows.Input;
 using FitnessApp.DataAccessLayer;
 using FitnessApp.Wpf;
 using FitnessApp.Wpf.ViewModels;
+using FitnessApp.Wpf.ViewModels.UserControls;
 
 namespace FitnessApp.AdminWindowPages
 {
@@ -31,9 +31,9 @@ namespace FitnessApp.AdminWindowPages
         private void LoadAllChallenges()
         {
 
-            ChallengesViewModel challengesDataContext = new ChallengesViewModel();
-            challengesDataContext.AllChallengesViewModel(0);
-            AllChallengesListBox.DataContext = challengesDataContext;
+            ChallengeViewModel challengeDataContext = new ChallengeViewModel();
+            challengeDataContext.AllChallengesViewModel(0);
+            AllChallengesListBox.DataContext = challengeDataContext;
 
         }
 

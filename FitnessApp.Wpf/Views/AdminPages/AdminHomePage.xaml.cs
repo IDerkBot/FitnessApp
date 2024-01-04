@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using FitnessApp.DataAccessLayer;
-using FitnessApp.ViewModels;
 using FitnessApp.Wpf;
+using FitnessApp.Wpf.ViewModels.UserControls;
 
 namespace FitnessApp.AdminWindowPages
 {
@@ -28,7 +28,7 @@ namespace FitnessApp.AdminWindowPages
 
             LoadAppRatingChart();
             LoadAppUsersNumber();
-            FeedbacksListBox.DataContext = new FeedbacksViewModel();
+            FeedbacksListBox.DataContext = new FeedbackViewModel();
         }
 
         public SeriesCollection SeriesCollection { get; set; }
@@ -68,7 +68,7 @@ namespace FitnessApp.AdminWindowPages
             App.Database.DeleteFeedback(chosenFeedback.Message);
 
             FeedbacksListBox.DataContext = null;
-            FeedbacksListBox.DataContext = new FeedbacksViewModel();
+            FeedbacksListBox.DataContext = new FeedbackViewModel();
             LoadAppRatingChart();
         }
 
@@ -131,7 +131,7 @@ namespace FitnessApp.AdminWindowPages
 
             // Refresh Feedbacks and Rating Chart
             FeedbacksListBox.DataContext = null;
-            FeedbacksListBox.DataContext = new FeedbacksViewModel();
+            FeedbacksListBox.DataContext = new FeedbackViewModel();
             LoadAppRatingChart();
 
             // Hide DeleteUsersCard if no remaining users exist 

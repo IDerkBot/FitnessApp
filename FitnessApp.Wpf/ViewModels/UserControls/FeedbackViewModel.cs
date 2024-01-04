@@ -1,16 +1,13 @@
 ﻿using FitnessApp.Models;
-using System.Collections.Generic;
-using FitnessApp.DataAccessLayer;
-using FitnessApp.Wpf;
 
-namespace FitnessApp.ViewModels
+namespace FitnessApp.Wpf.ViewModels.UserControls
 {
-    class FeedbacksViewModel
+    class FeedbackViewModel
     {
        
 
         private List<Feedback> _feedbacks;
-        public FeedbacksViewModel()
+        public FeedbackViewModel()
         {
             Feedbacks = App.Database.GetFeedbacks();
         }

@@ -84,6 +84,8 @@ public class SigningViewModel : ObservableObject
 
         if (isAccountFound)
         {
+            var user = App.Database.GetUserByLogin(Login)!;
+            App.Database.AccountId = user.Id;
             _openViewService.OpenUserView();
             _openViewService.CloseSigningView();
             // if (App.Database.AccountType == "User")

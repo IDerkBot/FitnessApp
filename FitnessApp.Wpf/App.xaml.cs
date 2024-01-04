@@ -26,6 +26,7 @@ public partial class App : Application
                     .AddSingleton<IOpenView, OpenWindowService>()
                     .AddSingleton<SigningViewModel>()
                     .AddSingleton<SignUpViewModel>()
+                    .AddSingleton<UserViewModel>()
                 
                     
                     .BuildServiceProvider());
