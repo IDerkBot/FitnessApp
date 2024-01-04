@@ -4,6 +4,7 @@ using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using FitnessApp.Wpf;
 
 namespace FitnessApp.Windows
 {
@@ -14,6 +15,7 @@ namespace FitnessApp.Windows
     {
         public static UserWindow UserWindowObject;
         public static User signedInUser;
+        public static Person? CurrentPerson;
 
         // Declare UserWindowPages Objects
         public static HomePage HomePageObject;
@@ -22,30 +24,32 @@ namespace FitnessApp.Windows
         public static CaloriesCalculatorPage CaloriesCalculatorPageObject;
         public static SettingsPage SettingsPageObject;
 
-        public UserWindow(int signedInUserID)
+        public UserWindow() /*int signedInUserID*/
         {
             InitializeComponent();
-            // UserWindowObject = this;
-            //
-            // // Initialize User Model
-            // signedInUser = new User(signedInUserID);
-            //
-            // // Initialize DataContext with signedInUser Model
-            // DataContext = signedInUser;
-            //
-            // // Initialize UserWindowPages Objects
-            // HomePageObject               = new HomePage();
-            // ChallengesPageObject         = new ChallengesPage();
-            // PlansPageObject              = new PlansPage();
-            // CaloriesCalculatorPageObject = new CaloriesCalculatorPage();
-            // SettingsPageObject           = new SettingsPage();
-            //
-            // // Initialize Listbox Selected Index
-            // UserWindowPagesListBox.SelectedIndex = 0;
-            //
-            // // Intialize MessagesQueue and Assign it to MessagesSnackbar's MessageQueue
-            // var MessagesQueue = new SnackbarMessageQueue(System.TimeSpan.FromMilliseconds(2000));
-            // MessagesSnackbar.MessageQueue = MessagesQueue;
+            UserWindowObject = this;
+            int signedInUserID = 1;
+            // Initialize User Model
+            signedInUser = new User(signedInUserID);
+
+            CurrentPerson = App.Database.GetPerson(signedInUserID);
+            
+            // Initialize DataContext with signedInUser Model
+            DataContext = signedInUser;
+            
+            // Initialize UserWindowPages Objects
+            HomePageObject               = new HomePage();
+            ChallengesPageObject         = new ChallengesPage();
+            PlansPageObject              = new PlansPage();
+            CaloriesCalculatorPageObject = new CaloriesCalculatorPage();
+            SettingsPageObject           = new SettingsPage();
+            
+            // Initialize Listbox Selected Index
+            UserWindowPagesListBox.SelectedIndex = 0;
+            
+            // Intialize MessagesQueue and Assign it to MessagesSnackbar's MessageQueue
+            var MessagesQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(2000));
+            MessagesSnackbar.MessageQueue = MessagesQueue;
         }
 
         private void UserWindowPagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

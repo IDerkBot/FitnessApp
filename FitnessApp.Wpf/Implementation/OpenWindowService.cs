@@ -11,9 +11,9 @@ namespace FitnessApp.Wpf.Implementation;
 public class OpenWindowService : IOpenView
 {
     internal AdminWindow? AdminWindow { get; set; }
-    internal SigningWindow? SigningWindow { get; set; }
-    internal UserWindow? UserWindow { get; set; }
-    internal SignUpPage? SignUpPage { get; set; }
+    private SigningWindow? SigningWindow { get; set; }
+    private UserWindow? UserWindow { get; set; }
+    private SignUpPage? SignUpPage { get; set; }
     internal SetUpProfilePage? SetUpProfilePage { get; set; }
     internal CaloriesCalculatorPage? CaloriesCalculatorPage { get; set; }
     internal ChallengesPage? ChallengesPage { get; set; }
@@ -24,10 +24,21 @@ public class OpenWindowService : IOpenView
     internal AdminSettingsPage? AdminSettingsPage { get; set; }
     internal ChallengesSetupPage? ChallengesSetupPage { get; set; }
 
+    #region AdminView
+
     public void OpenAdminView()
     {
         
     }
+
+    public void CloseAdminView()
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    #region SigningView
 
     public void OpenSigningView()
     {
@@ -37,30 +48,81 @@ public class OpenWindowService : IOpenView
         SigningWindow.Show();
     }
 
+    public void CloseSigningView() => SigningWindow?.Close();
+
+    #endregion
+
+    #region UserView
+
     public void OpenUserView()
     {
-        
+        if (UserWindow != null) return;
+        UserWindow = new UserWindow();
+        UserWindow.Closed += (_, _) => UserWindow = null;
+        UserWindow.Show();
     }
+
+    public void CloseUserView() => UserWindow?.Close();
+
+    #endregion
+
+    #region AdminHomeView
 
     public void OpenAdminHomeView()
     {
         throw new NotImplementedException();
     }
 
+    public void CloseAdminHomeView()
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    #region AdminSettingsView
+
     public void OpenAdminSettingsView()
     {
         throw new NotImplementedException();
     }
+
+    public void CloseAdminSettingsView()
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    #region ChallengesSetupView
 
     public void OpenChallengesSetupView()
     {
         throw new NotImplementedException();
     }
 
+    public void CloseChallengesSetupView()
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    #region SetUpProfileView
+
     public void OpenSetUpProfileView()
     {
         throw new NotImplementedException();
     }
+
+    public void CloseSetUpProfileView()
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    #region SignUpView
 
     public void OpenSignUpView()
     {
@@ -68,28 +130,70 @@ public class OpenWindowService : IOpenView
         SigningWindow?.SignUpPagesFrame.NavigationService.Navigate(SignUpPage);
     }
 
-    public void OpenCaloriesCalculatorView()
+    public void CloseSignUpView()
     {
         throw new NotImplementedException();
     }
+
+    #endregion
+
+    #region CaloriesCalculatorView
+
+    public void OpenCaloriesCalculatorView()
+    {
+        CaloriesCalculatorPage ??= new CaloriesCalculatorPage();
+        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(CaloriesCalculatorPage);
+    }
+
+    public void CloseCaloriesCalculatorView() { }
+
+    #endregion
+
+    #region ChallengesView
 
     public void OpenChallengesView()
     {
-        throw new NotImplementedException();
+        ChallengesPage ??= new ChallengesPage();
+        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(ChallengesPage);
     }
+
+    public void CloseChallengesView() { }
+
+    #endregion
+
+    #region HomeView
 
     public void OpenHomeView()
     {
-        throw new NotImplementedException();
+        HomePage ??= new HomePage();
+        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(HomePage);
     }
+
+    public void CloseHomeView() { }
+
+    #endregion
+
+    #region PlansView
 
     public void OpenPlansView()
     {
-        throw new NotImplementedException();
+        PlansPage ??= new PlansPage();
+        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(PlansPage);
     }
+
+    public void ClosePlansView() { }
+
+    #endregion
+
+    #region SettingsView
 
     public void OpenSettingsView()
     {
-        throw new NotImplementedException();
+        SettingsPage ??= new SettingsPage();
+        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(SettingsPage);
     }
+
+    public void CloseSettingsView() { }
+
+    #endregion
 }

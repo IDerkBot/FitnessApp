@@ -5,16 +5,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.Windows"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:controls="clr-namespace:FitnessApp.Wpf.Views.Controls"
     Title="Fitness App"
     Width="700"
     Height="700"
+    DataContext="{Binding Path=SigningVm, Source={StaticResource Locator}}"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.DataContext>
-        <vm:SigningViewModel />
-    </Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
 
         <!--  Background Pattern Image  -->
@@ -92,21 +96,20 @@
                     <Grid Grid.Row="6" Grid.Column="1">
                         <materialDesign:PackIcon Margin="0,20,0,0" Kind="Account" />
                         <TextBox
-                            x:Name="EmailSignInTextBox"
                             Margin="25,0,0,0"
-                            materialDesign:HintAssist.Hint="Email"
+                            materialDesign:HintAssist.Hint="Login"
+                            Text="{Binding Login}"
                             FontFamily="{StaticResource Roboto}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                     </Grid>
 
                     <Grid Grid.Row="8" Grid.Column="1">
                         <materialDesign:PackIcon Margin="0,20,0,0" Kind="Key" />
-                        <PasswordBox
-                            x:Name="PasswordSignInTextBox"
+                        <controls:SecuredPassword
                             Margin="25,0,0,0"
                             materialDesign:HintAssist.Hint="Password"
-                            FontFamily="{StaticResource Roboto}"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                            Password="{Binding Password, Mode=TwoWay}"
+                            FontFamily="{StaticResource Roboto}" />
                     </Grid>
 
 
@@ -133,8 +136,8 @@
                         HorizontalAlignment="Right"
                         FontFamily="{StaticResource ProductSans}"
                         FontSize="14"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Click="SignInButton_Click">
+                        Command="{Binding SignInCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
                         Sign in
                     </Button>
 

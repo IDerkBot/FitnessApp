@@ -6,6 +6,7 @@ using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -72,20 +73,20 @@ namespace FitnessApp.UserWindowPages
                     Values = App.Database.GetWeightValues(UserWindow.signedInUser.Id).AsChartValues(),
                 },
 
-                // new LineSeries
-                // {
-                //     Title = "Target Weight",
-                //     Values = Enumerable.Repeat(UserWindow.signedInUser.TargetWeight, 10).AsChartValues(),
-                //     PointGeometry = null,
-                //     Fill = Brushes.Transparent,
-                //     Stroke = Brushes.Red,
-                //     StrokeDashArray = new DoubleCollection {3},
-                // }
+                new LineSeries
+                {
+                    Title = "Target Weight",
+                    Values = Enumerable.Repeat(UserWindow.CurrentPerson?.TargetWeight, 10).AsChartValues(),
+                    PointGeometry = null,
+                    Fill = Brushes.Transparent,
+                    Stroke = Brushes.Red,
+                    StrokeDashArray = new DoubleCollection {3},
+                }
                 
             };
 
             Labels = App.Database.GetWeightDateValues(UserWindow.signedInUser.Id);
-            YFormatter = value => value.ToString() + " kg";
+            YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " kg";
 
             // Setting Data context for Weight Chart
             WeightChart.DataContext = this;

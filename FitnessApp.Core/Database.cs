@@ -219,13 +219,13 @@ public class Database
         return null;
     }
 
-    public  List<Challenge> GetJoinedChallenges(int accountID)
+    public  List<Challenge> GetJoinedChallenges(int accountId)
     {
-        // // Remove All Overdue Challenges before reading data
-        // RemoveOverdueChallenges();
-        //
-        // List<Challenge> joinedChallenges = new List<Challenge>();
-        //
+        // Remove All Overdue Challenges before reading data
+        RemoveOverdueChallenges();
+        
+        List<Challenge> joinedChallenges = new List<Challenge>();
+        
         // connection.Open();
         //
         // query = "SELECT [Challenge].*,[JoinedChallenge].* " +
@@ -238,25 +238,25 @@ public class Database
         //
         // while (dataReader.Read())
         // {
-        //     Challenge temp = new Challenge();
-        //
-        //     temp.Id = (int)dataReader["PK_ChallengeID"];
-        //     temp.Name = dataReader["Name"].ToString();
-        //     temp.Description = dataReader["Description"].ToString();
-        //     temp.TargetMinutes = (int)dataReader["TargetMinutes"];
-        //     temp.Reward = dataReader["Reward"].ToString();
-        //     temp.DueDate = dataReader["DueDate"].ToString().Split(' ')[0];
-        //     temp.WorkoutType = (int)dataReader["FK_Challenge_WorkoutID"];
-        //     temp.Progress = (int)dataReader["Progress"];
-        //     temp.IsJoined = true;
+        //     Challenge temp = new Challenge
+        //     {
+        //         Id = (int)dataReader["PK_ChallengeID"],
+        //         Name = dataReader["Name"].ToString(),
+        //         Description = dataReader["Description"].ToString(),
+        //         TargetMinutes = (int)dataReader["TargetMinutes"],
+        //         Reward = dataReader["Reward"].ToString(),
+        //         DueDate = dataReader["DueDate"].ToString().Split(' ')[0],
+        //         WorkoutType = (int)dataReader["FK_Challenge_WorkoutID"],
+        //         Progress = (int)dataReader["Progress"],
+        //         IsJoined = true
+        //     };
         //
         //     joinedChallenges.Add(temp);
         // }
         //
         // connection.Close();
-        //
-        // return joinedChallenges;
-        return null;
+        
+        return joinedChallenges;
     }
 
     public  void JoinChallenge(int accountID, int ChallengeID)
@@ -815,36 +815,18 @@ public class Database
         Context.SaveChanges();
     }
 
+    public Person? GetPerson(int userId)
+    {
+        return Context.Persons.FirstOrDefault(x => x.User.Id == userId);
+    }
+
     #endregion
 
     ///////////////////////////// Weight Functions /////////////////////////////
 
-    public  List<double> GetWeightValues(int accountID)
+    public  List<double> GetWeightValues(int accountId)
     {
-        // List<double> weightValues = new List<double>();
-        //
-        // connection.Open();
-        //
-        // SqlCommand CommandString =
-        //     new SqlCommand(
-        //         "SELECT Weight FROM UserWeight WHERE FK_UserWeight_UserID = @userID ORDER BY Timestamp DESC",
-        //         connection);
-        // CommandString.CommandType = CommandType.Text;
-        // CommandString.Parameters.AddWithValue("@userID", accountID);
-        // dataReader = CommandString.ExecuteReader();
-        //
-        // for (int i = 0; dataReader.Read() && i < 10; i++)
-        // {
-        //     weightValues.Add((double)dataReader["Weight"]);
-        // }
-        //
-        // connection.Close();
-        //
-        // // Reverse List
-        // weightValues.Reverse();
-        //
-        // return weightValues;
-        return null;
+        return Context.PersonWeights.Where(x => x.Person.Id == accountId).OrderBy(x => x.DateTime).Select(x => x.Weight).ToList();
     }
 
     public  List<string> GetWeightDateValues(int accountID)

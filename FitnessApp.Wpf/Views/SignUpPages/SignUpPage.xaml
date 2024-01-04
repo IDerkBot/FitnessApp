@@ -7,11 +7,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:controls="clr-namespace:FitnessApp.Wpf.Views.Controls"
-    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.SignUpPages"
+    DataContext="{Binding Path=SignUpVm, Source={StaticResource Locator}}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:SignUpViewModel />
-    </Page.DataContext>
     <Grid Width="450" HorizontalAlignment="Center">
         <!--
             450px Width gives 25px whitespace margin on both sides

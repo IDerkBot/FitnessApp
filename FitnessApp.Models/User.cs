@@ -8,6 +8,16 @@ public class User
     public int Id { get; set; }
 
     public string Login { get; set; }
-    public string Password { get; set; } = "1234";
+    public string Password { get; set; }
     public byte Access { get; set; } = 0;
+
+    public User()
+    {
+        
+    }
+
+    public User(int id)
+    {
+        
+    }
 }

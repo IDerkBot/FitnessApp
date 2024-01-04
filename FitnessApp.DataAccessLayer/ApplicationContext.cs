@@ -17,4 +17,7 @@ public sealed class ApplicationContext : DbContext
     public DbSet<Plan> Plans { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Person> Persons { get; set; }
+    public DbSet<PersonWeight> PersonWeights { get; set; }
+    
+    // JoinedChallenge (Challenge, Person)
 }
