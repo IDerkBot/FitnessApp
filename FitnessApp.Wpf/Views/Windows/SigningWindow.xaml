@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:controls="clr-namespace:FitnessApp.Wpf.Views.Controls"
+    xmlns:wpf="clr-namespace:StratumUi.Wpf.Core.AttachedProperties;assembly=StratumUi.Wpf.Core"
     Title="Fitness App"
     Width="700"
     Height="700"
@@ -75,35 +76,32 @@
                         FontFamily="{StaticResource ProductSans}"
                         FontWeight="Bold"
                         FontSize="18"
-                        TextAlignment="Center">
-                        Sign in
-                    </TextBlock>
+                        Text="Авторизация"
+                        TextAlignment="Center" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="1"
                         FontFamily="{StaticResource Roboto}"
                         FontSize="14"
-                        TextAlignment="Center">
-                        Use your "Fitness" account
-                    </TextBlock>
+                        Text="Используйте свою учетную запись &quot;Fitness&quot;"
+                        TextAlignment="Center" />
 
                     <!--  Sign in Feilds  -->
                     <Grid Grid.Row="6" Grid.Column="1">
                         <materialDesign:PackIcon Margin="0,20,0,0" Kind="Account" />
                         <TextBox
                             Margin="25,0,0,0"
-                            materialDesign:HintAssist.Hint="Login"
+                            Padding="10,0"
+                            wpf:Hint.Placeholder="Логин"
                             Text="{Binding Login}"
-                            FontFamily="{StaticResource Roboto}"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                            FontFamily="{StaticResource Roboto}" />
                     </Grid>
 
                     <Grid Grid.Row="8" Grid.Column="1">
                         <materialDesign:PackIcon Margin="0,20,0,0" Kind="Key" />
                         <controls:SecuredPassword
                             Margin="25,0,0,0"
-                            materialDesign:HintAssist.Hint="Password"
                             Password="{Binding Password, Mode=TwoWay}"
                             FontFamily="{StaticResource Roboto}" />
                     </Grid>
@@ -111,29 +109,26 @@
                     <!--  Create an account & Sign In Buttons  -->
 
                     <Button
-                        x:Name="CreateAnAccountButton"
                         Grid.Row="10"
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         FontFamily="{StaticResource ProductSans}"
                         FontSize="12"
-                        Foreground="{DynamicResource PrimaryHueMidBrush}"
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        Command="{x:Static materialDesign:Flipper.FlipCommand}">
-                        Create an account
-                    </Button>
+                        Opacity="1"
+                        Content="Создать аккаунт"
+                        Foreground="{DynamicResource Pr500}"
+                        Style="{StaticResource BtnText}"
+                        Command="{x:Static materialDesign:Flipper.FlipCommand}" />
 
                     <Button
-                        x:Name="SignInButton"
                         Grid.Row="10"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         FontFamily="{StaticResource ProductSans}"
                         FontSize="14"
+                        Content="Войти"
                         Command="{Binding SignInCommand}"
-                        Style="{StaticResource MaterialDesignRaisedButton}">
-                        Sign in
-                    </Button>
+                        Style="{StaticResource BtnFilled}" />
                 </Grid>
 
             </materialDesign:Flipper.FrontContent>
@@ -165,7 +160,7 @@
                                 FontFamily="{StaticResource ProductSans}"
                                 FontWeight="SemiBold"
                                 FontSize="16"
-                                Text="Create an account" />
+                                Text="Создание нового аккаунта" />
 
                         </StackPanel>
                     </materialDesign:ColorZone>

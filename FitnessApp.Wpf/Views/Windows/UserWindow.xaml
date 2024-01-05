@@ -147,7 +147,7 @@
                                         Margin="0,0,15,0"
                                         Kind="Home" />
 
-                                    <TextBlock Grid.Column="1" Text="Home" />
+                                    <TextBlock Grid.Column="1" Text="Домашняя" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -166,7 +166,7 @@
                                         Margin="0,0,15,0"
                                         Kind="Account" />
 
-                                    <TextBlock Grid.Column="1" Text="Challenges" />
+                                    <TextBlock Grid.Column="1" Text="Вызовы" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -185,7 +185,7 @@
                                         Margin="0,0,15,0"
                                         Kind="CalendarHeart" />
 
-                                    <TextBlock Grid.Column="1" Text="Fitness Plans" />
+                                    <TextBlock Grid.Column="1" Text="Планы занятий фитнесом" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -204,7 +204,7 @@
                                         Margin="0,0,15,0"
                                         Kind="CalculatorVariant" />
 
-                                    <TextBlock Grid.Column="1" Text="Calories Calculator" />
+                                    <TextBlock Grid.Column="1" Text="Калькулятор калорий" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -223,7 +223,7 @@
                                         Margin="0,0,15,0"
                                         Kind="Settings" />
 
-                                    <TextBlock Grid.Column="1" Text="Settings" />
+                                    <TextBlock Grid.Column="1" Text="Настройки" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -249,7 +249,7 @@
 
                                     <TextBlock
                                         Grid.Column="3"
-                                        Text="Logout"
+                                        Text="Выход"
                                         FontFamily="{StaticResource ProductSans}"
                                         FontSize="15" />
                                 </Grid>
