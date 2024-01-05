@@ -103,8 +103,5 @@
       <Resource Include="Resources\Images\No-Image.jpg" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ViewModels\AdminPages\" />
-    </ItemGroup>
 
 </Project>

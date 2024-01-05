@@ -12,7 +12,7 @@ public class SigningViewModel : ObservableObject
     private IOpenView _openViewService;
 
     #endregion
-    
+
     #region Properties
 
     #region Login : string - Логин пользователя
@@ -85,24 +85,20 @@ public class SigningViewModel : ObservableObject
         if (isAccountFound)
         {
             var user = App.Database.GetUserByLogin(Login)!;
-            App.Database.AccountId = user.Id;
-            _openViewService.OpenUserView();
-            _openViewService.CloseSigningView();
-            // if (App.Database.AccountType == "User")
-            // {
-            //     // Open User Main Window
-            //     UserWindow userWindowTemp = new UserWindow(App.Database.AccountId);
-            //     userWindowTemp.Show();
-            // }
-            // else
-            // {
-            //     // Open Admin Main Window
-            //     AdminWindow adminWindowTemp = new AdminWindow(App.Database.AccountId);
-            //     adminWindowTemp.Show();
-            // }
+            App.Database.Authorization(user);
 
-            // Close Signing Window
-            // Close();
+            if (App.Database.AccountType == AccountAccess.User)
+            {
+                // Open User Main Window
+                _openViewService.OpenUserView();
+            }
+            else if (App.Database.AccountType == AccountAccess.Admin)
+            {
+                // Open Admin Main Window
+                _openViewService.OpenAdminView();
+            }
+
+            _openViewService.CloseSigningView();
         }
         else
         {
@@ -114,7 +110,7 @@ public class SigningViewModel : ObservableObject
     private bool CanSignInCommandExecute() => true;
 
     #endregion SignIn
-    
+
     #endregion
 
     #region Constructor

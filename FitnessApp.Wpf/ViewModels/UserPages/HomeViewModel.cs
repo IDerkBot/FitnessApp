@@ -2,10 +2,13 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Models;
 using LiveCharts;
+using LiveCharts.Helpers;
+using LiveCharts.Wpf;
 
 namespace FitnessApp.Wpf.ViewModels.UserPages;
 
@@ -169,44 +172,45 @@ public class HomeViewModel : ObservableObject
 
     private void OnSaveNewWeightCommandExecuted()
     {
-// if (TodayWeightValue == 0)
-        //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your weight!");
-        // else
-        // {
-        //     // Update User Model Weight Porperty with the latest weight
-        //     // UserWindow.signedInUser.Weight = double.Parse(TodaysWeightTextBox.Text);
-        //
-        //     // Update Weight in Database
-        //     App.Database.AddNewWeight(TodayWeightValue, CurrentPerson.User.Id);
-        //
-        //     // Update User Weight Line Series:
-        //     // TOOD Add one value and remove another to keep the number of values 10
-        //     // WeightChart.Series[1].Values.Add(double.Parse(TodaysWeightTextBox.Text));
-        //     // if (WeightChart.Series[1].Values.Count > 10)
-        //     //     WeightChart.Series[1].Values.RemoveAt(0);
-        //
-        //     // Confirmation Message
-        //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Weight added successfully");
-        //
-        //     // Reset TextBox
-        //     TodayWeightValue = 0;
-        //
-        //     // Refresh Weight-Related Cards
-        //     LoadTotalWeightLostCard();
-        //     LoadAverageWeightLostCard();
-        //
-        //     // Refresh Calories Card and Chart
-        //     // TODO CaloriesChart.DataContext = null;
-        //     LoadCaloriesCard();
-        //
-        //     // Refresh CaloriesCalculatorPage DataContext
-        //     UserWindow.CaloriesCalculatorPageObject.DataContext = null;
-        //     UserWindow.CaloriesCalculatorPageObject.DataContext = UserWindow.SignedInUser;
-        //
-        //     // Refresh SettingsPage DataContext
-        //     UserWindow.SettingsPageObject.DataContext = null;
-        //     UserWindow.SettingsPageObject.DataContext = UserWindow.SignedInUser;
-        // }
+        if (TodayWeightValue == 0)
+            return;
+            // UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your weight!");
+        else
+        {
+            // Update User Model Weight Porperty with the latest weight
+            // UserWindow.signedInUser.Weight = double.Parse(TodaysWeightTextBox.Text);
+        
+            // Update Weight in Database
+            App.Database.AddNewWeight(TodayWeightValue, CurrentPerson.User.Id);
+        
+            // Update User Weight Line Series:
+            // TOOD Add one value and remove another to keep the number of values 10
+            // WeightChart.Series[1].Values.Add(double.Parse(TodaysWeightTextBox.Text));
+            // if (WeightChart.Series[1].Values.Count > 10)
+            //     WeightChart.Series[1].Values.RemoveAt(0);
+        
+            // Confirmation Message
+            // UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Weight added successfully");
+        
+            // Reset TextBox
+            TodayWeightValue = 0;
+        
+            // Refresh Weight-Related Cards
+            LoadTotalWeightLostCard();
+            LoadAverageWeightLostCard();
+        
+            // Refresh Calories Card and Chart
+            // TODO CaloriesChart.DataContext = null;
+            LoadCaloriesCard();
+        
+            // Refresh CaloriesCalculatorPage DataContext
+            // UserWindow.CaloriesCalculatorPageObject.DataContext = null;
+            // UserWindow.CaloriesCalculatorPageObject.DataContext = UserWindow.SignedInUser;
+        
+            // Refresh SettingsPage DataContext
+            // UserWindow.SettingsPageObject.DataContext = null;
+            // UserWindow.SettingsPageObject.DataContext = UserWindow.SignedInUser;
+        }
     }
 
     private bool CanSaveNewWeightCommandExecute() => true;
@@ -315,46 +319,42 @@ public class HomeViewModel : ObservableObject
 
     public void LoadWeightChart()
     {
-        // WeightsSeriesCollection = new SeriesCollection
-        // {
-        //     new LineSeries
-        //     {
-        //         Title = "Ideal Weight",
-        //         Values = Enumerable.Repeat(CalculateIdealWeight(), 10).AsChartValues(),
-        //         PointGeometry = null,
-        //         Fill = Brushes.Transparent,
-        //         Stroke = Brushes.ForestGreen,
-        //         StrokeDashArray = new DoubleCollection { 3 },
-        //     },
-        //
-        //     new LineSeries
-        //     {
-        //         Title = "Weight",
-        //         Values = App.Database.GetWeightValues(CurrentPerson.User.Id).AsChartValues(),
-        //     },
-        //
-        //     new LineSeries
-        //     {
-        //         Title = "Target Weight",
-        //         Values = Enumerable.Repeat(CurrentPerson?.TargetWeight, 10).AsChartValues(),
-        //         PointGeometry = null,
-        //         Fill = Brushes.Transparent,
-        //         Stroke = Brushes.Red,
-        //         StrokeDashArray = new DoubleCollection { 3 },
-        //     }
-        // };
+        WeightsSeriesCollection = new SeriesCollection
+        {
+            new LineSeries
+            {
+                Title = "Ideal Weight",
+                Values = Enumerable.Repeat(CalculateIdealWeight(), 10).AsChartValues(),
+                PointGeometry = null,
+                Fill = Brushes.Transparent,
+                Stroke = Brushes.ForestGreen,
+                StrokeDashArray = new DoubleCollection { 3 },
+            },
+        
+            new LineSeries
+            {
+                Title = "Weight",
+                Values = App.Database.GetWeightValues(CurrentPerson.User.Id).AsChartValues(),
+                // LabelPoint = _ => $"{App.Database.GetWeightDates(CurrentPerson.User.Id)}"
+            },
+        
+            new LineSeries
+            {
+                Title = "Target Weight",
+                Values = Enumerable.Repeat(CurrentPerson.TargetWeight, 10).AsChartValues(),
+                PointGeometry = null,
+                Fill = Brushes.Transparent,
+                Stroke = Brushes.Red,
+                StrokeDashArray = new DoubleCollection { 3 },
+            }
+        };
 
         Labels = App.Database.GetWeightDateValues(CurrentPerson.User.Id);
         YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " kg";
-
-        // TODO Setting Data context for Weight Chart
-        // WeightChart.DataContext = this;
     }
 
     private double CalculateIdealWeight()
     {
-        if (CurrentPerson == null) return 0;
-
         if (CurrentPerson.Gender == "Male")
             return CurrentPerson.Height - 100 + (CurrentPerson.Height - 100) * 0.10;
 

@@ -10,9 +10,11 @@ public class Database
     #region Variables
 
     protected readonly ApplicationContext Context;
+    
+    public User? SignedUser { get; set; }
     public int AccountId { get; set; }
 
-    public string AccountType { get; set; }
+    public AccountAccess? AccountType { get; set; }
 
     #endregion
 
@@ -1035,37 +1037,9 @@ public class Database
         // connection.Close();
     }
 
-    public List<Feedback> GetFeedbacks()
+    public IEnumerable<Feedback> GetFeedbacks()
     {
-        return null;
-        // List<Feedback> allFeedbacks = new List<Feedback>();
-        //
-        // connection.Open();
-        //
-        // query = "SELECT FirstName, LastName, FeedbackBody " +
-        //         "FROM [Account] RIGHT JOIN [Feedback] " +
-        //         "ON PK_AccountID  = FK_Feedback_UserID";
-        //
-        // command = new SqlCommand(query, connection);
-        // dataReader = command.ExecuteReader();
-        //
-        // while (dataReader.Read())
-        // {
-        //     if (!string.IsNullOrWhiteSpace(dataReader["FeedbackBody"].ToString()))
-        //     {
-        //         Feedback temp = new Feedback();
-        //
-        //         temp.FirstName = dataReader["FirstName"].ToString();
-        //         temp.LastName = dataReader["LastName"].ToString();
-        //         temp.Feedback = dataReader["FeedbackBody"].ToString();
-        //
-        //         allFeedbacks.Add(temp);
-        //     }
-        // }
-        //
-        // connection.Close();
-        //
-        // return allFeedbacks;
+        return Context.Feedbacks.OrderByDescending(x => x.Id);
     }
 
     public void DeleteFeedback(string feedbackBody)
@@ -1093,7 +1067,12 @@ public class Database
 
     public IEnumerable<double> GetWeightValues(int accountId)
     {
-        return Context.PersonWeights.Where(x => x.Person.Id == accountId).OrderBy(x => x.DateTime).Select(x => x.Weight);
+        return Context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.Weight);
+    }
+    
+    public IEnumerable<DateTime> GetWeightDates(int accountId)
+    {
+        return Context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.DateTime);
     }
 
     public List<string> GetWeightDateValues(int accountId)
@@ -1134,73 +1113,73 @@ public class Database
         if (person == null) return;
 
         person.Weight = newWeight;
+        
+        var personWeight = new PersonWeight
+        {
+            Person = person,
+            PersonId = person.Id,
+            DateTime = DateTime.Now,
+            Weight = newWeight
+        };
+
+        Context.PersonWeights.Add(personWeight);
+        Context.SaveChanges();
     }
 
     public double GetTotalWeightLostPerDuration(int accountId, string duration)
     {
-        // double weightLost = 0;
-        // List<double> weights = new List<double>();
-        //
-        // connection.Open();
-        //
-        // query = "SELECT Weight " +
-        //         "FROM [UserWeight] WHERE FK_UserWeight_UserID = @id " +
-        //         "AND DATEPART(" + duration + ", Timestamp) = DATEPART(" + duration + ", GETDATE()) " +
-        //         "ORDER BY Timestamp";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@id", accountID);
-        // dataReader = command.ExecuteReader();
-        //
-        // while (dataReader.Read())
-        // {
-        //     weights.Add((double)(dataReader["Weight"]));
-        // }
-        //
-        //
-        // connection.Close();
-        //
-        // for (int i = 0; i < (weights.Count - 1); i++)
-        // {
-        //     weightLost += (weights[i] - weights[i + 1]);
-        // }
-        //
-        //
-        // return Math.Round(weightLost, 2);
-        return 50;
+        double weightLost;
+        List<double> weights;
+
+        var dateNow = DateTime.Today;
+        
+        switch (duration)
+        {
+            case "WEEK":
+                var dateWeek = dateNow.Subtract(new TimeSpan(7,0,0,0));
+                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateWeek).Select(x => x.Weight).ToList();
+                break;
+            case "MONTH":
+                var dateMonth = dateNow.Subtract(new TimeSpan(30,0,0,0));
+                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateMonth).Select(x => x.Weight).ToList();
+                break;
+            case "YEAR":
+                var dateYear = dateNow.Subtract(new TimeSpan(365,0,0,0));
+                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateYear).Select(x => x.Weight).ToList();
+                break;
+            default:
+                return 0;
+        }
+
+        weightLost = weights.Max() - weights.Last();
+        return Math.Round(weightLost, 2);
     }
 
     public double GetAverageWeightLostPerDuration(int accountId, string duration)
     {
-        // double weightLost = 0;
-        // List<double> weights = new List<double>();
-        //
-        // connection.Open();
-        //
-        // query = "SELECT Weight " +
-        //         "FROM [UserWeight] WHERE FK_UserWeight_UserID = @id " +
-        //         "AND DATEPART(" + duration + ", Timestamp) = DATEPART(" + duration + ", GETDATE()) " +
-        //         "ORDER BY Timestamp";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@id", accountID);
-        // dataReader = command.ExecuteReader();
-        //
-        // while (dataReader.Read())
-        // {
-        //     weights.Add((double)(dataReader["Weight"]));
-        // }
-        //
-        //
-        // connection.Close();
-        //
-        // for (int i = 0; i < (weights.Count - 1); i++)
-        // {
-        //     weightLost += (weights[i] - weights[i + 1]);
-        // }
-        //
-        // return Math.Round((weightLost / weights.Count), 2);
-        return 0;
+        List<double> weights;
+
+        var dateNow = DateTime.Today;
+        
+        switch (duration)
+        {
+            case "WEEK":
+                var dateWeek = dateNow.Subtract(new TimeSpan(7,0,0,0));
+                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateWeek).Select(x => x.Weight).ToList();
+                break;
+            case "MONTH":
+                var dateMonth = dateNow.Subtract(new TimeSpan(30,0,0,0));
+                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateMonth).Select(x => x.Weight).ToList();
+                break;
+            case "YEAR":
+                var dateYear = dateNow.Subtract(new TimeSpan(365,0,0,0));
+                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateYear).Select(x => x.Weight).ToList();
+                break;
+            default:
+                return 0;
+        }
+
+        return Math.Round(weights.Sum() / weights.Count, 2);
     }
 
     ///////////////////////////// Motivational Quote Functions /////////////////////////////
@@ -1389,18 +1368,7 @@ public class Database
 
     public int GetAppUsersNumber()
     {
-        // connection.Open();
-        //
-        // query = "SELECT COUNT(*) " +
-        //         "FROM [User]";
-        //
-        // command = new SqlCommand(query, connection);
-        // int appUsersNumber = (int)command.ExecuteScalar();
-        //
-        // connection.Close();
-        //
-        // return appUsersNumber;
-        return 0;
+        return Context.Users.Count(x => x.Access == 0);
     }
 
     public bool IsNewAdmin(int accountID)
@@ -1557,4 +1525,29 @@ public class Database
         // smtp.Credentials = new System.Net.NetworkCredential("fitness.weightlossapp@gmail.com", "m3leshyFitness21");
         // smtp.Send(message);
     }
+
+    public void Authorization(User user)
+    {
+        SignedUser = user;
+        AccountId = SignedUser.Id;
+        AccountType = SignedUser.Access switch
+        {
+            0 => AccountAccess.User,
+            1 => AccountAccess.Admin,
+            _ => AccountType
+        };
+    }
+
+    public void Logout()
+    {
+        SignedUser = null;
+        AccountId = 0;
+        AccountType = null;
+    }
+}
+
+public enum AccountAccess
+{
+    User,
+    Admin
 }

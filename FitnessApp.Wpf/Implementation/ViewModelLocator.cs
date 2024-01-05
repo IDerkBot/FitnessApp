@@ -12,16 +12,7 @@ public class ViewModelLocator
 
     public SigningViewModel? SigningVm => Ioc.Default.GetService<SigningViewModel>();
     public UserViewModel? UserVm => Ioc.Default.GetService<UserViewModel>();
-
-    #endregion
-
-    #region UserPages
-
-    public CaloriesCalculatorViewModel? CaloriesCalculatorVm => Ioc.Default.GetService<CaloriesCalculatorViewModel>();
-    public ChallengesViewModel? ChallengesVm => Ioc.Default.GetService<ChallengesViewModel>();
-    public HomeViewModel? HomeVm => Ioc.Default.GetService<HomeViewModel>();
-    public PlansViewModel? PlansVm => Ioc.Default.GetService<PlansViewModel>();
-    public SettingsViewModel? SettingsVm => Ioc.Default.GetService<SettingsViewModel>();
+    public AdminViewModel? AdminVm => Ioc.Default.GetService<AdminViewModel>();
 
     #endregion
 

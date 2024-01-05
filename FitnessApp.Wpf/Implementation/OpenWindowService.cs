@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using FitnessApp.AdminWindowPages;
 using FitnessApp.Core;
 using FitnessApp.SignUpPages;
 using FitnessApp.Windows;
+using FitnessApp.Wpf.Views.AdminPages;
 using FitnessApp.Wpf.Views.SignUpPages;
 using FitnessApp.Wpf.Views.UserPages;
 using FitnessApp.Wpf.Views.Windows;
@@ -29,13 +29,13 @@ public class OpenWindowService : IOpenView
 
     public void OpenAdminView()
     {
-        
+        if (AdminWindow != null) return;
+        AdminWindow = new AdminWindow();
+        AdminWindow.Closed += (_, _) => AdminWindow = null;
+        AdminWindow.Show();
     }
 
-    public void CloseAdminView()
-    {
-        throw new NotImplementedException();
-    }
+    public void CloseAdminView() => AdminWindow?.Close();
 
     #endregion
 
@@ -71,13 +71,11 @@ public class OpenWindowService : IOpenView
 
     public void OpenAdminHomeView()
     {
-        throw new NotImplementedException();
+        AdminHomePage ??= new AdminHomePage();
+        AdminWindow?.DialogFrame.NavigationService.Navigate(AdminHomePage);
     }
 
-    public void CloseAdminHomeView()
-    {
-        throw new NotImplementedException();
-    }
+    public void CloseAdminHomeView() { }
 
     #endregion
 
@@ -143,7 +141,7 @@ public class OpenWindowService : IOpenView
     public void OpenCaloriesCalculatorView()
     {
         CaloriesCalculatorPage ??= new CaloriesCalculatorPage();
-        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(CaloriesCalculatorPage);
+        UserWindow?.DialogFrame.NavigationService.Navigate(CaloriesCalculatorPage);
     }
 
     public void CloseCaloriesCalculatorView() { }
@@ -155,7 +153,7 @@ public class OpenWindowService : IOpenView
     public void OpenChallengesView()
     {
         ChallengesPage ??= new ChallengesPage();
-        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(ChallengesPage);
+        UserWindow?.DialogFrame.NavigationService.Navigate(ChallengesPage);
     }
 
     public void CloseChallengesView() { }
@@ -167,7 +165,7 @@ public class OpenWindowService : IOpenView
     public void OpenHomeView()
     {
         HomePage ??= new HomePage();
-        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(HomePage);
+        UserWindow?.DialogFrame.NavigationService.Navigate(HomePage);
     }
 
     public void CloseHomeView() { }
@@ -179,7 +177,7 @@ public class OpenWindowService : IOpenView
     public void OpenPlansView()
     {
         PlansPage ??= new PlansPage();
-        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(PlansPage);
+        UserWindow?.DialogFrame.NavigationService.Navigate(PlansPage);
     }
 
     public void ClosePlansView() { }
@@ -191,10 +189,24 @@ public class OpenWindowService : IOpenView
     public void OpenSettingsView()
     {
         SettingsPage ??= new SettingsPage();
-        UserWindow?.UserWindowPagesFrame.NavigationService.Navigate(SettingsPage);
+        UserWindow?.DialogFrame.NavigationService.Navigate(SettingsPage);
     }
 
     public void CloseSettingsView() { }
 
     #endregion
+
+    public void Logout(bool isAdmin = false)
+    {
+        if (isAdmin)
+        {
+            OpenSigningView();
+            CloseAdminView();
+        }
+        else
+        {
+            OpenSigningView();
+            CloseUserView();
+        }
+    }
 }

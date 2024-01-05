@@ -277,7 +277,7 @@
 
                 <!--  User Main Window Frame  -->
                 <Frame
-                    x:Name="UserWindowPagesFrame"
+                    x:Name="DialogFrame"
                     Grid.Row="1"
                     NavigationUIVisibility="Hidden" />
 

@@ -27,6 +27,7 @@ public partial class App : Application
                     .AddSingleton<SigningViewModel>()
                     .AddSingleton<SignUpViewModel>()
                     .AddSingleton<UserViewModel>()
+                    .AddSingleton<AdminViewModel>()
                 
                     
                     .BuildServiceProvider());

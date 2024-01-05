@@ -232,14 +232,12 @@
                                     <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
                                     <Button
-                                        x:Name="SaveWeightButton"
                                         Grid.Column="2"
+                                        Command="{Binding SaveNewWeightCommand}"
                                         FontFamily="{StaticResource ProductSans}"
                                         FontSize="12"
-                                        Style="{StaticResource MaterialDesignRaisedButton}">
-                                        <!--  Click="SaveWeightButton_Click"  -->
-                                        Save
-                                    </Button>
+                                        Content="Save"
+                                        Style="{StaticResource BtnFilled}" />
                                 </Grid>
 
                             </Grid>

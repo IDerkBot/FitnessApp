@@ -1,16 +1,16 @@
 ﻿<Page
-    x:Class="FitnessApp.AdminWindowPages.AdminHomePage"
+    x:Class="FitnessApp.Wpf.Views.AdminPages.AdminHomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.AdminPages"
     xmlns:models="clr-namespace:FitnessApp.Models;assembly=FitnessApp.Models"
+    d:DataContext="{d:DesignInstance vm:AdminHomeViewModel}"
     mc:Ignorable="d">
-
     <Grid>
-
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
 
             <!--  Main Grid  -->
@@ -39,48 +39,39 @@
                     <materialDesign:Card
                         Grid.Row="0"
                         Width="500"
+                        Padding="10"
                         Background="{StaticResource MaterialDesignBackground}">
                         <Grid>
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="15" />
                                 <RowDefinition Height="auto" />
-                                <RowDefinition Height="15" />
                             </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                            </Grid.ColumnDefinitions>
 
                             <!--  Card Header  -->
                             <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="1"
+                                Grid.Row="0"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
-                                Text="App Rating" />
+                                Text="Оценка приложения" />
 
-                            <Grid Grid.Row="3" Grid.Column="1">
+                            <Grid Grid.Row="2">
 
                                 <lvc:CartesianChart
-                                    x:Name="AppRatingChart"
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Width="440"
+                                    Width="450"
                                     Height="200"
+                                    Margin="0"
+                                    Padding="0"
                                     HorizontalAlignment="Left"
                                     Series="{Binding SeriesCollection}">
 
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Title="Stars" Labels="{Binding Labels}" />
+                                        <lvc:Axis Title="Количество звезд" Labels="{Binding Labels}" />
                                     </lvc:CartesianChart.AxisX>
 
                                     <lvc:CartesianChart.AxisY>
-                                        <lvc:Axis Title="Users" LabelFormatter="{Binding Formatter}" />
+                                        <lvc:Axis Title="Пользователи" LabelFormatter="{Binding Formatter}" />
                                     </lvc:CartesianChart.AxisY>
 
                                 </lvc:CartesianChart>
@@ -117,7 +108,7 @@
                                 Grid.Column="1"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
-                                Text="User feedbacks" />
+                                Text="Отзывы пользователей" />
 
                             <!--  Feedbacks ListBox  -->
                             <ListBox
@@ -126,7 +117,7 @@
                                 Grid.Column="1"
                                 Padding="-8"
                                 materialDesign:RippleAssist.IsDisabled="True"
-                                ItemsSource="{Binding FeedbackModels}"
+                                ItemsSource="{Binding Feedbacks}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Foreground="Transparent">
 
@@ -171,8 +162,8 @@
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Right"
                                                 Background="Transparent"
-                                                BorderThickness="0"
-                                                Click="DeleteFeedbackButton_Click">
+                                                BorderThickness="0">
+                                                <!--  Click="DeleteFeedbackButton_Click"  -->
                                                 <materialDesign:PackIcon Kind="DeleteSweep" Foreground="Black" />
                                             </Button>
 
@@ -229,7 +220,7 @@
                                 Grid.Column="1"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
-                                Text="Number of System Users" />
+                                Text="Количество пользователей" />
 
                             <StackPanel
                                 Grid.Row="3"
@@ -238,25 +229,23 @@
                                 Orientation="Horizontal">
 
                                 <TextBlock
-                                    x:Name="AppUsersNumberTextBlock"
+                                    VerticalAlignment="Bottom"
                                     FontFamily="{StaticResource ProductSans}"
                                     Foreground="{StaticResource PrimaryHueMidBrush}"
                                     FontWeight="Bold"
                                     FontSize="40"
-                                    TextAlignment="Center">
-                                    1000
-                                </TextBlock>
+                                    Text="{Binding TotalUsers}"
+                                    TextAlignment="Center" />
 
                                 <TextBlock
-                                    Width="80"
-                                    Margin="-10,5"
+                                    Width="100"
+                                    Margin="0,5"
                                     VerticalAlignment="Bottom"
                                     FontFamily="{StaticResource Roboto}"
                                     FontSize="14"
+                                    Text="Пользователей"
                                     TextAlignment="Center"
-                                    TextWrapping="Wrap">
-                                    User
-                                </TextBlock>
+                                    TextWrapping="Wrap" />
 
                             </StackPanel>
 
@@ -290,7 +279,7 @@
                                 Grid.Column="1"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
-                                Text="Delete a User" />
+                                Text="Удаление пользователей" />
 
                             <Grid Grid.Row="3" Grid.Column="1">
 
@@ -318,9 +307,9 @@
                                     Grid.Column="2"
                                     FontFamily="{StaticResource ProductSans}"
                                     FontSize="14"
-                                    Style="{StaticResource MaterialDesignRaisedButton}"
-                                    Click="UserSearchButton_Click">
-                                    Search
+                                    Content="Поиск"
+                                    Style="{StaticResource MaterialDesignRaisedButton}">
+                                    <!--  Click="UserSearchButton_Click"  -->
                                 </Button>
 
                             </Grid>
@@ -431,8 +420,8 @@
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                                 Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                                 Background="#b71c1c"
-                                                BorderBrush="Transparent"
-                                                Click="DeleteUserButton_Click">
+                                                BorderBrush="Transparent">
+                                                <!--  Click="DeleteUserButton_Click"  -->
                                                 <materialDesign:PackIcon Kind="DeleteSweep" Foreground="White" />
                                             </Button>
 
@@ -530,10 +519,10 @@
                                 HorizontalAlignment="Center"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
+                                Content="Add"
                                 Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                Style="{StaticResource MaterialDesignFlatButton}"
-                                Click="AddNewAdminButton_Click">
-                                Add
+                                Style="{StaticResource MaterialDesignFlatButton}">
+                                <!--  Click="AddNewAdminButton_Click"  -->
                             </Button>
 
                         </Grid>

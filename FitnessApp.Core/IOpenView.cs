@@ -28,4 +28,5 @@ public interface IOpenView
     void ClosePlansView();
     void OpenSettingsView();
     void CloseSettingsView();
+    void Logout(bool isAdmin);
 }
