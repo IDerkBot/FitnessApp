@@ -49,6 +49,7 @@ namespace FitnessApp.Wpf.Views.Controls
 
         private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
         {
+            if(!PbPassword.IsFocused) return;
             Password = PbPassword.Password;
             IsError = false;
         }

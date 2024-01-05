@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:vm="clr-namespace:FitnessApp.Core.ViewModels.SignUpPages;assembly=FitnessApp.Core"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:controls="clr-namespace:FitnessApp.Wpf.Views.Controls"
     DataContext="{Binding Path=SignUpVm, Source={StaticResource Locator}}"
@@ -90,7 +91,7 @@
             <!--  Password="{Binding User.Password}"  -->
             <controls:SecuredPassword
                 Grid.Column="0"
-                Password="{Binding User.Password, Mode=TwoWay}"
+                Password="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 FontFamily="{StaticResource Roboto}" />
 
             <controls:SecuredPassword
@@ -102,18 +103,11 @@
 
         <!--  Gender and Birthdate Feilds  -->
         <ComboBox
-            x:Name="GenderComboBox"
             Grid.Row="8"
             materialDesign:HintAssist.Hint="Gender"
+            ItemsSource="{Binding Genders}"
             SelectedItem="{Binding Person.Gender}"
-            FontFamily="{StaticResource Roboto}">
-            <ComboBoxItem>
-                Male
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Female
-            </ComboBoxItem>
-        </ComboBox>
+            FontFamily="{StaticResource Roboto}" />
 
         <DatePicker
             x:Name="BirthDatePicker"
@@ -126,16 +120,12 @@
 
         <!--  SignUp Button  -->
         <Button
-            x:Name="SignUpButton"
             Grid.Row="14"
             HorizontalAlignment="Right"
             FontFamily="{StaticResource ProductSans}"
             FontSize="14"
-            Style="{StaticResource MaterialDesignRaisedButton}"
-            Command="{Binding SignUpCommand}">
-            Sign Up
-        </Button>
-
+            Content="Next"
+            Style="{StaticResource BtnFilled}"
+            Command="{Binding NextViewCommand}" />
     </Grid>
-
 </Page>

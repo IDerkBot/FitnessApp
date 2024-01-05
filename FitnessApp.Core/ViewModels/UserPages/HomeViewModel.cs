@@ -318,8 +318,10 @@ public class HomeViewModel : ObservableObject
     {
         var chartCreator = Ioc.Default.GetService<IChartCreator>();
         if(chartCreator == null) return;
+
+        var idealWeight = CalculateIdealWeight();
         
-        WeightsSeriesCollection = chartCreator.GetWeight(CalculateIdealWeight, CurrentPerson);
+        WeightsSeriesCollection = chartCreator.GetWeight(idealWeight, CurrentPerson);
 
         Labels = Global.Database.GetWeightDateValues(CurrentPerson.User.Id);
         YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " kg";

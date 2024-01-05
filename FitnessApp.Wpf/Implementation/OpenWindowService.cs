@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using FitnessApp.Core;
 using FitnessApp.Core.Interfaces;
-using FitnessApp.SignUpPages;
-using FitnessApp.Windows;
 using FitnessApp.Wpf.Views.AdminPages;
 using FitnessApp.Wpf.Views.SignUpPages;
 using FitnessApp.Wpf.Views.UserPages;
@@ -112,7 +110,8 @@ public class OpenWindowService : IOpenView
 
     public void OpenSetUpProfileView()
     {
-        throw new NotImplementedException();
+        SetUpProfilePage ??= new SetUpProfilePage();
+        SigningWindow?.SignUpPagesFrame.NavigationService.Navigate(SetUpProfilePage);
     }
 
     public void CloseSetUpProfileView()

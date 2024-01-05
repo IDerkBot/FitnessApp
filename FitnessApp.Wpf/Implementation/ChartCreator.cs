@@ -22,7 +22,7 @@ public class ChartCreator : IChartCreator
         };
     }
 
-    public SeriesCollection GetWeight(Func<double> calcIdealWeight, Person selectedPerson)
+    public SeriesCollection GetWeight(double calcIdealWeight, Person selectedPerson)
     {
         return new SeriesCollection
         {

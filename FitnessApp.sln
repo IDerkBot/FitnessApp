@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessApp.DataAccessLayer"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessApp.Core", "FitnessApp.Core\FitnessApp.Core.csproj", "{B01048E1-3139-4B2E-AEB2-203A5163552E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessApp.Maui", "FitnessApp.Maui\FitnessApp.Maui.csproj", "{479A4C9D-A7CD-45E0-91AF-8B0722894F3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B01048E1-3139-4B2E-AEB2-203A5163552E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B01048E1-3139-4B2E-AEB2-203A5163552E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B01048E1-3139-4B2E-AEB2-203A5163552E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{479A4C9D-A7CD-45E0-91AF-8B0722894F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{479A4C9D-A7CD-45E0-91AF-8B0722894F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{479A4C9D-A7CD-45E0-91AF-8B0722894F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{479A4C9D-A7CD-45E0-91AF-8B0722894F3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

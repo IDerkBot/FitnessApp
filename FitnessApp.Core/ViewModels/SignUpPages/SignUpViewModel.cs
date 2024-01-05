@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Core.Interfaces;
@@ -10,6 +11,7 @@ public class SignUpViewModel : ObservableObject
 {
     #region Private Properties
 
+    private readonly IOpenView _openViewService;
     private readonly IAlertService _alertService;
 
     #endregion Private Properties
@@ -41,7 +43,7 @@ public class SignUpViewModel : ObservableObject
     }
 
     #endregion Person
-
+    
     #region ConfirmedPassword : string - Подтверждение пароля
 
     private string _confirmedPassword;
@@ -54,11 +56,38 @@ public class SignUpViewModel : ObservableObject
     }
 
     #endregion ConfirmedPassword
+
+    #region Genders : ObservableCollection<string> - Description
+
+    private ObservableCollection<string> _genders;
+
+    /// <summary> Description </summary>
+    public ObservableCollection<string> Genders
+    {
+        get => _genders;
+        set => SetProperty(ref _genders, value);
+    }
+
+    #endregion Genders
     
     #endregion
 
     #region Commands
 
+    #region NextViewCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand NextViewCommand { get; set; }
+
+    private void OnNextViewCommandExecuted()
+    {
+        _openViewService.OpenSetUpProfileView();
+    }
+
+    private bool CanNextViewCommandExecute() => true;
+
+    #endregion NextView
+    
     #region SignUpCommand : Регистрация нового пользователя
 
     /// <summary> Регистрация нового пользователя </summary>
@@ -101,13 +130,42 @@ public class SignUpViewModel : ObservableObject
 
         Global.Database.AddUser(User);
         Global.Database.AddPerson(Person);
-
-        // NavigationService.Navigate(SigningWindow.SetUpProfilePageObject);
-
-        //Change Back Card Header
-        // SigningWindow.SigningWindowObject.BackArrowButton.Visibility = Visibility.Hidden;
-        // SigningWindow.SigningWindowObject.BackCardHeaderTextBlock.Text = "Set up your Profile";
-        // SigningWindow.SigningWindowObject.BackCardHeaderTextBlock.Margin = new Thickness(-15);
+        
+        // // Constarins to make sure that all fields are filled
+        //     if (string.IsNullOrWhiteSpace(HeightTextBox            .Text) ||
+        //         string.IsNullOrWhiteSpace(WeightTextBox            .Text) ||
+        //         string.IsNullOrWhiteSpace(TargetWeightTextBox      .Text) ||
+        //         string.IsNullOrWhiteSpace(KilosToLosePerWeekTextBox.Text) ||
+        //         string.IsNullOrWhiteSpace(WorkoutsPerWeekTextBox   .Text) ||
+        //         string.IsNullOrWhiteSpace(WorkoutHoursPerDayTextBox.Text))
+        //     {
+        //         SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("All fields are required!");
+        //     }
+        //
+        //     else
+        //     {
+        //         var date = DateTime.Now;
+        //         if (SigningWindow.SignUpPageObject.BirthDatePicker.SelectedDate != null)
+        //             date = (DateTime)SigningWindow.SignUpPageObject.BirthDatePicker.SelectedDate;
+        //         // Signing up
+        //         // App.Database.AddUser(profilePhoto.ByteArray,
+        //         //                  SigningWindow.SignUpPageObject.FirstNameTextBox.Text,
+        //         //                  SigningWindow.SignUpPageObject.LastNameTextBox.Text,
+        //         //                  SigningWindow.SignUpPageObject.EmailTextBox.Text,
+        //         //                  SigningWindow.SignUpPageObject.Password,
+        //         //                  SigningWindow.SignUpPageObject.GenderComboBox.Text,
+        //         //                  date,
+        //         //                  double.Parse(WeightTextBox.Text),
+        //         //                  double.Parse(HeightTextBox.Text),
+        //         //                  double.Parse(TargetWeightTextBox.Text),
+        //         //                  double.Parse(KilosToLosePerWeekTextBox.Text),
+        //         //                  double.Parse(WorkoutsPerWeekTextBox.Text),
+        //         //                  double.Parse(WorkoutHoursPerDayTextBox.Text));
+        //
+        //         // UserWindow UserWindowTemp = new UserWindow(App.Database.AccountId);
+        //         // SigningWindow.SigningWindowObject.Close();
+        //         // UserWindowTemp.Show();
+        //     }
     }
 
     private bool CanSignUpCommandExecute() => true;
@@ -118,15 +176,39 @@ public class SignUpViewModel : ObservableObject
 
     #region Constructor
 
-    public SignUpViewModel(IAlertService alertService)
+    public SignUpViewModel(IOpenView openViewView, IAlertService alertService)
     {
+        _openViewService = openViewView;
         _alertService = alertService;
         
+        NextViewCommand = new RelayCommand(OnNextViewCommandExecuted, CanNextViewCommandExecute);
         SignUpCommand = new RelayCommand(OnSignUpCommandExecuted, CanSignUpCommandExecute);
 
         User = new User();
         Person = new Person(User);
+
+        Genders = new ObservableCollection<string> { "Male", "Female" };
     }
 
     #endregion Constructor
+
+    #region Private Methods
+
+    // private void ChooseUserProfilePhotoButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     OpenFileDialog browsePhotoDialog = new OpenFileDialog();
+    //     browsePhotoDialog.Title  = "Select your Profile Photo";
+    //     browsePhotoDialog.Filter = "All formats|*.jpg;*.jpeg;*.png|" +
+    //                                "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+    //                                "PNG (*.png)|*.png";
+    //
+    //
+    //     if (browsePhotoDialog.ShowDialog() == true)
+    //     {
+    //         // profilePhoto = new ImageModel(browsePhotoDialog.FileName);
+    //         // UserProfilePhoto.ImageSource = profilePhoto.Source;
+    //     }
+    // }
+
+    #endregion
 }

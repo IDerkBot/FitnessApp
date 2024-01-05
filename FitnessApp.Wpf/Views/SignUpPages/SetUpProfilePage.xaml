@@ -1,10 +1,11 @@
 ﻿<Page
-    x:Class="FitnessApp.SignUpPages.SetUpProfilePage"
+    x:Class="FitnessApp.Wpf.Views.SignUpPages.SetUpProfilePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    DataContext="{Binding Path=SignUpVm, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
     <Grid Width="450" HorizontalAlignment="Center">
@@ -37,8 +38,8 @@
             <Button
                 Width="120"
                 Height="120"
-                Opacity="0"
-                Click="ChooseUserProfilePhotoButton_Click" />
+                Opacity="0" />
+            <!--  Click="ChooseUserProfilePhotoButton_Click"  -->
         </Grid>
 
         <!--  Weight and Height Fields  -->
@@ -53,17 +54,19 @@
                 x:Name="WeightTextBox"
                 Grid.Column="0"
                 materialDesign:HintAssist.Hint="Weight"
+                Text="{Binding Person.Weight}"
                 FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
             <TextBox
                 x:Name="HeightTextBox"
                 Grid.Column="2"
                 materialDesign:HintAssist.Hint="Height"
+                Text="{Binding Person.Height}"
                 FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
         </Grid>
 
@@ -80,17 +83,19 @@
                 x:Name="TargetWeightTextBox"
                 Grid.Column="0"
                 materialDesign:HintAssist.Hint="Target Weight"
+                Text="{Binding Person.TargetWeight}"
                 FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
             <TextBox
                 x:Name="KilosToLosePerWeekTextBox"
                 Grid.Column="2"
                 materialDesign:HintAssist.Hint="Kilos to lose/week"
+                Text="{Binding Person.KilosToLosePerWeek}"
                 FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
         </Grid>
 
@@ -106,17 +111,19 @@
                 x:Name="WorkoutsPerWeekTextBox"
                 Grid.Column="0"
                 materialDesign:HintAssist.Hint="Workouts/week"
+                Text="{Binding Person.WorkoutsPerWeek}"
                 FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
             <TextBox
                 x:Name="WorkoutHoursPerDayTextBox"
                 Grid.Column="2"
                 materialDesign:HintAssist.Hint="Workout Hours/Day"
+                Text="{Binding Person.WorkoutHoursPerDay}"
                 FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                PreviewTextInput="DecimalNumbersOnlyFieldValidation" />
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
         </Grid>
 
         <!--  Setup Profile Button  -->
@@ -125,8 +132,9 @@
             HorizontalAlignment="Right"
             FontFamily="{StaticResource ProductSans}"
             FontSize="14"
-            Style="{StaticResource MaterialDesignRaisedButton}"
-            Click="SetUpProfileButton_Click">
+            Command="{Binding SignUpCommand}"
+            Style="{StaticResource MaterialDesignRaisedButton}">
+            <!--  Click="SetUpProfileButton_Click"  -->
             Set up Profile
         </Button>
 

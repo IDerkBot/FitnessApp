@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Core.Interfaces;
+using FitnessApp.Core.ViewModels.SignUpPages;
 
 namespace FitnessApp.Core.ViewModels.Windows;
 
@@ -10,6 +11,7 @@ public class SigningViewModel : ObservableObject
     #region Private Properties
 
     private IOpenView _openViewService;
+    private IAlertService _alertService;
 
     #endregion
 
@@ -41,6 +43,19 @@ public class SigningViewModel : ObservableObject
 
     #endregion Password
 
+    #region SignUpVm : SignUpViewModel - Description
+
+    private SignUpViewModel _signUpVm;
+
+    /// <summary> Description </summary>
+    public SignUpViewModel SignUpVm
+    {
+        get => _signUpVm;
+        set => SetProperty(ref _signUpVm, value);
+    }
+
+    #endregion SignUpVm
+    
     #endregion
 
     #region Commands
@@ -102,6 +117,7 @@ public class SigningViewModel : ObservableObject
         }
         else
         {
+            _alertService.Error("Пользователь не найден");
             // Display error when the user is not found
             // ErrorsSnackbar.MessageQueue?.Enqueue("Incorrect Email Or Password");
         }
@@ -115,12 +131,16 @@ public class SigningViewModel : ObservableObject
 
     #region Constructor
 
-    public SigningViewModel(IOpenView openView)
+    public SigningViewModel(IOpenView openView, IAlertService alertService)
     {
+        _openViewService = openView;
+        _alertService = alertService;
+        
         LoadedCommand = new RelayCommand(OnLoadedCommandExecuted, CanLoadedCommandExecute);
         CreateAccountCommand = new RelayCommand(OnCreateAccountCommandExecuted, CanCreateAccountCommandExecute);
         SignInCommand = new RelayCommand(OnSignInCommandExecuted, CanSignInCommandExecute);
-        _openViewService = openView;
+
+        SignUpVm = new SignUpViewModel(_openViewService, _alertService);
     }
 
     #endregion

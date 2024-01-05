@@ -1151,6 +1151,8 @@ public class Database
                 return 0;
         }
 
+        if (weights.Count == 0) return 0;
+        
         weightLost = weights.Max() - weights.Last();
         return Math.Round(weightLost, 2);
     }
@@ -1179,6 +1181,8 @@ public class Database
                 return 0;
         }
 
+        if (weights.Count == 0) return 0;
+        
         return Math.Round(weights.Sum() / weights.Count, 2);
     }
 
