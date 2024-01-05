@@ -1,12 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FitnessApp.Core;
-using FitnessApp.Wpf.ViewModels.AdminPages;
+using FitnessApp.Core.Interfaces;
+using FitnessApp.Core.ViewModels.AdminPages;
 
-namespace FitnessApp.Wpf.ViewModels.Windows;
+namespace FitnessApp.Core.ViewModels.Windows;
 
 public class AdminViewModel : ObservableObject
 {
@@ -206,30 +204,30 @@ public class AdminViewModel : ObservableObject
 
     #endregion Constructor
 
-    private void AdminWindowPagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // Close Side Menu Drawer
-        // SideMenuDrawer.IsLeftDrawerOpen = false;
-
-        // Navigate to the selected Page and Highlight the chosen Item
-        // switch (AdminWindowPagesListBox.SelectedIndex)
-        // {
-        //     case 0:
-        //         AdminWindowPagesFrame.NavigationService.Navigate(AdminHomePageObject);
-        //         HighlightItem(HomeTextBlock, HomeIcon);
-        //         break;
-        //
-        //     case 1:
-        //         AdminWindowPagesFrame.NavigationService.Navigate(ChallengesSetupPageObject);
-        //         HighlightItem(SetupChallengesTextBlock, ChallengesIcon);
-        //         break;
-        //
-        //     case 2:
-        //         AdminWindowPagesFrame.NavigationService.Navigate(AdminSettingsPageObject);
-        //         HighlightItem(SettingsTextBlock, SettingsIcon);
-        //         break;
-        // }
-    }
+    // private void AdminWindowPagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    // {
+    //     // Close Side Menu Drawer
+    //     // SideMenuDrawer.IsLeftDrawerOpen = false;
+    //
+    //     // Navigate to the selected Page and Highlight the chosen Item
+    //     // switch (AdminWindowPagesListBox.SelectedIndex)
+    //     // {
+    //     //     case 0:
+    //     //         AdminWindowPagesFrame.NavigationService.Navigate(AdminHomePageObject);
+    //     //         HighlightItem(HomeTextBlock, HomeIcon);
+    //     //         break;
+    //     //
+    //     //     case 1:
+    //     //         AdminWindowPagesFrame.NavigationService.Navigate(ChallengesSetupPageObject);
+    //     //         HighlightItem(SetupChallengesTextBlock, ChallengesIcon);
+    //     //         break;
+    //     //
+    //     //     case 2:
+    //     //         AdminWindowPagesFrame.NavigationService.Navigate(AdminSettingsPageObject);
+    //     //         HighlightItem(SettingsTextBlock, SettingsIcon);
+    //     //         break;
+    //     // }
+    // }
 
     private void ControlUpdateNewAdminPasswordGrid(int accountId)
     {
@@ -241,45 +239,45 @@ public class AdminViewModel : ObservableObject
         //     UpdateNewAdminPasswordGrid.Visibility = Visibility.Collapsed;
     }
 
-    private void UpdatePasswordButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Empty Fields Validation
-        // if (string.IsNullOrWhiteSpace(OldPasswordTextBox.Password))
-        //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your old password!");
-        //
-        // else if (string.IsNullOrWhiteSpace(NewPasswordTextBox.Password))
-        //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your new password!");
-        //
-        // else if (NewPasswordTextBox.Password != ConfirmNewPasswordTextBox.Password)
-        //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("New Password and Confirmation doesn't match!");
-        //
-        // // Password Validation
-        // else if (NewPasswordTextBox.Password.Length < 7)
-        //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
-        //
-        // else if (Global.Database.EncryptPassword(OldPasswordTextBox.Password) != signedInAdmin.Password)
-        //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
-        //
-        // else
-        // {
-        //     // Update signedInAdmin User Model
-        //     signedInAdmin.Password = Global.Database.EncryptPassword(NewPasswordTextBox.Password);
-        //
-        //     // Update Admin's Password in database
-        //     Global.Database.UpdateAdminPassword(signedInAdmin);
-        //
-        //     // Confirmation Message
-        //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");
-        //
-        //     // Hide UpdateNewAdminPasswordGrid
-        //     UpdateNewAdminPasswordGrid.Visibility = Visibility.Collapsed;
-        // }
-    }
-
-    private void LogoutListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // SigningWindow SigningWindowTemp = new SigningWindow();
-        // Close();
-        // SigningWindowTemp.Show();
-    }
+    // private void UpdatePasswordButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     // Empty Fields Validation
+    //     // if (string.IsNullOrWhiteSpace(OldPasswordTextBox.Password))
+    //     //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your old password!");
+    //     //
+    //     // else if (string.IsNullOrWhiteSpace(NewPasswordTextBox.Password))
+    //     //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your new password!");
+    //     //
+    //     // else if (NewPasswordTextBox.Password != ConfirmNewPasswordTextBox.Password)
+    //     //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("New Password and Confirmation doesn't match!");
+    //     //
+    //     // // Password Validation
+    //     // else if (NewPasswordTextBox.Password.Length < 7)
+    //     //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
+    //     //
+    //     // else if (Global.Database.EncryptPassword(OldPasswordTextBox.Password) != signedInAdmin.Password)
+    //     //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
+    //     //
+    //     // else
+    //     // {
+    //     //     // Update signedInAdmin User Model
+    //     //     signedInAdmin.Password = Global.Database.EncryptPassword(NewPasswordTextBox.Password);
+    //     //
+    //     //     // Update Admin's Password in database
+    //     //     Global.Database.UpdateAdminPassword(signedInAdmin);
+    //     //
+    //     //     // Confirmation Message
+    //     //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");
+    //     //
+    //     //     // Hide UpdateNewAdminPasswordGrid
+    //     //     UpdateNewAdminPasswordGrid.Visibility = Visibility.Collapsed;
+    //     // }
+    // }
+    //
+    // private void LogoutListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    // {
+    //     // SigningWindow SigningWindowTemp = new SigningWindow();
+    //     // Close();
+    //     // SigningWindowTemp.Show();
+    // }
 }

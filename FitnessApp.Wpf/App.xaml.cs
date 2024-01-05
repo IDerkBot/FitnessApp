@@ -1,9 +1,10 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
+using FitnessApp.Core.ViewModels.SignUpPages;
+using FitnessApp.Core.ViewModels.Windows;
 using FitnessApp.Wpf.Implementation;
-using FitnessApp.Wpf.ViewModels.SignUpPages;
-using FitnessApp.Wpf.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FitnessApp.Wpf;
@@ -23,6 +24,7 @@ public partial class App : Application
                 new ServiceCollection()
                     .AddSingleton<IOpenView, OpenWindowService>()
                     .AddSingleton<IChartCreator, ChartCreator>()
+                    .AddSingleton<IAlertService, AlertService>()
                     .AddSingleton<SigningViewModel>()
                     .AddSingleton<SignUpViewModel>()
                     .AddSingleton<UserViewModel>()

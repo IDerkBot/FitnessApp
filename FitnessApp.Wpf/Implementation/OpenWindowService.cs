@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
 using FitnessApp.SignUpPages;
 using FitnessApp.Windows;
 using FitnessApp.Wpf.Views.AdminPages;

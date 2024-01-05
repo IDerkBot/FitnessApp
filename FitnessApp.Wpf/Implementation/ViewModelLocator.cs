@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using FitnessApp.Wpf.ViewModels.SignUpPages;
-using FitnessApp.Wpf.ViewModels.UserPages;
-using FitnessApp.Wpf.ViewModels.Windows;
+using FitnessApp.Core.ViewModels.SignUpPages;
+using FitnessApp.Core.ViewModels.Windows;
 using FitnessApp.Wpf.Views.SignUpPages;
 
 namespace FitnessApp.Wpf.Implementation;

@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vm="clr-namespace:FitnessApp.Core.ViewModels.UserPages;assembly=FitnessApp.Core"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:models="clr-namespace:FitnessApp.Models;assembly=FitnessApp.Models"
-    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.UserPages"
     d:DataContext="{d:DesignInstance vm:PlansViewModel}"
     mc:Ignorable="d">
 

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Models;
 
-namespace FitnessApp.Wpf.ViewModels.UserPages;
+namespace FitnessApp.Core.ViewModels.UserPages;
 
 public class CaloriesCalculatorViewModel : ObservableObject
 {

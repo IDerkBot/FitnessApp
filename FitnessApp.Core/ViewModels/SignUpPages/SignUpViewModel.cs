@@ -1,16 +1,19 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Navigation;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
 using FitnessApp.Models;
-using FitnessApp.Windows;
 
-namespace FitnessApp.Wpf.ViewModels.SignUpPages;
+namespace FitnessApp.Core.ViewModels.SignUpPages;
 
 public class SignUpViewModel : ObservableObject
 {
+    #region Private Properties
+
+    private readonly IAlertService _alertService;
+
+    #endregion Private Properties
+    
     #region Properties
 
     #region User : User - Пользователь
@@ -66,30 +69,33 @@ public class SignUpViewModel : ObservableObject
         // Empty Fields Validation
         if (string.IsNullOrWhiteSpace(Person.FirstName) ||
             string.IsNullOrWhiteSpace(Person.LastName) ||
-            // string.IsNullOrWhiteSpace(PasswordTextBox.Password) ||
-            string.IsNullOrWhiteSpace(Person.Gender) ||
-            Person.BirthDate == null)
+            string.IsNullOrWhiteSpace(Person.Gender))
         {
-            SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("All fields are required!");
-        }
-
-        else if (!Person.Email.Contains("@"))
-            SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("Invalid E-mail");
-
-        else if (Global.Database.IsEmailTaken(Person.Email))
-            SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("Email is already taken!");
-
-        else if (User.Password != ConfirmedPassword)
-        {
-            SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue(
-                "Password and Confirmation doesn't match!");
+            _alertService.Error("All fields are required!");
             return;
         }
-        
-        else if (User.Password.Length < 7)
+
+        if (!Person.Email.Contains("@"))
         {
-            SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue(
-                "Password must be 7 characters or more");
+            _alertService.Error("Invalid E-mail");
+            return;
+        }
+
+        if (Global.Database.IsEmailTaken(Person.Email))
+        {
+            _alertService.Error("Email is already taken!");
+            return;
+        }
+
+        if (User.Password != ConfirmedPassword)
+        {
+            _alertService.Error("Password and Confirmation doesn't match!");
+            return;
+        }
+
+        if (User.Password.Length < 7)
+        {
+            _alertService.Error("Password must be 7 characters or more");
             return;
         }
 
@@ -110,11 +116,17 @@ public class SignUpViewModel : ObservableObject
 
     #endregion
 
-    public SignUpViewModel()
+    #region Constructor
+
+    public SignUpViewModel(IAlertService alertService)
     {
+        _alertService = alertService;
+        
         SignUpCommand = new RelayCommand(OnSignUpCommandExecuted, CanSignUpCommandExecute);
 
         User = new User();
         Person = new Person(User);
     }
+
+    #endregion Constructor
 }

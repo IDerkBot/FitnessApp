@@ -1,12 +1,9 @@
-﻿using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Models;
-using FitnessApp.Wpf.Views.Windows;
 
-namespace FitnessApp.Wpf.ViewModels.UserPages;
+namespace FitnessApp.Core.ViewModels.UserPages;
 
 public class PlansViewModel : ObservableObject
 {

@@ -1,15 +1,13 @@
 ﻿using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
 using FitnessApp.Models;
 using LiveCharts;
 
-namespace FitnessApp.Wpf.ViewModels.UserPages;
+namespace FitnessApp.Core.ViewModels.UserPages;
 
 public class HomeViewModel : ObservableObject
 {
@@ -278,18 +276,18 @@ public class HomeViewModel : ObservableObject
 
     #endregion CompletedChallenge
 
-    private void JoinPlanButton_Click(object sender, RoutedEventArgs e)
-    {
-        // UserWindow.UserWindowObject.UserWindowPagesListBox.SelectedIndex = 2;
-    }
-
-    private void DismissPlanButton_Click(object sender, RoutedEventArgs e)
-    {
-        Global.Database.UnjoinPlan(CurrentPerson.User.Id);
-        LoadJoinedPlanCard();
-
-        // UserWindow.PlansPageObject.LoadAllPlansCards();
-    }
+    // private void JoinPlanButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     // UserWindow.UserWindowObject.UserWindowPagesListBox.SelectedIndex = 2;
+    // }
+    //
+    // private void DismissPlanButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     Global.Database.UnjoinPlan(CurrentPerson.User.Id);
+    //     LoadJoinedPlanCard();
+    //
+    //     // UserWindow.PlansPageObject.LoadAllPlansCards();
+    // }
     
     #endregion
 
@@ -335,12 +333,12 @@ public class HomeViewModel : ObservableObject
         return CurrentPerson.Height - 100 + (CurrentPerson.Height - 100) * 0.15;
     }
 
-    private void DecimalNumbersOnlyFieldValidation(object sender, TextCompositionEventArgs e)
-    {
-        var s = sender as TextBox;
-        var text = s.Text.Insert(s.SelectionStart, e.Text);
-        e.Handled = !double.TryParse(text, out double d);
-    }
+    // private void DecimalNumbersOnlyFieldValidation(object sender, TextCompositionEventArgs e)
+    // {
+    //     var s = sender as TextBox;
+    //     var text = s.Text.Insert(s.SelectionStart, e.Text);
+    //     e.Handled = !double.TryParse(text, out double d);
+    // }
 
     public void LoadTotalWeightLostCard()
     {
@@ -431,53 +429,53 @@ public class HomeViewModel : ObservableObject
         // }
     }
 
-    private void DayItemCheckBox_Checked(object sender, RoutedEventArgs e)
-    {
-        CheckBox currentCheckBox = sender as CheckBox;
+    // private void DayItemCheckBox_Checked(object sender, RoutedEventArgs e)
+    // {
+    //     CheckBox currentCheckBox = sender as CheckBox;
+    //
+    //     switch (currentCheckBox.Name)
+    //     {
+    //         case "BreakfastCheckBox":
+    //             Global.Database.UpdateDayBreakfastStatus(true, CurrentPerson.User.Id);
+    //             break;
+    //
+    //         case "LunchCheckBox":
+    //             Global.Database.UpdateDayLunchStatus(true, CurrentPerson.User.Id);
+    //             break;
+    //
+    //         case "DinnerCheckBox":
+    //             Global.Database.UpdateDayDinnerStatus(true, CurrentPerson.User.Id);
+    //             break;
+    //
+    //         case "WorkoutsCheckBox":
+    //             Global.Database.UpdateDayWorkoutStatus(true, CurrentPerson.User.Id);
+    //             break;
+    //     }
+    // }
 
-        switch (currentCheckBox.Name)
-        {
-            case "BreakfastCheckBox":
-                Global.Database.UpdateDayBreakfastStatus(true, CurrentPerson.User.Id);
-                break;
-
-            case "LunchCheckBox":
-                Global.Database.UpdateDayLunchStatus(true, CurrentPerson.User.Id);
-                break;
-
-            case "DinnerCheckBox":
-                Global.Database.UpdateDayDinnerStatus(true, CurrentPerson.User.Id);
-                break;
-
-            case "WorkoutsCheckBox":
-                Global.Database.UpdateDayWorkoutStatus(true, CurrentPerson.User.Id);
-                break;
-        }
-    }
-
-    private void DayItemCheckBox_Unchecked(object sender, RoutedEventArgs e)
-    {
-        CheckBox currentCheckBox = sender as CheckBox;
-
-        switch (currentCheckBox.Name)
-        {
-            case "BreakfastCheckBox":
-                Global.Database.UpdateDayBreakfastStatus(false, CurrentPerson.User.Id);
-                break;
-
-            case "LunchCheckBox":
-                Global.Database.UpdateDayLunchStatus(false, CurrentPerson.User.Id);
-                break;
-
-            case "DinnerCheckBox":
-                Global.Database.UpdateDayDinnerStatus(false, CurrentPerson.User.Id);
-                break;
-
-            case "WorkoutsCheckBox":
-                Global.Database.UpdateDayWorkoutStatus(false, CurrentPerson.User.Id);
-                break;
-        }
-    }
+    // private void DayItemCheckBox_Unchecked(object sender, RoutedEventArgs e)
+    // {
+    //     CheckBox currentCheckBox = sender as CheckBox;
+    //
+    //     switch (currentCheckBox.Name)
+    //     {
+    //         case "BreakfastCheckBox":
+    //             Global.Database.UpdateDayBreakfastStatus(false, CurrentPerson.User.Id);
+    //             break;
+    //
+    //         case "LunchCheckBox":
+    //             Global.Database.UpdateDayLunchStatus(false, CurrentPerson.User.Id);
+    //             break;
+    //
+    //         case "DinnerCheckBox":
+    //             Global.Database.UpdateDayDinnerStatus(false, CurrentPerson.User.Id);
+    //             break;
+    //
+    //         case "WorkoutsCheckBox":
+    //             Global.Database.UpdateDayWorkoutStatus(false, CurrentPerson.User.Id);
+    //             break;
+    //     }
+    // }
 
     //////////////////////////////////////////////////////////////
 
@@ -552,74 +550,74 @@ public class HomeViewModel : ObservableObject
 
     ////////// DialogBoxes Functions/Event Handlers //////////
 
-    private void DialogBoxAddFoodButton_Click(object sender, RoutedEventArgs e)
-    {
-        // if (FoodComboBox.SelectedIndex == -1)
-        //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please choose Food!");
-        //
-        // else if (string.IsNullOrWhiteSpace(FoodQuantityTextBox.Text))
-        //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter Food Quantity!");
-        //
-        // else
-        // {
-        //     Global.Database.AddFood(FoodComboBox.Text, double.Parse(FoodQuantityTextBox.Text), CurrentPerson.User.Id);
-        //     AddFoodDialogBox.Visibility = Visibility.Collapsed;
-        //     DialogBox.IsOpen = false;
-        //
-        //     // Refresh Calories Card
-        //     CaloriesChart.DataContext = null;
-        //     LoadCaloriesCard();
-        // }
-        //
-        // // Reset Dialog Box Fields
-        // FoodComboBox.SelectedIndex = -1;
-        // FoodQuantityTextBox.Text = "";
-    }
+    // private void DialogBoxAddFoodButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     // if (FoodComboBox.SelectedIndex == -1)
+    //     //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please choose Food!");
+    //     //
+    //     // else if (string.IsNullOrWhiteSpace(FoodQuantityTextBox.Text))
+    //     //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter Food Quantity!");
+    //     //
+    //     // else
+    //     // {
+    //     //     Global.Database.AddFood(FoodComboBox.Text, double.Parse(FoodQuantityTextBox.Text), CurrentPerson.User.Id);
+    //     //     AddFoodDialogBox.Visibility = Visibility.Collapsed;
+    //     //     DialogBox.IsOpen = false;
+    //     //
+    //     //     // Refresh Calories Card
+    //     //     CaloriesChart.DataContext = null;
+    //     //     LoadCaloriesCard();
+    //     // }
+    //     //
+    //     // // Reset Dialog Box Fields
+    //     // FoodComboBox.SelectedIndex = -1;
+    //     // FoodQuantityTextBox.Text = "";
+    // }
 
-    private void DialogBoxAddWorkoutButton_Click(object sender, RoutedEventArgs e)
-    {
-        // if (WorkoutsComboBox.SelectedIndex == -1)
-        //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please choose Workout!");
-        //
-        // else if (string.IsNullOrWhiteSpace(WorkoutsDurationTextBox.Text))
-        //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter Workout Duration!");
-        //
-        // else
-        // {
-        //     Global.Database.AddWorkout(WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text),
-        //         UserWindow.SignedInUser);
-        //     AddWorkoutDialogBox.Visibility = Visibility.Collapsed;
-        //     DialogBox.IsOpen = false;
-        //
-        //     // Update Progress of the Challenges having the same type as the entered workout
-        //     Global.Database.UpdateChallengesProgress(CurrentPerson.User.Id, WorkoutsComboBox.Text,
-        //         double.Parse(WorkoutsDurationTextBox.Text));
-        //
-        //     // Refresh Challenges card
-        //     LoadJoinedChallengesCards();
-        //
-        //     // Refresh Calories Card
-        //     CaloriesChart.DataContext = null;
-        //     LoadCaloriesCard();
-        // }
-        //
-        // // Reset Dialog Box Fields
-        // WorkoutsComboBox.SelectedIndex = -1;
-        // WorkoutsDurationTextBox.Text = "";
-    }
-
-    private void DialogBoxCancelButton_Click(object sender, RoutedEventArgs e)
-    {
-        // AddFoodDialogBox.Visibility = Visibility.Collapsed;
-        // AddWorkoutDialogBox.Visibility = Visibility.Collapsed;
-        // DialogBox.IsOpen = false;
-        //
-        // WorkoutsComboBox.SelectedIndex = -1;
-        // WorkoutsDurationTextBox.Text = "";
-        //
-        // FoodComboBox.SelectedIndex = -1;
-        // FoodQuantityTextBox.Text = "";
-    }
+    // private void DialogBoxAddWorkoutButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     // if (WorkoutsComboBox.SelectedIndex == -1)
+    //     //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please choose Workout!");
+    //     //
+    //     // else if (string.IsNullOrWhiteSpace(WorkoutsDurationTextBox.Text))
+    //     //     UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter Workout Duration!");
+    //     //
+    //     // else
+    //     // {
+    //     //     Global.Database.AddWorkout(WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text),
+    //     //         UserWindow.SignedInUser);
+    //     //     AddWorkoutDialogBox.Visibility = Visibility.Collapsed;
+    //     //     DialogBox.IsOpen = false;
+    //     //
+    //     //     // Update Progress of the Challenges having the same type as the entered workout
+    //     //     Global.Database.UpdateChallengesProgress(CurrentPerson.User.Id, WorkoutsComboBox.Text,
+    //     //         double.Parse(WorkoutsDurationTextBox.Text));
+    //     //
+    //     //     // Refresh Challenges card
+    //     //     LoadJoinedChallengesCards();
+    //     //
+    //     //     // Refresh Calories Card
+    //     //     CaloriesChart.DataContext = null;
+    //     //     LoadCaloriesCard();
+    //     // }
+    //     //
+    //     // // Reset Dialog Box Fields
+    //     // WorkoutsComboBox.SelectedIndex = -1;
+    //     // WorkoutsDurationTextBox.Text = "";
+    // }
+    
+    // private void DialogBoxCancelButton_Click(object sender, RoutedEventArgs e)
+    // {
+    //     // AddFoodDialogBox.Visibility = Visibility.Collapsed;
+    //     // AddWorkoutDialogBox.Visibility = Visibility.Collapsed;
+    //     // DialogBox.IsOpen = false;
+    //     //
+    //     // WorkoutsComboBox.SelectedIndex = -1;
+    //     // WorkoutsDurationTextBox.Text = "";
+    //     //
+    //     // FoodComboBox.SelectedIndex = -1;
+    //     // FoodQuantityTextBox.Text = "";
+    // }
 
     ///////////////////////////////////////////////////////////
 }

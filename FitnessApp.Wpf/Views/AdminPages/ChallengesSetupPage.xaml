@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:vm="clr-namespace:FitnessApp.Wpf.ViewModels.AdminPages"
+    xmlns:vm="clr-namespace:FitnessApp.Core.ViewModels.AdminPages;assembly=FitnessApp.Core"
     xmlns:models="clr-namespace:FitnessApp.Models;assembly=FitnessApp.Models"
     d:DataContext="{d:DesignInstance vm:ChallengesSetupViewModel}"
     mc:Ignorable="d">

@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
+using FitnessApp.Core.ViewModels.UserPages;
 using FitnessApp.Models;
-using FitnessApp.Wpf.ViewModels.UserPages;
 
-namespace FitnessApp.Wpf.ViewModels.Windows;
+namespace FitnessApp.Core.ViewModels.Windows;
 
 public class UserViewModel : ObservableObject
 {

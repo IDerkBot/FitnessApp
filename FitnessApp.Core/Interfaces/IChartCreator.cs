@@ -1,7 +1,7 @@
 ﻿using FitnessApp.Models;
 using LiveCharts;
 
-namespace FitnessApp.Core;
+namespace FitnessApp.Core.Interfaces;
 
 public interface IChartCreator
 {

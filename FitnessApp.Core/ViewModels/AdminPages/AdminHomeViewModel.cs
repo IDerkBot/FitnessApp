@@ -3,12 +3,11 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
 using FitnessApp.Models;
-using FitnessApp.Wpf.Implementation;
 using LiveCharts;
 
-namespace FitnessApp.Wpf.ViewModels.AdminPages;
+namespace FitnessApp.Core.ViewModels.AdminPages;
 
 public class AdminHomeViewModel : ObservableObject
 {

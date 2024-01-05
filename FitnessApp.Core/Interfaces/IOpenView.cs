@@ -1,4 +1,4 @@
-﻿namespace FitnessApp.Core;
+﻿namespace FitnessApp.Core.Interfaces;
 
 public interface IOpenView
 {

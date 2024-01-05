@@ -1,9 +1,9 @@
 ﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
 
-namespace FitnessApp.Wpf.ViewModels.Windows;
+namespace FitnessApp.Core.ViewModels.Windows;
 
 public class SigningViewModel : ObservableObject
 {

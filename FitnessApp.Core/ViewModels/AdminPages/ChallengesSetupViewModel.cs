@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace FitnessApp.Wpf.ViewModels.AdminPages;
+namespace FitnessApp.Core.ViewModels.AdminPages;
 
 public class ChallengesSetupViewModel : ObservableObject
 {

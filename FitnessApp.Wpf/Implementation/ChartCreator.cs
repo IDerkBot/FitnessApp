@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using FitnessApp.Core;
+using FitnessApp.Core.Interfaces;
 using FitnessApp.Models;
 using LiveCharts;
 using LiveCharts.Helpers;
