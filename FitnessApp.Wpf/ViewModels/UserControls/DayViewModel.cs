@@ -1,4 +1,5 @@
-﻿using FitnessApp.Models;
+﻿using FitnessApp.Core;
+using FitnessApp.Models;
 
 namespace FitnessApp.Wpf.ViewModels.UserControls
 {
@@ -11,7 +12,7 @@ namespace FitnessApp.Wpf.ViewModels.UserControls
         {
             //Initialize 30 Days of Plan of ID: planNumber + 1 in Days Array
 
-            Days = App.Database.GetPlanDays(planID);
+            Days = Global.Database.GetPlanDays(planID);
         }
 
         public List<DayInPlan> Days

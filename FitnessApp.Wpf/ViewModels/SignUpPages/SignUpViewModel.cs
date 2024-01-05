@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FitnessApp.Core;
 using FitnessApp.Models;
 using FitnessApp.Windows;
 
@@ -75,7 +76,7 @@ public class SignUpViewModel : ObservableObject
         else if (!Person.Email.Contains("@"))
             SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("Invalid E-mail");
 
-        else if (App.Database.IsEmailTaken(Person.Email))
+        else if (Global.Database.IsEmailTaken(Person.Email))
             SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("Email is already taken!");
 
         else if (User.Password != ConfirmedPassword)
@@ -92,8 +93,8 @@ public class SignUpViewModel : ObservableObject
             return;
         }
 
-        App.Database.AddUser(User);
-        App.Database.AddPerson(Person);
+        Global.Database.AddUser(User);
+        Global.Database.AddPerson(Person);
 
         // NavigationService.Navigate(SigningWindow.SetUpProfilePageObject);
 

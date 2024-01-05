@@ -80,19 +80,19 @@ public class SigningViewModel : ObservableObject
 
     private void OnSignInCommandExecuted()
     {
-        bool isAccountFound = App.Database.IsUserExists(Login, Password);
+        bool isAccountFound = Global.Database.IsUserExists(Login, Password);
 
         if (isAccountFound)
         {
-            var user = App.Database.GetUserByLogin(Login)!;
-            App.Database.Authorization(user);
+            var user = Global.Database.GetUserByLogin(Login)!;
+            Global.Database.Authorization(user);
 
-            if (App.Database.AccountType == AccountAccess.User)
+            if (Global.Database.AccountType == AccountAccess.User)
             {
                 // Open User Main Window
                 _openViewService.OpenUserView();
             }
-            else if (App.Database.AccountType == AccountAccess.Admin)
+            else if (Global.Database.AccountType == AccountAccess.Admin)
             {
                 // Open Admin Main Window
                 _openViewService.OpenAdminView();

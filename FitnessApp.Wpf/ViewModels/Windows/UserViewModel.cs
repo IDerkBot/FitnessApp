@@ -232,8 +232,8 @@ public class UserViewModel : ObservableObject
         LogoutCommand = new RelayCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
 
         // Initialize User Model
-        _signedInUser = App.Database.GetUserById(App.Database.AccountId)!;
-        CurrentPerson = App.Database.GetPersonByUserId(_signedInUser.Id)!;
+        _signedInUser = Global.Database.GetUserById(Global.Database.AccountId)!;
+        CurrentPerson = Global.Database.GetPersonByUserId(_signedInUser.Id)!;
 
         // Initialize View Models
         HomeVm = new HomeViewModel(CurrentPerson);

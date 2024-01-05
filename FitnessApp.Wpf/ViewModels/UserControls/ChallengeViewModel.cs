@@ -1,4 +1,5 @@
-﻿using FitnessApp.Models;
+﻿using FitnessApp.Core;
+using FitnessApp.Models;
 
 namespace FitnessApp.Wpf.ViewModels.UserControls
 {
@@ -13,13 +14,13 @@ namespace FitnessApp.Wpf.ViewModels.UserControls
 
         public void AllChallengesViewModel(int accountId)
         {
-            allChallenges = App.Database.GetChallengesByPersonId(accountId).ToList();
+            allChallenges = Global.Database.GetChallengesByPersonId(accountId).ToList();
         }
 
         public void JoinedChallengesViewModel(int accountId)
         {
 
-            List<JoinedChallenge> joinedChallenges = App.Database.GetJoinedChallenges(accountId);
+            List<JoinedChallenge> joinedChallenges = Global.Database.GetJoinedChallenges(accountId);
 
             foreach (var item in joinedChallenges)
             {

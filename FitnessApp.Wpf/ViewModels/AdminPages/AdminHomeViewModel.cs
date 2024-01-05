@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Input;
+using FitnessApp.Core;
 using FitnessApp.Models;
-using FitnessApp.Wpf.ViewModels.UserControls;
-using FitnessApp.Wpf.Views.Windows;
+using FitnessApp.Wpf.Implementation;
 using LiveCharts;
-using LiveCharts.Helpers;
-using LiveCharts.Wpf;
 
 namespace FitnessApp.Wpf.ViewModels.AdminPages;
 
@@ -18,9 +18,44 @@ public class AdminHomeViewModel : ObservableObject
 
     #region Properties
 
-    public SeriesCollection SeriesCollection { get; set; }
-    public List<string> Labels { get; set; }
-    public Func<double, string> Formatter { get; set; }
+    #region SeriesCollection : SeriesCollection - Description
+
+    private SeriesCollection _seriesCollection;
+
+    /// <summary> Description </summary>
+    public SeriesCollection SeriesCollection
+    {
+        get => _seriesCollection;
+        set => SetProperty(ref _seriesCollection, value);
+    }
+
+    #endregion SeriesCollection
+
+    #region Labels : List<string> - Description
+
+    private List<string> _labels;
+
+    /// <summary> Description </summary>
+    public List<string> Labels
+    {
+        get => _labels;
+        set => SetProperty(ref _labels, value);
+    }
+
+    #endregion Labels
+
+    #region Formatter : Func<double, string> - Description
+
+    private Func<double, string> _formatter;
+
+    /// <summary> Description </summary>
+    public Func<double, string> Formatter
+    {
+        get => _formatter;
+        set => SetProperty(ref _formatter, value);
+    }
+
+    #endregion Formatter
 
     #region Feedbacks : ObservableCollection<Feedback> - Description
 
@@ -47,68 +82,42 @@ public class AdminHomeViewModel : ObservableObject
     }
 
     #endregion TotalUsers
-    
+
     #endregion Properties
 
     #region Commands
 
-    #endregion Commands
+    #region DeleteFeedback - Description
 
-    #region Constructor
+    ///<summary> Description </summary>
+    public ICommand DeleteFeedbackCommand { get; }
 
-    public AdminHomeViewModel()
-    {
-        // LoadAppRatingChart();
-        // LoadAppUsersNumber();
-        LoadFeedbacks();
-    }
-
-    #endregion Constructor
-
-    #region Private Methods
-
-    private void LoadFeedbacks()
-    {
-        Feedbacks = new ObservableCollection<Feedback>(App.Database.GetFeedbacks().Take(5));
-    }
-
-    private void LoadAppRatingChart()
-    {
-        // AppRatingChart.DataContext = null;
-        //
-        // SeriesCollection = new SeriesCollection
-        // {
-        //     new ColumnSeries
-        //     {
-        //         Title = "Rating",
-        //         Values = App.Database.GetAppRatingValues().AsChartValues()
-        //     }
-        // };
-        // Labels = new List<string> { "1", "2", "3", "4", "5" };
-        // Formatter = value => value.ToString("N");
-        //
-        // AppRatingChart.DataContext = this;
-    }
-
-    private void LoadAppUsersNumber()
-    {
-        TotalUsers = App.Database.GetAppUsersNumber();
-    }
-
-    private void DeleteFeedbackButton_Click(object sender, RoutedEventArgs e)
+    private void OnDeleteFeedbackCommandExecuted()
     {
         // Button deleteFeedbackButton = sender as Button;
         // int selectedFeedbackIndex = FeedbacksListBox.Items.IndexOf(deleteFeedbackButton.DataContext);
         //
         // Feedback chosenFeedback = (Feedback)FeedbacksListBox.Items[selectedFeedbackIndex];
-        // App.Database.DeleteFeedback(chosenFeedback.Message);
+        // Global.Database.DeleteFeedback(chosenFeedback.Message);
         //
         // FeedbacksListBox.DataContext = null;
         // FeedbacksListBox.DataContext = new FeedbackViewModel();
         // LoadAppRatingChart();
     }
 
-    private void AddNewAdminButton_Click(object sender, RoutedEventArgs e)
+    private bool CanDeleteFeedbackCommandExecute()
+    {
+        return true;
+    }
+
+    #endregion DeleteFeedback
+
+    #region AddNewAdmin - Description
+
+    ///<summary> Description </summary>
+    public ICommand AddNewAdminCommand { get; }
+
+    private void OnAddNewAdminCommandExecuted()
     {
         // // Empty Fields Validation
         // if (string.IsNullOrWhiteSpace(FirstNameTextBox.Text))
@@ -125,16 +134,28 @@ public class AdminHomeViewModel : ObservableObject
         //     AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Invalid E-mail");
         //
         // // Check Email not used before
-        // else if (App.Database.IsEmailTaken(NewAdminEmailTextBox.Text))
+        // else if (Global.Database.IsEmailTaken(NewAdminEmailTextBox.Text))
         //     AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("E-mail is in use");
         // else
         // {
-        //     App.Database.AddNewAdmin(FirstNameTextBox.Text, LastNameTextBox.Text, NewAdminEmailTextBox.Text);
+        //     Global.Database.AddNewAdmin(FirstNameTextBox.Text, LastNameTextBox.Text, NewAdminEmailTextBox.Text);
         //     AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Admin Added Succesfully");
         // }
     }
 
-    private void UserSearchButton_Click(object sender, RoutedEventArgs e)
+    private bool CanAddNewAdminCommandExecute()
+    {
+        return true;
+    }
+
+    #endregion AddNewAdmin
+    
+    #region SearchUser - Description
+
+    ///<summary> Description </summary>
+    public ICommand SearchUserCommand { get; }
+
+    private void OnSearchUserCommandExecuted()
     {
         // if (!string.IsNullOrWhiteSpace(UserSearchTextBox.Text))
         // {
@@ -149,7 +170,19 @@ public class AdminHomeViewModel : ObservableObject
         // }
     }
 
-    private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
+    private bool CanSearchUserCommandExecute()
+    {
+        return true;
+    }
+
+    #endregion SearchUser
+
+    #region DeleteUser - Description
+
+    ///<summary> Description </summary>
+    public ICommand DeleteUserCommand { get; }
+
+    private void OnDeleteUserCommandExecuted()
     {
         // // Get User ID
         // Button deleteButton = sender as Button;
@@ -157,13 +190,13 @@ public class AdminHomeViewModel : ObservableObject
         // User chosenUser = (User)DeleteUserListBox.Items[selectedUserIndex];
         //
         // // Delete Challenge From Database
-        // App.Database.DeleteUser(chosenUser.Id);
+        // Global.Database.DeleteUser(chosenUser.Id);
         //
         // // Refresh Listbox and Number of users
         // DeleteUserListBox.DataContext = null;
         // UserViewModel deletedUserDataContext = new UserViewModel(UserSearchTextBox.Text);
         // DeleteUserListBox.DataContext = deletedUserDataContext;
-        // AppUsersNumberTextBlock.Text = App.Database.GetAppUsersNumber().ToString();
+        // AppUsersNumberTextBlock.Text = Global.Database.GetAppUsersNumber().ToString();
         //
         // // Refresh Feedbacks and Rating Chart
         // FeedbacksListBox.DataContext = null;
@@ -176,6 +209,54 @@ public class AdminHomeViewModel : ObservableObject
         //
         // // Confirmation Message
         // AdminWindow.AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("User deleted successfully");
+    }
+
+    private bool CanDeleteUserCommandExecute()
+    {
+        return true;
+    }
+    
+    #endregion DeleteUser
+
+    #endregion Commands
+
+    #region Constructor
+
+    public AdminHomeViewModel()
+    {
+        DeleteFeedbackCommand = new RelayCommand(OnDeleteFeedbackCommandExecuted, CanDeleteFeedbackCommandExecute);
+        AddNewAdminCommand = new RelayCommand(OnAddNewAdminCommandExecuted, CanAddNewAdminCommandExecute);
+        SearchUserCommand = new RelayCommand(OnSearchUserCommandExecuted, CanSearchUserCommandExecute);
+        DeleteUserCommand = new RelayCommand(OnDeleteUserCommandExecuted, CanDeleteUserCommandExecute);
+        
+        LoadAppRatingChart();
+        LoadAppUsersNumber();
+        LoadFeedbacks();
+    }
+
+    #endregion Constructor
+
+    #region Private Methods
+
+    private void LoadFeedbacks()
+    {
+        Feedbacks = new ObservableCollection<Feedback>(Global.Database.GetFeedbacks().Take(5));
+    }
+
+    private void LoadAppRatingChart()
+    {
+        var chartCreator = Ioc.Default.GetService<IChartCreator>();
+        
+        if(chartCreator == null) return;
+        
+        SeriesCollection = chartCreator.GetRating();
+        Labels = new List<string> { "1", "2", "3", "4", "5" };
+        Formatter = value => value.ToString("N");
+    }
+
+    private void LoadAppUsersNumber()
+    {
+        TotalUsers = Global.Database.GetAppUsersNumber();
     }
 
     #endregion Private Methods

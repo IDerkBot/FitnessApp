@@ -1342,8 +1342,10 @@ public class Database
         //     SendAdminEmail(email, password);
     }
 
-    public List<int>? GetAppRatingValues()
+    public IEnumerable<int> GetAppRatingValues()
     {
+        return Context.Feedbacks.Select(x => x.Rating);
+        //
         // connection.Open();
         //
         // List<int> ratingList = new List<int>();
@@ -1363,7 +1365,7 @@ public class Database
         // connection.Close();
         //
         // return ratingList;
-        return null;
+        // return null;
     }
 
     public int GetAppUsersNumber()

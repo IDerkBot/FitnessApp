@@ -2,13 +2,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using FitnessApp.Core;
 using FitnessApp.Models;
 using LiveCharts;
-using LiveCharts.Helpers;
-using LiveCharts.Wpf;
 
 namespace FitnessApp.Wpf.ViewModels.UserPages;
 
@@ -181,7 +180,7 @@ public class HomeViewModel : ObservableObject
             // UserWindow.signedInUser.Weight = double.Parse(TodaysWeightTextBox.Text);
         
             // Update Weight in Database
-            App.Database.AddNewWeight(TodayWeightValue, CurrentPerson.User.Id);
+            Global.Database.AddNewWeight(TodayWeightValue, CurrentPerson.User.Id);
         
             // Update User Weight Line Series:
             // TOOD Add one value and remove another to keep the number of values 10
@@ -243,7 +242,7 @@ public class HomeViewModel : ObservableObject
         //
         // Challenge currentChallenge = (Challenge)UncompletedJoinedChallengesListBox.Items[selectedChallengeIndex];
         //
-        // App.Database.UnjoinChallenge(CurrentPerson.User.Id, currentChallenge.Id);
+        // Global.Database.UnjoinChallenge(CurrentPerson.User.Id, currentChallenge.Id);
         //
         // // Reloading Data context for JoinedChallengesListBox
         // ChallengesViewModel joinedChallengesDataContext = new ChallengesViewModel();
@@ -270,7 +269,7 @@ public class HomeViewModel : ObservableObject
         //
         // Challenge currentChallenge = (Challenge)CompletedJoinedChallengesListBox.Items[selectedChallengeIndex];
         //
-        // App.Database.UnjoinChallenge(CurrentPerson.User.Id, currentChallenge.Id);
+        // Global.Database.UnjoinChallenge(CurrentPerson.User.Id, currentChallenge.Id);
         //
         // LoadJoinedChallengesCards();
     }
@@ -286,7 +285,7 @@ public class HomeViewModel : ObservableObject
 
     private void DismissPlanButton_Click(object sender, RoutedEventArgs e)
     {
-        App.Database.UnjoinPlan(CurrentPerson.User.Id);
+        Global.Database.UnjoinPlan(CurrentPerson.User.Id);
         LoadJoinedPlanCard();
 
         // UserWindow.PlansPageObject.LoadAllPlansCards();
@@ -313,43 +312,18 @@ public class HomeViewModel : ObservableObject
         LoadMotivationalQuoteCard();
         LoadCaloriesCard();
 
-        // FoodComboBox.ItemsSource = App.Database.GetAllFood().ToList();
-        // WorkoutsComboBox.ItemsSource = App.Database.GetWorkouts().ToList();
+        // FoodComboBox.ItemsSource = Global.Database.GetAllFood().ToList();
+        // WorkoutsComboBox.ItemsSource = Global.Database.GetWorkouts().ToList();
     }
 
     public void LoadWeightChart()
     {
-        WeightsSeriesCollection = new SeriesCollection
-        {
-            new LineSeries
-            {
-                Title = "Ideal Weight",
-                Values = Enumerable.Repeat(CalculateIdealWeight(), 10).AsChartValues(),
-                PointGeometry = null,
-                Fill = Brushes.Transparent,
-                Stroke = Brushes.ForestGreen,
-                StrokeDashArray = new DoubleCollection { 3 },
-            },
+        var chartCreator = Ioc.Default.GetService<IChartCreator>();
+        if(chartCreator == null) return;
         
-            new LineSeries
-            {
-                Title = "Weight",
-                Values = App.Database.GetWeightValues(CurrentPerson.User.Id).AsChartValues(),
-                // LabelPoint = _ => $"{App.Database.GetWeightDates(CurrentPerson.User.Id)}"
-            },
-        
-            new LineSeries
-            {
-                Title = "Target Weight",
-                Values = Enumerable.Repeat(CurrentPerson.TargetWeight, 10).AsChartValues(),
-                PointGeometry = null,
-                Fill = Brushes.Transparent,
-                Stroke = Brushes.Red,
-                StrokeDashArray = new DoubleCollection { 3 },
-            }
-        };
+        WeightsSeriesCollection = chartCreator.GetWeight(CalculateIdealWeight, CurrentPerson);
 
-        Labels = App.Database.GetWeightDateValues(CurrentPerson.User.Id);
+        Labels = Global.Database.GetWeightDateValues(CurrentPerson.User.Id);
         YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " kg";
     }
 
@@ -370,16 +344,16 @@ public class HomeViewModel : ObservableObject
 
     public void LoadTotalWeightLostCard()
     {
-        TotalWeightLostPerWeek = App.Database.GetTotalWeightLostPerDuration(CurrentPerson.User.Id, "WEEK");
-        TotalWeightLostPerMonth = App.Database.GetTotalWeightLostPerDuration(CurrentPerson.User.Id, "MONTH");
-        TotalWeightLostPerYear = App.Database.GetTotalWeightLostPerDuration(CurrentPerson.User.Id, "YEAR");
+        TotalWeightLostPerWeek = Global.Database.GetTotalWeightLostPerDuration(CurrentPerson.User.Id, "WEEK");
+        TotalWeightLostPerMonth = Global.Database.GetTotalWeightLostPerDuration(CurrentPerson.User.Id, "MONTH");
+        TotalWeightLostPerYear = Global.Database.GetTotalWeightLostPerDuration(CurrentPerson.User.Id, "YEAR");
     }
 
     public void LoadAverageWeightLostCard()
     {
-        AverageWeightLostPerWeek = App.Database.GetAverageWeightLostPerDuration(CurrentPerson.User.Id, "WEEK");
-        AverageWeightLostPerMonth = App.Database.GetAverageWeightLostPerDuration(CurrentPerson.User.Id, "MONTH");
-        AverageWeightLostPerYear = App.Database.GetAverageWeightLostPerDuration(CurrentPerson.User.Id, "YEAR");
+        AverageWeightLostPerWeek = Global.Database.GetAverageWeightLostPerDuration(CurrentPerson.User.Id, "WEEK");
+        AverageWeightLostPerMonth = Global.Database.GetAverageWeightLostPerDuration(CurrentPerson.User.Id, "MONTH");
+        AverageWeightLostPerYear = Global.Database.GetAverageWeightLostPerDuration(CurrentPerson.User.Id, "YEAR");
         // Value < 0 = Foreground Red
     }
 
@@ -410,7 +384,7 @@ public class HomeViewModel : ObservableObject
 
     public void LoadJoinedPlanCard()
     {
-        bool checkJoinedInPlan = App.Database.IsInPlan(CurrentPerson.User.Id);
+        bool checkJoinedInPlan = Global.Database.IsInPlan(CurrentPerson.User.Id);
 
         // NoPlanCard.Visibility = Visibility.Visible;
         // JoinedPlanCard.Visibility = Visibility.Visible;
@@ -420,7 +394,7 @@ public class HomeViewModel : ObservableObject
         // {
         //     // NoPlanCard.Visibility = Visibility.Collapsed;
         //
-        //     int planDayNum = App.Database.GetJoinedPlanDayNumber(CurrentPerson.User.Id);
+        //     int planDayNum = Global.Database.GetJoinedPlanDayNumber(CurrentPerson.User.Id);
         //
         //     if (planDayNum > 30)
         //         JoinedPlanCard.Visibility = Visibility.Collapsed;
@@ -429,22 +403,22 @@ public class HomeViewModel : ObservableObject
         //         PlanCompletedCard.Visibility = Visibility.Collapsed;
         //
         //         // Load Header
-        //         string planName = App.Database.GetJoinedPlanName(CurrentPerson.User.Id).ToString();
+        //         string planName = Global.Database.GetJoinedPlanName(CurrentPerson.User.Id).ToString();
         //         PlanHeaderTextBlock.Text = planName + " | Day #" + planDayNum;
-        //         App.Database.UpdatePlanDayNumber(CurrentPerson.User.Id, planDayNum);
+        //         Global.Database.UpdatePlanDayNumber(CurrentPerson.User.Id, planDayNum);
         //
         //         // Load CheckBoxes
-        //         BreakfastCheckBox.IsChecked = App.Database.GetDayBreakfastStatus(CurrentPerson.User.Id);
-        //         LunchCheckBox.IsChecked = App.Database.GetDayLunchStatus(CurrentPerson.User.Id);
-        //         DinnerCheckBox.IsChecked = App.Database.GetDayDinnerStatus(CurrentPerson.User.Id);
-        //         WorkoutsCheckBox.IsChecked = App.Database.GetDayWorkoutStatus(CurrentPerson.User.Id);
+        //         BreakfastCheckBox.IsChecked = Global.Database.GetDayBreakfastStatus(CurrentPerson.User.Id);
+        //         LunchCheckBox.IsChecked = Global.Database.GetDayLunchStatus(CurrentPerson.User.Id);
+        //         DinnerCheckBox.IsChecked = Global.Database.GetDayDinnerStatus(CurrentPerson.User.Id);
+        //         WorkoutsCheckBox.IsChecked = Global.Database.GetDayWorkoutStatus(CurrentPerson.User.Id);
         //
         //         // Load Descriptions
         //         BreakfastDescriptionTextBlock.Text =
-        //             App.Database.GetDayBreakfastDescription(CurrentPerson.User.Id);
-        //         LunchDescriptionTextBlock.Text = App.Database.GetDayLunchDescription(CurrentPerson.User.Id);
-        //         DinnerDescriptionTextBlock.Text = App.Database.GetDayDinnerDescription(CurrentPerson.User.Id);
-        //         WorkoutsDescriptionTextBlock.Text = App.Database.GetDayWorkoutDescription(CurrentPerson.User.Id);
+        //             Global.Database.GetDayBreakfastDescription(CurrentPerson.User.Id);
+        //         LunchDescriptionTextBlock.Text = Global.Database.GetDayLunchDescription(CurrentPerson.User.Id);
+        //         DinnerDescriptionTextBlock.Text = Global.Database.GetDayDinnerDescription(CurrentPerson.User.Id);
+        //         WorkoutsDescriptionTextBlock.Text = Global.Database.GetDayWorkoutDescription(CurrentPerson.User.Id);
         //
         //         // Load Progress Bar
         //         PlanProgressBar.Value = planDayNum;
@@ -464,19 +438,19 @@ public class HomeViewModel : ObservableObject
         switch (currentCheckBox.Name)
         {
             case "BreakfastCheckBox":
-                App.Database.UpdateDayBreakfastStatus(true, CurrentPerson.User.Id);
+                Global.Database.UpdateDayBreakfastStatus(true, CurrentPerson.User.Id);
                 break;
 
             case "LunchCheckBox":
-                App.Database.UpdateDayLunchStatus(true, CurrentPerson.User.Id);
+                Global.Database.UpdateDayLunchStatus(true, CurrentPerson.User.Id);
                 break;
 
             case "DinnerCheckBox":
-                App.Database.UpdateDayDinnerStatus(true, CurrentPerson.User.Id);
+                Global.Database.UpdateDayDinnerStatus(true, CurrentPerson.User.Id);
                 break;
 
             case "WorkoutsCheckBox":
-                App.Database.UpdateDayWorkoutStatus(true, CurrentPerson.User.Id);
+                Global.Database.UpdateDayWorkoutStatus(true, CurrentPerson.User.Id);
                 break;
         }
     }
@@ -488,19 +462,19 @@ public class HomeViewModel : ObservableObject
         switch (currentCheckBox.Name)
         {
             case "BreakfastCheckBox":
-                App.Database.UpdateDayBreakfastStatus(false, CurrentPerson.User.Id);
+                Global.Database.UpdateDayBreakfastStatus(false, CurrentPerson.User.Id);
                 break;
 
             case "LunchCheckBox":
-                App.Database.UpdateDayLunchStatus(false, CurrentPerson.User.Id);
+                Global.Database.UpdateDayLunchStatus(false, CurrentPerson.User.Id);
                 break;
 
             case "DinnerCheckBox":
-                App.Database.UpdateDayDinnerStatus(false, CurrentPerson.User.Id);
+                Global.Database.UpdateDayDinnerStatus(false, CurrentPerson.User.Id);
                 break;
 
             case "WorkoutsCheckBox":
-                App.Database.UpdateDayWorkoutStatus(false, CurrentPerson.User.Id);
+                Global.Database.UpdateDayWorkoutStatus(false, CurrentPerson.User.Id);
                 break;
         }
     }
@@ -511,7 +485,7 @@ public class HomeViewModel : ObservableObject
 
     private void LoadMotivationalQuoteCard()
     {
-        // MotiationalQuoteTextBlock.Text = App.Database.GetMotivationalQuote();
+        // MotiationalQuoteTextBlock.Text = Global.Database.GetMotivationalQuote();
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -524,9 +498,9 @@ public class HomeViewModel : ObservableObject
 
     public void LoadCaloriesCard()
     {
-        double caloriesGained = App.Database.GetCaloriesGainedToday(CurrentPerson.User.Id);
+        double caloriesGained = Global.Database.GetCaloriesGainedToday(CurrentPerson.User.Id);
         double caloriesNeeded = CalculateCaloriedNeeded();
-        double caloriesLost = App.Database.GetCaloriesLostToday(CurrentPerson.User.Id);
+        double caloriesLost = Global.Database.GetCaloriesLostToday(CurrentPerson.User.Id);
 
         // CaloriesGainedTextBlock.Text = caloiresGained.ToString();
         // CaloriesNeededTextBlock.Text = caloriesNeeded.ToString();
@@ -588,7 +562,7 @@ public class HomeViewModel : ObservableObject
         //
         // else
         // {
-        //     App.Database.AddFood(FoodComboBox.Text, double.Parse(FoodQuantityTextBox.Text), CurrentPerson.User.Id);
+        //     Global.Database.AddFood(FoodComboBox.Text, double.Parse(FoodQuantityTextBox.Text), CurrentPerson.User.Id);
         //     AddFoodDialogBox.Visibility = Visibility.Collapsed;
         //     DialogBox.IsOpen = false;
         //
@@ -612,13 +586,13 @@ public class HomeViewModel : ObservableObject
         //
         // else
         // {
-        //     App.Database.AddWorkout(WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text),
+        //     Global.Database.AddWorkout(WorkoutsComboBox.Text, double.Parse(WorkoutsDurationTextBox.Text),
         //         UserWindow.SignedInUser);
         //     AddWorkoutDialogBox.Visibility = Visibility.Collapsed;
         //     DialogBox.IsOpen = false;
         //
         //     // Update Progress of the Challenges having the same type as the entered workout
-        //     App.Database.UpdateChallengesProgress(CurrentPerson.User.Id, WorkoutsComboBox.Text,
+        //     Global.Database.UpdateChallengesProgress(CurrentPerson.User.Id, WorkoutsComboBox.Text,
         //         double.Parse(WorkoutsDurationTextBox.Text));
         //
         //     // Refresh Challenges card

@@ -165,7 +165,7 @@ public class AdminViewModel : ObservableObject
 
     private void OnLogoutCommandExecuted()
     {
-        App.Database.Logout();
+        Global.Database.Logout();
         _openView.Logout(true);
     }
 
@@ -191,7 +191,7 @@ public class AdminViewModel : ObservableObject
         LogoutCommand = new RelayCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
 
 
-        ControlUpdateNewAdminPasswordGrid(App.Database.SignedUser.Id);
+        ControlUpdateNewAdminPasswordGrid(Global.Database.SignedUser.Id);
 
         // Initialize AdminWindowPages Objects
 
@@ -233,7 +233,7 @@ public class AdminViewModel : ObservableObject
 
     private void ControlUpdateNewAdminPasswordGrid(int accountId)
     {
-        // if (App.Database.IsNewAdmin(accountId))
+        // if (Global.Database.IsNewAdmin(accountId))
         // {
         //     UpdateNewAdminPasswordGrid.Visibility = Visibility.Visible;
         // }
@@ -257,16 +257,16 @@ public class AdminViewModel : ObservableObject
         // else if (NewPasswordTextBox.Password.Length < 7)
         //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password must be 7 characters or more");
         //
-        // else if (App.Database.EncryptPassword(OldPasswordTextBox.Password) != signedInAdmin.Password)
+        // else if (Global.Database.EncryptPassword(OldPasswordTextBox.Password) != signedInAdmin.Password)
         //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Old Password is Incorrect!");
         //
         // else
         // {
         //     // Update signedInAdmin User Model
-        //     signedInAdmin.Password = App.Database.EncryptPassword(NewPasswordTextBox.Password);
+        //     signedInAdmin.Password = Global.Database.EncryptPassword(NewPasswordTextBox.Password);
         //
         //     // Update Admin's Password in database
-        //     App.Database.UpdateAdminPassword(signedInAdmin);
+        //     Global.Database.UpdateAdminPassword(signedInAdmin);
         //
         //     // Confirmation Message
         //     AdminWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Password Updated!");

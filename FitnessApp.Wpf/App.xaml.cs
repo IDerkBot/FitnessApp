@@ -13,17 +13,16 @@ namespace FitnessApp.Wpf;
 /// </summary>
 public partial class App : Application
 {
-    internal static Database Database = null!;
-    
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        
-        Database = new Database();
+
+        Global.Database = new Database();
 
         Ioc.Default.ConfigureServices(
                 new ServiceCollection()
                     .AddSingleton<IOpenView, OpenWindowService>()
+                    .AddSingleton<IChartCreator, ChartCreator>()
                     .AddSingleton<SigningViewModel>()
                     .AddSingleton<SignUpViewModel>()
                     .AddSingleton<UserViewModel>()

@@ -1,4 +1,5 @@
-﻿using FitnessApp.Models;
+﻿using FitnessApp.Core;
+using FitnessApp.Models;
 
 namespace FitnessApp.Wpf.ViewModels.UserControls
 {
@@ -9,7 +10,7 @@ namespace FitnessApp.Wpf.ViewModels.UserControls
 
         public PlanViewModel(int accountID)
         {
-            planModels = App.Database.GetPlans(accountID);
+            planModels = Global.Database.GetPlans(accountID);
         }
 
         public List<Plan> Plans

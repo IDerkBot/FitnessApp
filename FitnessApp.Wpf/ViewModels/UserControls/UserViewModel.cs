@@ -1,4 +1,5 @@
-﻿using FitnessApp.Models;
+﻿using FitnessApp.Core;
+using FitnessApp.Models;
 
 namespace FitnessApp.Wpf.ViewModels.UserControls
 {
@@ -9,7 +10,7 @@ namespace FitnessApp.Wpf.ViewModels.UserControls
 
         public UserViewModel(string userNameOrEmail)
         {
-            userModels = App.Database.SearchForUser(userNameOrEmail).ToList();
+            userModels = Global.Database.SearchForUser(userNameOrEmail).ToList();
         }
 
 
