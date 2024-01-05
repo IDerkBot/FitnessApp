@@ -7,4 +7,6 @@ public class Workout
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
+
+    public IEnumerable<PersonWorkout> PersonWorkouts { get; set; }
 }

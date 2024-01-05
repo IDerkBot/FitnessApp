@@ -6,7 +6,7 @@ namespace FitnessApp.Models;
 public class PersonWeight
 {
     public int PersonId { get; set; }
-    public Person Person { get; set; }
+    public Person Person { get; set; } = null!;
     public DateTime DateTime { get; set; }
     public double Weight { get; set; }
 

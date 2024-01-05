@@ -138,57 +138,21 @@ public class Database
 
     public void DeleteUser(int id)
     {
-        // connection.Open();
-        //
-        // query = "DELETE FROM [Feedback] WHERE FK_Feedback_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM UserWorkout WHERE FK_UserWorkout_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM [JoinedChallenge] WHERE FK_JoinedChallenge_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM [JoinedPlan] WHERE FK_JoinedPlan_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM [UserWeight] WHERE FK_UserWeight_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM [UserFood] WHERE FK_UserFood_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM [User] WHERE PK_UserID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "DELETE FROM [Account] WHERE PK_AccountID = @accountID";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // connection.Close();
+        var user = GetUserById(id);
+        if(user == null) return;
+
+        var person = GetPersonByUserId(id);
+        if(person == null) return;
+        
+        // TODO Get JoinedChallenge
+        // TODO Get JoinedPlan
+        // TODO Get PersonFood
+        // TODO Get PersonWorkout
+        
+        // TODO Delete JoinedChallenge
+        // TODO Delete JoinedPlan
+        // TODO Delete PersonFood
+        // TODO Delete PersonWorkout
     }
 
     ///////////////////////////////////////////////// SEARCH /////////////////////////////////////////////////
@@ -207,9 +171,9 @@ public class Database
 
     ////////////////////////////////////////////////// GET ///////////////////////////////////////////////////
 
-    public IEnumerable<Challenge> GetChallengesByUserId(int userId)
+    public IEnumerable<Challenge> GetChallengesByPersonId(int userId)
     {
-        return Context.JoinedChallenges.Where(x => x.User.Id == userId).Select(x => x.Challenge);
+        return Context.JoinedChallenges.Where(x => x.PersonId == userId).Select(x => x.Challenge);
     }
 
     ////////////////////////////////////////////////// ADD ///////////////////////////////////////////////////

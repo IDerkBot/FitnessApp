@@ -13,7 +13,7 @@ namespace FitnessApp.Wpf.ViewModels.UserControls
 
         public void AllChallengesViewModel(int accountId)
         {
-            allChallenges = App.Database.GetChallengesByUserId(accountId).ToList();
+            allChallenges = App.Database.GetChallengesByPersonId(accountId).ToList();
         }
 
         public void JoinedChallengesViewModel(int accountId)

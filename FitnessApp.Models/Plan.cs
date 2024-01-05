@@ -11,4 +11,7 @@ public class Plan
     public int Duration { get; set; }
     public string Hardness { get; set; }
     public byte[] Photo { get; set; }
+    
+    public IEnumerable<DayInPlan> DaysInPlan { get; set; }
+    public IEnumerable<JoinedPlan> JoinedPlans { get; set; }
 }

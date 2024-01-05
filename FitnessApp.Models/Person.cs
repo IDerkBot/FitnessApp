@@ -20,7 +20,15 @@ public class Person
     public double WorkoutsPerWeek { get; set; }
     public double WorkoutHoursPerDay { get; set; }
     public byte[]? ProfilePhoto { get; set; }
-    public User User { get; set; }
+
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
+    
+    public IEnumerable<JoinedChallenge> JoinedChallenges { get; set; }
+    public IEnumerable<JoinedPlan> JoinedPlans { get; set; }
+    public IEnumerable<PersonFood> PersonFoods { get; set; }
+    public IEnumerable<PersonWeight> PersonWeights { get; set; }
+    public IEnumerable<PersonWorkout> PersonWorkouts { get; set; }
 
     public Person()
     {

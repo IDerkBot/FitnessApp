@@ -21,6 +21,19 @@ public class CaloriesCalculatorViewModel : ObservableObject
     }
 
     #endregion CurrentPerson
+
+    #region Age : int - Возраст
+
+    private int _age;
+
+    /// <summary> Возраст </summary>
+    public int Age
+    {
+        get => _age;
+        set => SetProperty(ref _age, value);
+    }
+
+    #endregion Age
     
     #region ResultCalculating : double - Результат расчета
 
@@ -50,7 +63,7 @@ public class CaloriesCalculatorViewModel : ObservableObject
         {
             var weight = CurrentPerson.Weight;
             var height = CurrentPerson.Height;
-            double age = CurrentPerson.Age;
+            double age = Age;
             var calculate = 665 + 9.6 * weight + 1.8 * height - 4.7 * age;
             ResultCalculating = calculate; // " kCal."
         }
@@ -58,7 +71,7 @@ public class CaloriesCalculatorViewModel : ObservableObject
         {
             var weight = CurrentPerson.Weight;
             var height = CurrentPerson.Height;
-            double age = CurrentPerson.Age;
+            double age = Age;
             var calculate = 66 + 13.7 * weight + 1.8 * height - 4.7 * age;
             ResultCalculating = calculate;
         }
@@ -75,5 +88,6 @@ public class CaloriesCalculatorViewModel : ObservableObject
         CalculateCommand = new RelayCommand(OnCalculateCommandExecuted, CanCalculateCommandExecute);
         
         CurrentPerson = selectedPerson;
+        Age = CurrentPerson.Age;
     }
 }

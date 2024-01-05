@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessApp.Models;
 
@@ -14,4 +15,6 @@ public class Challenge
     public byte[] Photo { get; set; }
     public Workout Workout { get; set; }
     public string StyledTargetMinutes => TargetMinutes + " minutes";
+
+    public IEnumerable<JoinedChallenge> JoinedChallenges { get; set; }
 }

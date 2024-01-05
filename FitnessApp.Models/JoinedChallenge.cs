@@ -5,8 +5,8 @@ namespace FitnessApp.Models;
 [Table(nameof(JoinedChallenge))]
 public class JoinedChallenge
 {
-    public int UserId { get; set; }
-    public User User { get; set; } = null!;
+    public int PersonId { get; set; }
+    public Person Person { get; set; } = null!;
     
     public int ChallengeId { get; set; }
     public Challenge Challenge { get; set; } = null!;

@@ -5,8 +5,8 @@ namespace FitnessApp.Models;
 [Table(nameof(JoinedPlan))]
 public class JoinedPlan
 {
-    public int UserId { get; set; }
-    public User User { get; set; } = null!;
+    public int PersonId { get; set; }
+    public Person Person { get; set; } = null!;
 
     public int PlanId { get; set; }
     public Plan Plan { get; set; } = null!;

@@ -11,7 +11,8 @@ public class User
     public string Password { get; set; }
     public byte Access { get; set; }
 
-    public IEnumerable<JoinedChallenge> JoinedChallenges;
+    public int PersonId { get; set; }
+    public Person Person { get; set; }
     
     public User()
     {

@@ -86,7 +86,7 @@
                         Margin="30,0,0,0"
                         materialDesign:HintAssist.Hint="Age"
                         FontFamily="{StaticResource Roboto}"
-                        Text="{Binding CurrentPerson.Age}"
+                        Text="{Binding Age}"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
                 </Grid>

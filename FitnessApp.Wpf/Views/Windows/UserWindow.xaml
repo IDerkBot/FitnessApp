@@ -113,181 +113,154 @@
                             Text="{Binding CurrentPerson.Email}" />
                     </StackPanel>
 
-                    <Separator Grid.Row="5" Grid.ColumnSpan="3" />
+                    <Separator
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3" />
 
-                    <ListBox
-                        x:Name="UserWindowPagesListBox"
+                    <StackPanel
                         Grid.Row="7"
+                        Grid.Column="0"
                         Grid.ColumnSpan="3">
                         <!--  SelectionChanged="UserWindowPagesListBox_SelectionChanged"  -->
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BtnText}">
+                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            </Style>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="FontSize" Value="15" />
+                                <Setter Property="FontFamily" Value="{StaticResource ProductSans}" />
+                            </Style>
+                        </StackPanel.Resources>
 
                         <!--  Home Button  -->
-                        <ListBoxItem>
-                            <Grid>
+                        <Button Command="{Binding MoveOnHomeCommand}">
+                            <Button.Content>
+                                <Grid Margin="5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon
+                                        Grid.Column="0"
+                                        Margin="0,0,15,0"
+                                        Kind="Home" />
 
-                                <!--  Initially Highlighted  -->
-                                <materialDesign:PackIcon
-                                    x:Name="HomeIcon"
-                                    Grid.Column="1"
-                                    Kind="Home" />
-
-                                <TextBlock
-                                    x:Name="HomeTextBlock"
-                                    Grid.Column="3"
-                                    Text="Home"
-                                    FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15" />
-
-                            </Grid>
-                        </ListBoxItem>
+                                    <TextBlock Grid.Column="1" Text="Home" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
 
                         <!--  Challenges Button  -->
-                        <ListBoxItem>
-                            <Grid>
+                        <Button Command="{Binding MoveOnChallengesCommand}">
+                            <Button.Content>
+                                <Grid Margin="5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon
+                                        Grid.Column="0"
+                                        Margin="0,0,15,0"
+                                        Kind="Account" />
 
-                                <materialDesign:PackIcon
-                                    x:Name="ChallengesIcon"
-                                    Grid.Column="1"
-                                    Kind="Account" />
-
-                                <TextBlock
-                                    x:Name="ChallengesTextBlock"
-                                    Grid.Column="3"
-                                    Text="Challenges"
-                                    FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15" />
-
-                            </Grid>
-                        </ListBoxItem>
+                                    <TextBlock Grid.Column="1" Text="Challenges" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
 
                         <!--  Fitness Plans Button  -->
-                        <ListBoxItem>
-                            <Grid>
+                        <Button Command="{Binding MoveOnPlansCommand}">
+                            <Button.Content>
+                                <Grid Margin="5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon
+                                        Grid.Column="0"
+                                        Margin="0,0,15,0"
+                                        Kind="CalendarHeart" />
 
-                                <materialDesign:PackIcon
-                                    x:Name="FitnessPlansIcon"
-                                    Grid.Column="1"
-                                    Kind="CalendarHeart" />
-
-                                <TextBlock
-                                    x:Name="FitnessPlansTextBlock"
-                                    Grid.Column="3"
-                                    Text="Fitness Plans"
-                                    FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15" />
-
-                            </Grid>
-                        </ListBoxItem>
+                                    <TextBlock Grid.Column="1" Text="Fitness Plans" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
 
                         <!--  Calories Calculator Button  -->
-                        <ListBoxItem>
-                            <Grid>
+                        <Button Command="{Binding MoveOnCaloriesCalculatorCommand}">
+                            <Button.Content>
+                                <Grid Margin="5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon
+                                        Grid.Column="0"
+                                        Margin="0,0,15,0"
+                                        Kind="CalculatorVariant" />
 
-                                <materialDesign:PackIcon
-                                    x:Name="CaloriesCalculatorIcon"
-                                    Grid.Column="1"
-                                    Kind="CalculatorVariant" />
-
-                                <TextBlock
-                                    x:Name="CaloriesCalculatorTextBlock"
-                                    Grid.Column="3"
-                                    Text="Calories Calculator"
-                                    FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15" />
-
-                            </Grid>
-                        </ListBoxItem>
+                                    <TextBlock Grid.Column="1" Text="Calories Calculator" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
 
                         <!--  Settings Button  -->
-                        <ListBoxItem>
-                            <Grid>
+                        <Button Command="{Binding MoveOnSettingsCommand}">
+                            <Button.Content>
+                                <Grid Margin="5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon
+                                        Grid.Column="0"
+                                        Margin="0,0,15,0"
+                                        Kind="Settings" />
 
-                                <materialDesign:PackIcon
-                                    x:Name="SettingsIcon"
-                                    Grid.Column="1"
-                                    Kind="Settings" />
-
-                                <TextBlock
-                                    x:Name="SettingsTextBlock"
-                                    Grid.Column="3"
-                                    Text="Settings"
-                                    FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15" />
-
-                            </Grid>
-                        </ListBoxItem>
-
-                    </ListBox>
+                                    <TextBlock Grid.Column="1" Text="Settings" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
 
                     <!--  Logout Button  -->
+                    <Button
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="15" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <materialDesign:PackIcon Grid.Column="1" Kind="LogoutVariant" />
+
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        Text="Logout"
+                                        FontFamily="{StaticResource ProductSans}"
+                                        FontSize="15" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                     <ListBox
                         Grid.Row="9"
                         Grid.Column="0"
                         Grid.ColumnSpan="3">
                         <!--  SelectionChanged="LogoutListBox_SelectionChanged"  -->
-
-                        <ListBoxItem>
-                            <Grid>
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                </Grid.ColumnDefinitions>
-
-                                <materialDesign:PackIcon Grid.Column="1" Kind="LogoutVariant" />
-
-                                <TextBlock
-                                    Grid.Column="3"
-                                    Text="Logout"
-                                    FontFamily="{StaticResource ProductSans}"
-                                    FontSize="15" />
-
-                            </Grid>
-                        </ListBoxItem>
-
                     </ListBox>
 
                 </Grid>
