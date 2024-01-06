@@ -6,12 +6,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:scv="clr-namespace:StratumUi.Wpf.Core.Converters;assembly=StratumUi.Wpf.Core"
     Title="Fitness App"
     Width="1080"
     Height="720"
     DataContext="{Binding Path=AdminVm, Source={StaticResource Locator}}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <scv:BooleanToVisibilityConverter
+            x:Key="BooleanToVisibilityConverter"
+            TrueValue="Visible"
+            FalseValue="Collapsed" />
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
@@ -20,11 +27,24 @@
     <Grid>
         <Grid>
             <!--  Side Menu  -->
-            <Border x:Name="SideMenu" HorizontalAlignment="Left">
-                <Grid Width="220">
+            <Border Padding="5" Panel.ZIndex="999">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Value="True">
+                                <Setter Property="Width" Value="220" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Value="False">
+                                <Setter Property="Width" Value="60" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
                     <!--  Menu rows and columns  -->
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="15" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="5" />
                         <RowDefinition Height="auto" />
@@ -34,35 +54,26 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="5" />
                     </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="15" />
-                    </Grid.ColumnDefinitions>
-
                     <ToggleButton
-                        Grid.Row="1"
-                        Grid.Column="1"
+                        Grid.Row="0"
                         Width="25"
                         Height="25"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
+                        Background="Red"
                         IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
 
                     <!--  Admin's name and Email  -->
-                    <StackPanel Grid.Row="3" Grid.Column="1">
+                    <StackPanel Grid.Row="2">
                         <TextBlock
-                            x:Name="FullNameTextBlock"
                             FontFamily="{StaticResource ProductSans}"
                             FontWeight="Bold"
                             FontSize="18"
                             Text="{Binding FullName}" />
 
                         <TextBlock
-                            x:Name="EmailTextBlock"
                             FontFamily="{StaticResource ProductSans}"
                             FontWeight="Light"
                             FontSize="14"
@@ -70,15 +81,9 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
 
-                    <Separator
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3" />
+                    <Separator Grid.Row="3" />
 
-                    <StackPanel
-                        Grid.Row="7"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3">
+                    <StackPanel Grid.Row="4">
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BtnText}">
                                 <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -103,7 +108,10 @@
                                         Margin="0,0,15,0"
                                         Kind="Home" />
 
-                                    <TextBlock Grid.Column="1" Text="Home" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Text="Home" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -122,7 +130,10 @@
                                         Margin="0,0,15,0"
                                         Kind="PlaylistAdd" />
 
-                                    <TextBlock Grid.Column="1" Text="Setup a Challenge" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Text="Setup a Challenge" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -141,7 +152,10 @@
                                         Margin="0,0,15,0"
                                         Kind="Settings" />
 
-                                    <TextBlock Grid.Column="1" Text="Settings" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Text="Settings" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -149,24 +163,22 @@
 
                     <!--  Logout Button  -->
                     <Button
-                        Grid.Row="9"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3"
+                        Grid.Row="8"
                         Command="{Binding LogoutCommand}"
                         Style="{StaticResource BtnText}">
                         <Button.Content>
                             <Grid Margin="5,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <materialDesign:PackIcon Grid.Column="0" Kind="LogoutVariant" />
 
                                 <TextBlock
-                                    Grid.Column="2"
+                                    Grid.Column="1"
                                     Text="Выход"
+                                    Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     FontFamily="{StaticResource ProductSans}"
                                     FontSize="15" />
                             </Grid>
