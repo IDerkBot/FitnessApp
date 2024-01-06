@@ -12,9 +12,7 @@
     mc:Ignorable="d">
 
     <materialDesign:DialogHost x:Name="DialogBox">
-
         <materialDesign:DialogHost.DialogContent>
-
             <Grid>
 
                 <StackPanel
