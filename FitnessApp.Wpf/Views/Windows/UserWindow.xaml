@@ -82,7 +82,7 @@
                                 Background="Transparent"
                                 Opacity="1"
                                 BorderThickness="0"
-                                Style="{StaticResource MaterialDesignFloatingActionButton}" />
+                                Style="{StaticResource BtnFilled}" />
                             <!--  Click="UserProfilePhotoButton_Click"  -->
                         </Grid>
 
@@ -92,7 +92,6 @@
                             Height="25"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-                            Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                             IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
                     </Grid>
 
@@ -300,8 +299,7 @@
                             x:Name="MenuToggleButton"
                             Grid.Column="0"
                             Width="25"
-                            Height="25"
-                            Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                            Height="25" />
 
                         <!--  Page Header  -->
                         <TextBlock

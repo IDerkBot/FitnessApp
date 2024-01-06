@@ -5,9 +5,20 @@ namespace FitnessApp.DataAccessLayer;
 
 public sealed class ApplicationContext : DbContext
 {
+    public event EventHandler LostConnection;
+    public bool IsConnected { get; set; }
+    
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
-        Database.EnsureCreated();
+        try
+        {
+            Database.EnsureCreated();
+            IsConnected = true;
+        }
+        catch (Exception e)
+        {
+            IsConnected = false;
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

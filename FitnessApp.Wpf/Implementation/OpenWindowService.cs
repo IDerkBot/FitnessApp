@@ -209,4 +209,9 @@ public class OpenWindowService : IOpenView
             CloseUserView();
         }
     }
+
+    public void Shutdown()
+    {
+        Application.Current.Shutdown();
+    }
 }

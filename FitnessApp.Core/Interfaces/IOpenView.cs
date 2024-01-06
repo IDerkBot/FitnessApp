@@ -29,4 +29,5 @@ public interface IOpenView
     void OpenSettingsView();
     void CloseSettingsView();
     void Logout(bool isAdmin);
+    void Shutdown();
 }

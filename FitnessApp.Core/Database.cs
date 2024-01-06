@@ -15,6 +15,8 @@ public class Database
     public int AccountId { get; set; }
 
     public AccountAccess? AccountType { get; set; }
+    
+    public bool IsConnected { get; set; }
 
     #endregion
 
@@ -35,6 +37,7 @@ public class Database
         var options = optionsBuilder.UseSqlServer(connectionString).Options;
 
         _context = new ApplicationContext(options);
+        IsConnected = _context.IsConnected;
     }
 
     #endregion

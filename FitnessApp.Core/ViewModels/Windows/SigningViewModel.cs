@@ -55,6 +55,19 @@ public class SigningViewModel : ObservableObject
     }
 
     #endregion SignUpVm
+
+    #region IsCreateNewAccount : bool - Description
+
+    private bool _isCreateNewAccount;
+
+    /// <summary> Description </summary>
+    public bool IsCreateNewAccount
+    {
+        get => _isCreateNewAccount;
+        set => SetProperty(ref _isCreateNewAccount, value);
+    }
+
+    #endregion IsCreateNewAccount
     
     #endregion
 
@@ -67,12 +80,27 @@ public class SigningViewModel : ObservableObject
 
     private void OnCreateAccountCommandExecuted()
     {
+        IsCreateNewAccount = true;
         _openViewService.OpenSignUpView();
     }
 
     private bool CanCreateAccountCommandExecute() => true;
 
     #endregion CreateAccount
+
+    #region CancelCreateAccount - Description
+
+    ///<summary> Description </summary>
+    public ICommand CancelCreateAccountCommand { get; }
+
+    private void OnCancelCreateAccountCommandExecuted()
+    {
+        IsCreateNewAccount = false;
+    }
+
+    private bool CanCancelCreateAccountCommandExecute() => true;
+
+    #endregion CancelCreateAccount
 
     #region LoadedCommand : Загрузка окна
 
@@ -81,7 +109,11 @@ public class SigningViewModel : ObservableObject
 
     private void OnLoadedCommandExecuted()
     {
-        CreateAccountCommand.Execute(null);
+        if (!Global.Database.IsConnected)
+        {
+            _alertService.Error("Нет подключения к базе данных! Попробуйте войти позднее");
+            _openViewService.Shutdown();
+        }
     }
 
     private bool CanLoadedCommandExecute() => true;
@@ -139,6 +171,7 @@ public class SigningViewModel : ObservableObject
         LoadedCommand = new RelayCommand(OnLoadedCommandExecuted, CanLoadedCommandExecute);
         CreateAccountCommand = new RelayCommand(OnCreateAccountCommandExecuted, CanCreateAccountCommandExecute);
         SignInCommand = new RelayCommand(OnSignInCommandExecuted, CanSignInCommandExecute);
+        CancelCreateAccountCommand = new RelayCommand(OnCancelCreateAccountCommandExecuted, CanCancelCreateAccountCommandExecute);
 
         SignUpVm = new SignUpViewModel(_openViewService, _alertService);
     }

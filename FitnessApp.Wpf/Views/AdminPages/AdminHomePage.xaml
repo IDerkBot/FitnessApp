@@ -36,11 +36,10 @@
                     </Grid.RowDefinitions>
 
                     <!--  Feedback Rating Card  -->
-                    <materialDesign:Card
+                    <Border
                         Grid.Row="0"
                         Width="500"
-                        Padding="10"
-                        Background="{StaticResource MaterialDesignBackground}">
+                        Padding="10">
                         <Grid>
 
                             <Grid.RowDefinitions>
@@ -76,16 +75,11 @@
 
                                 </lvc:CartesianChart>
                             </Grid>
-
                         </Grid>
-
-                    </materialDesign:Card>
+                    </Border>
 
                     <!--  User feedbacks ListBox  -->
-                    <materialDesign:Card
-                        Grid.Row="2"
-                        Width="500"
-                        Background="{StaticResource MaterialDesignBackground}">
+                    <Border Grid.Row="2" Width="500">
                         <Grid>
 
                             <Grid.RowDefinitions>
@@ -123,9 +117,7 @@
 
                                 <!--  Feedback Item Template  -->
                                 <ListBox.ItemTemplate>
-
                                     <DataTemplate DataType="{x:Type models:Feedback}">
-
                                         <Grid Width="450">
 
                                             <Grid.ColumnDefinitions>
@@ -168,17 +160,11 @@
                                             </Button>
 
                                         </Grid>
-
                                     </DataTemplate>
-
                                 </ListBox.ItemTemplate>
-
                             </ListBox>
-
                         </Grid>
-
-                    </materialDesign:Card>
-
+                    </Border>
                 </Grid>
 
                 <!--  Right cards grid  -->
@@ -194,10 +180,7 @@
                     </Grid.RowDefinitions>
 
                     <!--  Number Of Users Card  -->
-                    <materialDesign:Card
-                        Grid.Row="0"
-                        Width="500"
-                        Background="{StaticResource MaterialDesignBackground}">
+                    <Border Grid.Row="0" Width="500">
                         <Grid>
 
                             <Grid.RowDefinitions>
@@ -231,7 +214,6 @@
                                 <TextBlock
                                     VerticalAlignment="Bottom"
                                     FontFamily="{StaticResource ProductSans}"
-                                    Foreground="{StaticResource PrimaryHueMidBrush}"
                                     FontWeight="Bold"
                                     FontSize="40"
                                     Text="{Binding TotalUsers}"
@@ -250,13 +232,10 @@
                             </StackPanel>
 
                         </Grid>
-                    </materialDesign:Card>
+                    </Border>
 
                     <!--  User Search Card  -->
-                    <materialDesign:Card
-                        Grid.Row="2"
-                        Width="500"
-                        Background="{StaticResource MaterialDesignBackground}">
+                    <Border Grid.Row="2" Width="500">
                         <Grid>
 
                             <Grid.RowDefinitions>
@@ -297,8 +276,7 @@
                                         x:Name="UserSearchTextBox"
                                         Margin="25,0,0,0"
                                         materialDesign:HintAssist.Hint="User's Name or Email"
-                                        FontFamily="{StaticResource Roboto}"
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                        FontFamily="{StaticResource Roboto}" />
                                 </Grid>
 
                                 <!--  Search Button  -->
@@ -307,8 +285,7 @@
                                     Grid.Column="2"
                                     FontFamily="{StaticResource ProductSans}"
                                     FontSize="14"
-                                    Content="Поиск"
-                                    Style="{StaticResource MaterialDesignRaisedButton}">
+                                    Content="Поиск">
                                     <!--  Click="UserSearchButton_Click"  -->
                                 </Button>
 
@@ -316,14 +293,13 @@
 
                         </Grid>
 
-                    </materialDesign:Card>
+                    </Border>
 
-                    <materialDesign:Card
+                    <Border
                         x:Name="DeleteUsersCard"
                         Grid.Row="3"
                         Width="500"
                         Margin="0,15,0,0"
-                        Background="{StaticResource MaterialDesignBackground}"
                         Visibility="Collapsed">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -351,7 +327,6 @@
 
                                 <!--  User item Template  -->
                                 <ListBox.ItemTemplate>
-
                                     <DataTemplate DataType="{x:Type models:User}">
 
                                         <Grid
@@ -428,20 +403,13 @@
                                         </Grid>
 
                                     </DataTemplate>
-
                                 </ListBox.ItemTemplate>
-
                             </ListBox>
-
                         </Grid>
-
-                    </materialDesign:Card>
+                    </Border>
 
                     <!--  New Admin Card  -->
-                    <materialDesign:Card
-                        Grid.Row="6"
-                        Width="500"
-                        Background="{StaticResource MaterialDesignBackground}">
+                    <Border Grid.Row="6" Width="500">
                         <Grid>
 
                             <Grid.RowDefinitions>
@@ -487,15 +455,13 @@
                                         x:Name="FirstNameTextBox"
                                         Grid.Column="0"
                                         materialDesign:HintAssist.Hint="First Name"
-                                        FontFamily="{StaticResource Roboto}"
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                        FontFamily="{StaticResource Roboto}" />
 
                                     <TextBox
                                         x:Name="LastNameTextBox"
                                         Grid.Column="2"
                                         materialDesign:HintAssist.Hint="Last Name"
-                                        FontFamily="{StaticResource Roboto}"
-                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                        FontFamily="{StaticResource Roboto}" />
                                 </Grid>
                             </Grid>
 
@@ -507,8 +473,7 @@
                                     x:Name="NewAdminEmailTextBox"
                                     Margin="25,0,0,0"
                                     materialDesign:HintAssist.Hint="Admin's email"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                    FontFamily="{StaticResource Roboto}" />
 
                             </Grid>
 
@@ -519,23 +484,13 @@
                                 HorizontalAlignment="Center"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
-                                Content="Add"
-                                Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                Style="{StaticResource MaterialDesignFlatButton}">
+                                Content="Add">
                                 <!--  Click="AddNewAdminButton_Click"  -->
                             </Button>
-
                         </Grid>
-
-                    </materialDesign:Card>
-
-
+                    </Border>
                 </Grid>
-
             </Grid>
-
         </ScrollViewer>
-
     </Grid>
-
 </Page>

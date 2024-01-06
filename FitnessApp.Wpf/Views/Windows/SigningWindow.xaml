@@ -8,6 +8,8 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:controls="clr-namespace:FitnessApp.Wpf.Views.Controls"
     xmlns:wpf="clr-namespace:StratumUi.Wpf.Core.AttachedProperties;assembly=StratumUi.Wpf.Core"
+    xmlns:sc="clr-namespace:StratumUi.Wpf.Core.Controls;assembly=StratumUi.Wpf.Core"
+    xmlns:scv="clr-namespace:StratumUi.Wpf.Core.Converters;assembly=StratumUi.Wpf.Core"
     Title="Fitness App"
     Width="700"
     Height="700"
@@ -15,6 +17,16 @@
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <scv:BooleanToVisibilityConverter
+            x:Key="BooleanToVisibilityConverter"
+            TrueValue="Visible"
+            FalseValue="Collapsed" />
+        <scv:BooleanToVisibilityConverter
+            x:Key="InvertVisibilityConverter"
+            TrueValue="Collapsed"
+            FalseValue="Visible" />
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
@@ -33,13 +45,13 @@
         <materialDesign:Snackbar x:Name="ErrorsSnackbar" />
 
         <!--  Flip Card  -->
-        <materialDesign:Flipper
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Style="{StaticResource MaterialDesignCardFlipper}">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <!--  Sign In Card  -->
-            <materialDesign:Flipper.FrontContent>
+            <Border
+                Visibility="{Binding IsCreateNewAccount, Converter={StaticResource InvertVisibilityConverter}}"
+                Background="White"
+                CornerRadius="6">
                 <Grid Width="500" Height="500">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -115,10 +127,11 @@
                         FontFamily="{StaticResource ProductSans}"
                         FontSize="12"
                         Opacity="1"
+                        IsEnabled="True"
                         Content="Создать аккаунт"
                         Foreground="{DynamicResource Pr500}"
                         Style="{StaticResource BtnText}"
-                        Command="{x:Static materialDesign:Flipper.FlipCommand}" />
+                        Command="{Binding CreateAccountCommand}" />
 
                     <Button
                         Grid.Row="10"
@@ -130,15 +143,11 @@
                         Command="{Binding SignInCommand}"
                         Style="{StaticResource BtnFilled}" />
                 </Grid>
-
-            </materialDesign:Flipper.FrontContent>
+            </Border>
 
             <!--  Sign Up Card  -->
-            <materialDesign:Flipper.BackContent>
-                <Grid
-                    Width="500"
-                    Height="500"
-                    DataContext="{Binding Path=SignUpVm, Source={StaticResource Locator}}">
+            <Border Visibility="{Binding IsCreateNewAccount, Converter={StaticResource BooleanToVisibilityConverter}}" Background="White">
+                <Grid Width="500" Height="500">
                     <!--  DataContext="{Binding SignUpVm}"  -->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -147,23 +156,24 @@
                     </Grid.RowDefinitions>
 
                     <!--  Create an account Header  -->
-                    <materialDesign:ColorZone Padding="10" Mode="PrimaryMid">
+                    <Border Padding="10" Background="{StaticResource Pr500}">
                         <StackPanel Orientation="Horizontal">
 
-                            <Button Style="{StaticResource MaterialDesignToolForegroundButton}" Command="{x:Static materialDesign:Flipper.FlipCommand}">
-                                <materialDesign:PackIcon Kind="ArrowLeft" />
+                            <Button Style="{StaticResource BtnText}" Command="{Binding CancelCreateAccountCommand}">
+                                <sc:Icon Kind="ArrowLeft" Fill="White" />
                             </Button>
 
                             <TextBlock
                                 Margin="10,0,0,0"
                                 VerticalAlignment="Center"
+                                Foreground="White"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontWeight="SemiBold"
                                 FontSize="16"
                                 Text="Создание нового аккаунта" />
 
                         </StackPanel>
-                    </materialDesign:ColorZone>
+                    </Border>
 
                     <!--  SignUpPages Frame  -->
                     <Frame
@@ -171,7 +181,7 @@
                         Grid.Row="2"
                         NavigationUIVisibility="Hidden" />
                 </Grid>
-            </materialDesign:Flipper.BackContent>
-        </materialDesign:Flipper>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

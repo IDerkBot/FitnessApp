@@ -15,7 +15,7 @@ public class SignUpViewModel : ObservableObject
     private readonly IAlertService _alertService;
 
     #endregion Private Properties
-    
+
     #region Properties
 
     #region User : User - Пользователь
@@ -43,7 +43,7 @@ public class SignUpViewModel : ObservableObject
     }
 
     #endregion Person
-    
+
     #region ConfirmedPassword : string - Подтверждение пароля
 
     private string _confirmedPassword;
@@ -69,7 +69,7 @@ public class SignUpViewModel : ObservableObject
     }
 
     #endregion Genders
-    
+
     #endregion
 
     #region Commands
@@ -81,24 +81,10 @@ public class SignUpViewModel : ObservableObject
 
     private void OnNextViewCommandExecuted()
     {
-        _openViewService.OpenSetUpProfileView();
-    }
-
-    private bool CanNextViewCommandExecute() => true;
-
-    #endregion NextView
-    
-    #region SignUpCommand : Регистрация нового пользователя
-
-    /// <summary> Регистрация нового пользователя </summary>
-    public ICommand SignUpCommand { get; set; }
-
-    private void OnSignUpCommandExecuted()
-    {
-        // Empty Fields Validation
         if (string.IsNullOrWhiteSpace(Person.FirstName) ||
             string.IsNullOrWhiteSpace(Person.LastName) ||
-            string.IsNullOrWhiteSpace(Person.Gender))
+            string.IsNullOrWhiteSpace(Person.Gender) ||
+            string.IsNullOrWhiteSpace(Person.Email))
         {
             _alertService.Error("All fields are required!");
             return;
@@ -116,6 +102,16 @@ public class SignUpViewModel : ObservableObject
             return;
         }
 
+        var time = DateTime.Now.Subtract(Person.BirthDate);
+        var years = time.Days / 365;
+
+
+        if (years is < 8 or > 100)
+        {
+            _alertService.Error("Не корректная дата!");
+            return;
+        }
+
         if (User.Password != ConfirmedPassword)
         {
             _alertService.Error("Password and Confirmation doesn't match!");
@@ -128,49 +124,56 @@ public class SignUpViewModel : ObservableObject
             return;
         }
 
+        _openViewService.OpenSetUpProfileView();
+    }
+
+    private bool CanNextViewCommandExecute() => true;
+
+    #endregion NextView
+
+    #region SignUpCommand : Регистрация нового пользователя
+
+    /// <summary> Регистрация нового пользователя </summary>
+    public ICommand SignUpCommand { get; set; }
+
+    private void OnSignUpCommandExecuted()
+    {
+        // Constarins to make sure that all fields are filled
+        if (Person.Height == 0 || Person.Weight == 0 ||
+            Person.TargetWeight == 0 || Person.KilosToLosePerWeek == 0 ||
+            Person.WorkoutsPerWeek == 0 || Person.WorkoutHoursPerDay == 0)
+        {
+            _alertService.Error("All fields are required!");
+            return;
+        }
+        
+        // else if(
+        //         Person.Height is < 80 or > 300 ||
+        //         Person.Weight is < 20 or > 300 ||
+        //         Person.TargetWeight is < 20 or > 150 ||
+        //         
+        //         )
+
         Global.Database.AddUser(User);
         Global.Database.AddPerson(Person);
-        
-        // // Constarins to make sure that all fields are filled
-        //     if (string.IsNullOrWhiteSpace(HeightTextBox            .Text) ||
-        //         string.IsNullOrWhiteSpace(WeightTextBox            .Text) ||
-        //         string.IsNullOrWhiteSpace(TargetWeightTextBox      .Text) ||
-        //         string.IsNullOrWhiteSpace(KilosToLosePerWeekTextBox.Text) ||
-        //         string.IsNullOrWhiteSpace(WorkoutsPerWeekTextBox   .Text) ||
-        //         string.IsNullOrWhiteSpace(WorkoutHoursPerDayTextBox.Text))
-        //     {
-        //         SigningWindow.SigningWindowObject.ErrorsSnackbar.MessageQueue.Enqueue("All fields are required!");
-        //     }
-        //
-        //     else
-        //     {
-        //         var date = DateTime.Now;
-        //         if (SigningWindow.SignUpPageObject.BirthDatePicker.SelectedDate != null)
-        //             date = (DateTime)SigningWindow.SignUpPageObject.BirthDatePicker.SelectedDate;
-        //         // Signing up
-        //         // App.Database.AddUser(profilePhoto.ByteArray,
-        //         //                  SigningWindow.SignUpPageObject.FirstNameTextBox.Text,
-        //         //                  SigningWindow.SignUpPageObject.LastNameTextBox.Text,
-        //         //                  SigningWindow.SignUpPageObject.EmailTextBox.Text,
-        //         //                  SigningWindow.SignUpPageObject.Password,
-        //         //                  SigningWindow.SignUpPageObject.GenderComboBox.Text,
-        //         //                  date,
-        //         //                  double.Parse(WeightTextBox.Text),
-        //         //                  double.Parse(HeightTextBox.Text),
-        //         //                  double.Parse(TargetWeightTextBox.Text),
-        //         //                  double.Parse(KilosToLosePerWeekTextBox.Text),
-        //         //                  double.Parse(WorkoutsPerWeekTextBox.Text),
-        //         //                  double.Parse(WorkoutHoursPerDayTextBox.Text));
-        //
-        //         // UserWindow UserWindowTemp = new UserWindow(App.Database.AccountId);
-        //         // SigningWindow.SigningWindowObject.Close();
-        //         // UserWindowTemp.Show();
-        //     }
     }
 
     private bool CanSignUpCommandExecute() => true;
 
     #endregion SignUp
+
+    #region SelectImageForProfile
+
+    public ICommand SelectImageForProfileCommand { get; }
+
+    private void OnSelectImageForProfileCommandExecute()
+    {
+
+    }
+
+    private bool CanSelectImageForProfileCommandExecuted() => true;
+
+    #endregion SelectImageForProfile
 
     #endregion
 
@@ -180,9 +183,10 @@ public class SignUpViewModel : ObservableObject
     {
         _openViewService = openViewView;
         _alertService = alertService;
-        
+
         NextViewCommand = new RelayCommand(OnNextViewCommandExecuted, CanNextViewCommandExecute);
         SignUpCommand = new RelayCommand(OnSignUpCommandExecuted, CanSignUpCommandExecute);
+        SelectImageForProfileCommand = new RelayCommand(OnSelectImageForProfileCommandExecute, CanSelectImageForProfileCommandExecuted);
 
         User = new User();
         Person = new Person(User);
@@ -194,21 +198,21 @@ public class SignUpViewModel : ObservableObject
 
     #region Private Methods
 
-    // private void ChooseUserProfilePhotoButton_Click(object sender, RoutedEventArgs e)
-    // {
-    //     OpenFileDialog browsePhotoDialog = new OpenFileDialog();
-    //     browsePhotoDialog.Title  = "Select your Profile Photo";
-    //     browsePhotoDialog.Filter = "All formats|*.jpg;*.jpeg;*.png|" +
-    //                                "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-    //                                "PNG (*.png)|*.png";
-    //
-    //
-    //     if (browsePhotoDialog.ShowDialog() == true)
-    //     {
-    //         // profilePhoto = new ImageModel(browsePhotoDialog.FileName);
-    //         // UserProfilePhoto.ImageSource = profilePhoto.Source;
-    //     }
-    // }
+    private void ChooseUserProfilePhotoButton_Click()
+    {
+        // OpenFileDialog browsePhotoDialog = new OpenFileDialog();
+        // browsePhotoDialog.Title  = "Select your Profile Photo";
+        // browsePhotoDialog.Filter = "All formats|*.jpg;*.jpeg;*.png|" +
+        //                            "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+        //                            "PNG (*.png)|*.png";
+        //
+        //
+        // if (browsePhotoDialog.ShowDialog() == true)
+        // {
+        //     // profilePhoto = new ImageModel(browsePhotoDialog.FileName);
+        //     // UserProfilePhoto.ImageSource = profilePhoto.Source;
+        // }
+    }
 
     #endregion
 }

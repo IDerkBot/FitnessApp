@@ -18,13 +18,10 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <materialDesign:DrawerHost x:Name="SideMenuDrawer" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-
+        <Grid>
             <!--  Side Menu  -->
-            <materialDesign:DrawerHost.LeftDrawerContent>
-
+            <Border x:Name="SideMenu" HorizontalAlignment="Left">
                 <Grid Width="220">
-
                     <!--  Menu rows and columns  -->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="15" />
@@ -53,7 +50,6 @@
                         Height="25"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                         IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
 
                     <!--  Admin's name and Email  -->
@@ -74,7 +70,10 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
 
-                    <Separator Grid.Row="5" Grid.ColumnSpan="3" />
+                    <Separator
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3" />
 
                     <StackPanel
                         Grid.Row="7"
@@ -175,12 +174,10 @@
                     </Button>
 
                 </Grid>
-
-            </materialDesign:DrawerHost.LeftDrawerContent>
+            </Border>
 
             <!--  User Main Window  -->
             <Grid DataContext="{Binding CurrentContext}">
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
@@ -193,11 +190,11 @@
                     NavigationUIVisibility="Hidden" />
 
                 <!--  User Main Window Header  -->
-                <materialDesign:ColorZone
+                <Border
                     Grid.Row="0"
                     Padding="15"
                     materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                    Mode="PrimaryMid">
+                    Background="{StaticResource Pr500}">
 
                     <Grid Width="1035">
                         <Grid.ColumnDefinitions>
@@ -211,12 +208,10 @@
                             x:Name="MenuToggleButton"
                             Grid.Column="0"
                             Width="25"
-                            Height="25"
-                            Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                            Height="25" />
 
                         <!--  Page Header  -->
                         <TextBlock
-                            x:Name="PageHeaderTextBlock"
                             Grid.Column="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -231,29 +226,23 @@
                             Stretch="Fill" />
 
                     </Grid>
-
-                </materialDesign:ColorZone>
-
+                </Border>
             </Grid>
-
-        </materialDesign:DrawerHost>
+        </Grid>
 
         <!--  Update Password Grid Content  -->
         <!--  TODO IS NEW ADMIN  -->
-        <Grid x:Name="UpdateNewAdminPasswordGrid" Visibility="Collapsed">
-
+        <Grid Visibility="Collapsed">
             <!--  Background Pattern Image  -->
             <Grid.Background>
                 <ImageBrush ImageSource="pack://application:,,,/FitnessApp.Wpf;component/Resources/Images/BG.jpg" Stretch="UniformToFill" />
             </Grid.Background>
 
-            <materialDesign:Card
+            <Border
                 Width="500"
                 Padding="25"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="{StaticResource MaterialDesignBackground}"
-                Visibility="Visible">
+                VerticalAlignment="Center">
                 <Grid>
 
                     <Grid.RowDefinitions>
@@ -289,52 +278,35 @@
                         Grid.Row="4"
                         FontFamily="{StaticResource Roboto}"
                         FontSize="14"
-                        TextWrapping="Wrap">
-                        You need to update your password because this is the first time you are signing in.
-                    </TextBlock>
+                        Text="You need to update your password because this is the first time you are signing in."
+                        TextWrapping="Wrap" />
 
                     <!--  Password Fields  -->
                     <PasswordBox
-                        x:Name="OldPasswordTextBox"
                         Grid.Row="6"
                         materialDesign:HintAssist.Hint="Old Password"
-                        FontFamily="{StaticResource Roboto}"
-                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                        FontFamily="{StaticResource Roboto}" />
 
                     <PasswordBox
-                        x:Name="NewPasswordTextBox"
                         Grid.Row="8"
                         materialDesign:HintAssist.Hint="New Password"
-                        FontFamily="{StaticResource Roboto}"
-                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                        FontFamily="{StaticResource Roboto}" />
 
                     <PasswordBox
-                        x:Name="ConfirmNewPasswordTextBox"
                         Grid.Row="10"
                         materialDesign:HintAssist.Hint="Confirm New Password"
-                        FontFamily="{StaticResource Roboto}"
-                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                        FontFamily="{StaticResource Roboto}" />
 
                     <!--  Update Password Button  -->
                     <Button
-                        x:Name="UpdatePasswordButton"
                         Grid.Row="12"
+                        Content="Update Password"
                         FontFamily="{StaticResource ProductSans}"
-                        FontSize="14"
-                        Style="{StaticResource MaterialDesignFlatButton}">
+                        FontSize="14">
                         <!--  Click="UpdatePasswordButton_Click"  -->
-                        Update Password
                     </Button>
-
-
                 </Grid>
-
-            </materialDesign:Card>
-
+            </Border>
         </Grid>
-
-        <materialDesign:Snackbar x:Name="MessagesSnackbar" />
-
     </Grid>
-
 </Window>

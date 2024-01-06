@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:vm="clr-namespace:FitnessApp.Core.ViewModels.SignUpPages;assembly=FitnessApp.Core"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:wpf="clr-namespace:StratumUi.Wpf.Core.AttachedProperties;assembly=StratumUi.Wpf.Core"
     xmlns:controls="clr-namespace:FitnessApp.Wpf.Views.Controls"
     DataContext="{Binding Path=SignUpVm, Source={StaticResource Locator}}"
     mc:Ignorable="d">
@@ -37,10 +38,9 @@
         <Grid Grid.Row="0">
             <TextBox
                 Grid.Column="0"
-                materialDesign:HintAssist.Hint="Login"
+                wpf:Hint.Placeholder="Логин"
                 Text="{Binding User.Login}"
-                FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                FontFamily="{StaticResource Roboto}" />
         </Grid>
 
         <!--  First and Last name Feilds  -->
@@ -52,31 +52,25 @@
             </Grid.ColumnDefinitions>
 
             <TextBox
-                x:Name="FirstNameTextBox"
                 Grid.Column="0"
-                materialDesign:HintAssist.Hint="First Name"
+                wpf:Hint.Placeholder="Имя"
                 Text="{Binding Person.FirstName}"
-                FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                FontFamily="{StaticResource Roboto}" />
 
             <TextBox
-                x:Name="LastNameTextBox"
                 Grid.Column="2"
-                materialDesign:HintAssist.Hint="Last Name"
+                wpf:Hint.Placeholder="Фамилия"
                 Text="{Binding Person.LastName}"
-                FontFamily="{StaticResource Roboto}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                FontFamily="{StaticResource Roboto}" />
         </Grid>
 
 
         <!--  Email Feild  -->
         <TextBox
-            x:Name="EmailTextBox"
             Grid.Row="4"
-            materialDesign:HintAssist.Hint="Email"
+            wpf:Hint.Placeholder="Электронная почта"
             Text="{Binding Person.Email}"
-            FontFamily="{StaticResource Roboto}"
-            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            FontFamily="{StaticResource Roboto}" />
 
 
         <!--  Passsword and Confirm Password Feilds  -->
@@ -104,19 +98,17 @@
         <!--  Gender and Birthdate Feilds  -->
         <ComboBox
             Grid.Row="8"
-            materialDesign:HintAssist.Hint="Gender"
+            wpf:Hint.Placeholder="Пол"
             ItemsSource="{Binding Genders}"
             SelectedItem="{Binding Person.Gender}"
             FontFamily="{StaticResource Roboto}" />
 
         <DatePicker
-            x:Name="BirthDatePicker"
             Grid.Row="10"
-            materialDesign:HintAssist.Hint="Birth Date"
+            wpf:Hint.Placeholder="Дата рождения"
             SelectedDate="{Binding Person.BirthDate}"
             DisplayDateEnd="{x:Static sys:DateTime.Today}"
-            FontFamily="{StaticResource Roboto}"
-            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            FontFamily="{StaticResource Roboto}" />
 
         <!--  SignUp Button  -->
         <Button
