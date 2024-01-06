@@ -128,6 +128,32 @@ public class HomeViewModel : ObservableObject
 
     #endregion AverageWeightLostPerYear
 
+    #region HavePlans : bool - Указывает, есть учеловека планы
+
+    private bool _havePlans;
+
+    /// <summary> Указывает, есть учеловека планы </summary>
+    public bool HavePlans
+    {
+        get => _havePlans;
+        set => SetProperty(ref _havePlans, value);
+    }
+
+    #endregion HavePlans
+
+    #region HaveChallenges : bool - Description
+
+    private bool _haveChallenges;
+
+    /// <summary> Description </summary>
+    public bool HaveChallenges
+    {
+        get => _haveChallenges;
+        set => SetProperty(ref _haveChallenges, value);
+    }
+
+    #endregion HaveChallenges
+    
     #endregion
 
     #region Commands
@@ -359,9 +385,13 @@ public class HomeViewModel : ObservableObject
 
     ////////// Joined Challenges Cards Functions/Event Handlers //////////
 
-    // Setting Data context for JoinedChallengesListBox
+    /// <summary>
+    /// Загрузка принятых вызовов
+    /// </summary>
     public void LoadJoinedChallengesCards()
     {
+        var challenges = Global.Database.GetJoinedChallenges(Global.Database.AccountId);
+        
         // ChallengesViewModel joinedChallengesDataContext = new ChallengesViewModel();
         // joinedChallengesDataContext.JoinedChallengesViewModel(CurrentPerson.User.Id);
         // CompletedJoinedChallengesListBox.DataContext = joinedChallengesDataContext;
@@ -384,7 +414,7 @@ public class HomeViewModel : ObservableObject
 
     public void LoadJoinedPlanCard()
     {
-        bool checkJoinedInPlan = Global.Database.IsInPlan(CurrentPerson.User.Id);
+        bool checkJoinedInPlan = Global.Database.HavePlans(CurrentPerson.User.Id);
 
         // NoPlanCard.Visibility = Visibility.Visible;
         // JoinedPlanCard.Visibility = Visibility.Visible;

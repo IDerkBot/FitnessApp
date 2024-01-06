@@ -958,9 +958,9 @@
 
                         <!--  Plan Completed Card  -->
                         <materialDesign:Card
-                            x:Name="PlanCompletedCard"
                             Grid.Row="0"
                             Width="500"
+                            VerticalAlignment="Top"
                             Background="{StaticResource MaterialDesignBackground}">
 
                             <Grid>
@@ -1016,9 +1016,9 @@
 
                         <!--  No Plan Card  -->
                         <materialDesign:Card
-                            x:Name="NoPlanCard"
                             Grid.Row="0"
                             Width="500"
+                            VerticalAlignment="Top"
                             Background="{StaticResource MaterialDesignBackground}">
 
                             <Grid>
@@ -1075,6 +1075,7 @@
                         <materialDesign:Card
                             Grid.Row="2"
                             Width="500"
+                            VerticalAlignment="Top"
                             Background="{StaticResource MaterialDesignBackground}">
                             <Grid>
 

@@ -9,7 +9,7 @@ public class Database
 {
     #region Variables
 
-    protected readonly ApplicationContext Context;
+    private readonly ApplicationContext _context;
     
     public User? SignedUser { get; set; }
     public int AccountId { get; set; }
@@ -34,7 +34,7 @@ public class Database
 
         var options = optionsBuilder.UseSqlServer(connectionString).Options;
 
-        Context = new ApplicationContext(options);
+        _context = new ApplicationContext(options);
     }
 
     #endregion
@@ -43,40 +43,45 @@ public class Database
 
     #region Users
 
-    ///////////////////////////////////////////////// EXISTS /////////////////////////////////////////////////
-    public bool IsUserExists(string login)
+    #region Exists
+
+    public bool UserExists(string login)
     {
-        return Context.Users.Any(user => user.Login == login);
+        return _context.Users.Any(user => user.Login == login);
     }
 
-    public bool IsUserExists(string login, string password)
+    public bool UserExists(string login, string password)
     {
-        return Context.Users.Any(user => user.Login == login && user.Password == password);
+        return _context.Users.Any(user => user.Login == login && user.Password == password);
     }
 
-    ////////////////////////////////////////////////// GET ///////////////////////////////////////////////////
+    #endregion
+
+    #region Get
 
     public IEnumerable<User> GetUsers()
     {
-        return Context.Users;
+        return _context.Users;
     }
 
     public User? GetUserById(int id)
     {
-        return Context.Users.FirstOrDefault(x => x.Id == id);
+        return _context.Users.FirstOrDefault(x => x.Id == id);
     }
 
     public User? GetUserByLogin(string login)
     {
-        return Context.Users.FirstOrDefault(x => x.Login == login);
+        return _context.Users.FirstOrDefault(x => x.Login == login);
     }
 
-    ////////////////////////////////////////////////// ADD ///////////////////////////////////////////////////
+    #endregion
+
+    #region Add
 
     public void AddUser(User user)
     {
-        Context.Users.Add(user);
-        Context.SaveChanges();
+        _context.Users.Add(user);
+        _context.SaveChanges();
 
         // Sending email to gmails only
         // if (email.Contains("gmail"))
@@ -85,20 +90,22 @@ public class Database
 
     public void AddUser(string login, string password, byte access = 0)
     {
-        Context.Users.Add(new User
+        _context.Users.Add(new User
         {
             Login = login,
             Password = password,
             Access = access
         });
-        Context.SaveChanges();
+        _context.SaveChanges();
 
         // Sending email to gmails only
         // if (email.Contains("gmail"))
         //     SendUserEmail(email, firstName + " " + lastName);
     }
 
-    ///////////////////////////////////////////////// UPDATE /////////////////////////////////////////////////
+    #endregion
+
+    #region Update
 
     public void UpdateUser(User currentUser)
     {
@@ -136,7 +143,9 @@ public class Database
         // connection.Close();
     }
 
-    ///////////////////////////////////////////////// DELETE /////////////////////////////////////////////////
+    #endregion
+
+    #region Delete
 
     public void DeleteUser(int id)
     {
@@ -157,93 +166,31 @@ public class Database
         // TODO Delete PersonWorkout
     }
 
-    ///////////////////////////////////////////////// SEARCH /////////////////////////////////////////////////
+    #endregion
+
+    #region Search
 
     public IEnumerable<User> SearchForUser(string search)
     {
-        return Context.Users.Where(x => x.Login.Contains(search));
+        return _context.Users.Where(x => x.Login.Contains(search));
     }
+
+    #endregion
 
     #endregion
 
     #region Challenges
 
-    ///////////////////////////////////////////////// EXISTS /////////////////////////////////////////////////
-
-
-    ////////////////////////////////////////////////// GET ///////////////////////////////////////////////////
+    #region Get
 
     public IEnumerable<Challenge> GetChallengesByPersonId(int userId)
     {
-        return Context.JoinedChallenges.Where(x => x.PersonId == userId).Select(x => x.Challenge);
+        return _context.JoinedChallenges.Where(x => x.PersonId == userId).Select(x => x.Challenge);
     }
 
-    ////////////////////////////////////////////////// ADD ///////////////////////////////////////////////////
+    #endregion
 
-
-    ///////////////////////////////////////////////// UPDATE /////////////////////////////////////////////////
-
-
-    ///////////////////////////////////////////////// DELETE /////////////////////////////////////////////////
-
-    public void DeleteChallenge(int id)
-    {
-        var challenge = Context.Challenges.FirstOrDefault(x => x.Id == id);
-        if (challenge != null)
-            Context.Challenges.Remove(challenge);
-    }
-
-    public void DeleteChallenge(Challenge challenge)
-    {
-        Context.Challenges.Remove(challenge);
-    }
-
-    ///////////////////////////////////////////////// SEARCH /////////////////////////////////////////////////
-
-
-    public void RemoveOverdueChallenges()
-    {
-        // connection.Open();
-        //
-        // query = "DELETE [JoinedChallenge] " +
-        //         "FROM [Challenge] RIGHT JOIN [JoinedChallenge] " +
-        //         "ON [Challenge].PK_ChallengeID = [JoinedChallenge].FK_JoinedChallenge_ChallengeID " +
-        //         "WHERE [Challenge].DueDate < GETDATE()";
-        //
-        // command = new SqlCommand(query, connection);
-        // dataReader = command.ExecuteReader();
-        // dataReader.Close();
-        //
-        // query = "DELETE FROM[Challenge] WHERE[Challenge].DueDate < GETDATE()";
-        //
-        // command = new SqlCommand(query, connection);
-        // dataReader = command.ExecuteReader();
-        //
-        // connection.Close();
-    }
-
-    public void UpdateChallengesProgress(int userId, string workout, double duration)
-    {
-        // connection.Open();
-        //
-        // query = "UPDATE [JoinedChallenge] " +
-        //         "SET progress += @workoutDuration " +
-        //         "FROM [Challenge] RIGHT JOIN [JoinedChallenge] " +
-        //         "ON [Challenge].PK_ChallengeID = [JoinedChallenge].FK_JoinedChallenge_ChallengeID " +
-        //         "RIGHT JOIN [Workout] " +
-        //         "ON [Challenge].Fk_Challenge_WorkoutID = [Workout].PK_WorkoutID " +
-        //         "WHERE FK_JoinedChallenge_UserID = @userID " +
-        //         "AND GETDATE() BETWEEN JoiningDate AND DueDate " +
-        //         "AND [Workout].[Name] = @workoutName";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@workoutDuration", duration);
-        // command.Parameters.AddWithValue("@userID", accountID);
-        // command.Parameters.AddWithValue("@workoutName", workout);
-        // command.ExecuteReader();
-        //
-        // connection.Close();
-    }
+    #region Add
 
     public void AddNewChallenge(byte[] photo, string name, string description, int targetMinutes,
         string reward, DateTime? dueDate, int workoutID)
@@ -274,33 +221,83 @@ public class Database
 
     #endregion
 
-    #region JoinedChallenge
+    #region Update
 
-    public void JoinChallenge(int userId, int challengeId)
+    public void UpdateChallengesProgress(int userId, string workout, double duration)
     {
         // connection.Open();
-        // query = "INSERT INTO [JoinedChallenge] " +
-        //         "(FK_JoinedChallenge_UserID, FK_JoinedChallenge_ChallengeID, JoiningDate, Progress) " +
-        //         "VALUES (" + accountID + ", " + ChallengeID + ", GETDATE(), 0)";
+        //
+        // query = "UPDATE [JoinedChallenge] " +
+        //         "SET progress += @workoutDuration " +
+        //         "FROM [Challenge] RIGHT JOIN [JoinedChallenge] " +
+        //         "ON [Challenge].PK_ChallengeID = [JoinedChallenge].FK_JoinedChallenge_ChallengeID " +
+        //         "RIGHT JOIN [Workout] " +
+        //         "ON [Challenge].Fk_Challenge_WorkoutID = [Workout].PK_WorkoutID " +
+        //         "WHERE FK_JoinedChallenge_UserID = @userID " +
+        //         "AND GETDATE() BETWEEN JoiningDate AND DueDate " +
+        //         "AND [Workout].[Name] = @workoutName";
         //
         // command = new SqlCommand(query, connection);
+        // command.Parameters.AddWithValue("@workoutDuration", duration);
+        // command.Parameters.AddWithValue("@userID", accountID);
+        // command.Parameters.AddWithValue("@workoutName", workout);
         // command.ExecuteReader();
         //
         // connection.Close();
     }
+
+    #endregion
+
+    #region Delete
+
+    public void DeleteChallenge(int id)
+    {
+        var challenge = _context.Challenges.FirstOrDefault(x => x.Id == id);
+        if (challenge != null)
+            _context.Challenges.Remove(challenge);
+    }
+
+    public void DeleteChallenge(Challenge challenge)
+    {
+        _context.Challenges.Remove(challenge);
+    }
+
+    #endregion
+
+    ///////////////////////////////////////////////// SEARCH /////////////////////////////////////////////////
+
+
+    /// <summary>
+    /// Удалить законченные вызовы
+    /// </summary>
+    public void RemoveOverdueChallenges()
+    {
+        // connection.Open();
+        //
+        // query = "DELETE [JoinedChallenge] " +
+        //         "FROM [Challenge] RIGHT JOIN [JoinedChallenge] " +
+        //         "ON [Challenge].PK_ChallengeID = [JoinedChallenge].FK_JoinedChallenge_ChallengeID " +
+        //         "WHERE [Challenge].DueDate < GETDATE()";
+        //
+        // command = new SqlCommand(query, connection);
+        // dataReader = command.ExecuteReader();
+        // dataReader.Close();
+        //
+        // query = "DELETE FROM[Challenge] WHERE[Challenge].DueDate < GETDATE()";
+        //
+        // command = new SqlCommand(query, connection);
+        // dataReader = command.ExecuteReader();
+        //
+        // connection.Close();
+    }
+
+    #endregion
+
+    #region JoinedChallenge
     
-    public void JoinChallenge(User user, Challenge challenge)
-    {
-        // connection.Open();
-        // query = "INSERT INTO [JoinedChallenge] " +
-        //         "(FK_JoinedChallenge_UserID, FK_JoinedChallenge_ChallengeID, JoiningDate, Progress) " +
-        //         "VALUES (" + accountID + ", " + ChallengeID + ", GETDATE(), 0)";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.ExecuteReader();
-        //
-        // connection.Close();
-    }
+    ///////////////////////////////////////////////// EXISTS /////////////////////////////////////////////////
+    
+    #region Get
 
     public List<JoinedChallenge> GetJoinedChallenges(int accountId)
     {
@@ -342,7 +339,43 @@ public class Database
         return joinedChallenges;
     }
 
-    public void UnjoinChallenge(int accountID, int ChallengeID)
+    #endregion
+    
+    #region Add
+
+    public void JoinChallenge(int userId, int challengeId)
+    {
+        // connection.Open();
+        // query = "INSERT INTO [JoinedChallenge] " +
+        //         "(FK_JoinedChallenge_UserID, FK_JoinedChallenge_ChallengeID, JoiningDate, Progress) " +
+        //         "VALUES (" + accountID + ", " + ChallengeID + ", GETDATE(), 0)";
+        //
+        // command = new SqlCommand(query, connection);
+        // command.ExecuteReader();
+        //
+        // connection.Close();
+    }
+    
+    public void JoinChallenge(User user, Challenge challenge)
+    {
+        // connection.Open();
+        // query = "INSERT INTO [JoinedChallenge] " +
+        //         "(FK_JoinedChallenge_UserID, FK_JoinedChallenge_ChallengeID, JoiningDate, Progress) " +
+        //         "VALUES (" + accountID + ", " + ChallengeID + ", GETDATE(), 0)";
+        //
+        // command = new SqlCommand(query, connection);
+        // command.ExecuteReader();
+        //
+        // connection.Close();
+    }
+
+    #endregion
+    
+    ///////////////////////////////////////////////// UPDATE /////////////////////////////////////////////////
+
+    #region Delete
+
+    public void LeaveChallenge(int accountId, int challengeId)
     {
         // connection.Open();
         // query = "DELETE [JoinedChallenge] " +
@@ -355,140 +388,81 @@ public class Database
         // connection.Close();
     }
 
-    #endregion JoinedChallenge
-
-
-    ///////////////////////////////////////////////// EXISTS /////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////// GET ///////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////// ADD ///////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////// UPDATE /////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////// DELETE /////////////////////////////////////////////////
-
+    #endregion
+    
     ///////////////////////////////////////////////// SEARCH /////////////////////////////////////////////////
 
+    #endregion JoinedChallenge
 
     #region Plans
 
-    public List<Plan> GetPlans(int accountID)
+    #region Exists
+
+    /// <summary>
+    /// Проверяет, есть ли присоединенные "Планы" для пользователя 
+    /// </summary>
+    /// <param name="accountId"></param>
+    /// <returns></returns>
+    public bool HavePlans(int accountId)
     {
-        // connection.Open();
-        // query = "SELECT [Plan].*,[User].PK_UserID " +
-        //         "FROM [Plan] Left JOIN [User] " +
-        //         "ON [Plan].PK_PlanID = [User].FK_User_PlanID " +
-        //         "AND PK_UserID = @userID";
-        //
-        // List<Plan> plansModels = new List<Plan>();
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@userID", accountID);
-        // dataReader = command.ExecuteReader();
-        //
-        // while (dataReader.Read())
-        // {
-        //     Plan temp = new Plan();
-        //
-        //     temp.Id = (int)dataReader["PK_PlanID"];
-        //
-        //     if (dataReader["Photo"] != DBNull.Value)
-        //         temp.Photo.ByteArray = (byte[])dataReader["Photo"];
-        //
-        //     temp.Name = dataReader["Name"].ToString();
-        //     temp.Description = dataReader["Description"].ToString();
-        //     temp.Duration = dataReader["Duration"].ToString();
-        //     temp.Hardness = dataReader["Hardness"].ToString();
-        //
-        //     if (dataReader["PK_UserID"] != DBNull.Value)
-        //         temp.IsJoined = true;
-        //     else
-        //         temp.IsJoined = false;
-        //
-        //     plansModels.Add(temp);
-        // }
-        //
-        // connection.Close();
-        //
-        // return plansModels;
-        return null;
+        return _context.JoinedPlans.Any(x => x.Person.UserId == accountId);
     }
 
-    public List<DayInPlan> GetPlanDays(int planID)
+    #endregion
+    
+    #region Get
+
+    public IEnumerable<Plan> GetPlans()
     {
-        // connection.Open();
-        // query = "SELECT * FROM [Day] " +
-        //         "WHERE [Day].FK_Day_PlanID = " + planID + " " +
-        //         "ORDER BY [Day].DayNumber";
-        //
-        // List<Day> Days = new List<Day>();
-        // command = new SqlCommand(query, connection);
-        // dataReader = command.ExecuteReader();
-        //
-        // while (dataReader.Read())
-        // {
-        //     Day temp = new Day();
-        //
-        //     temp.DayNumber = (int)dataReader["DayNumber"];
-        //     //temp.image
-        //     temp.BreakfastDescription = dataReader["BreakfastDescription"].ToString();
-        //     temp.LunchDescription = dataReader["LunchDescription"].ToString();
-        //     temp.DinnerDescription = dataReader["DinnerDescription"].ToString();
-        //     temp.WorkoutDescription = dataReader["WorkoutDescription"].ToString();
-        //
-        //     Days.Add(temp);
-        // }
-        //
-        // connection.Close();
-        //
-        // return Days;
-        return null;
+        return _context.Plans;
     }
 
-    public bool IsInPlan(int accountID)
+    public IEnumerable<DayInPlan> GetPlanDays(int planId)
     {
-        // connection.Open();
-        // query = "SELECT FK_User_PlanID " +
-        //         "FROM [USER] " +
-        //         "WHERE PK_UserID = " + accountID;
-        //
-        // command = new SqlCommand(query, connection);
-        //
-        // if (command.ExecuteScalar() != DBNull.Value)
-        // {
-        //     connection.Close();
-        //     return true;
-        // }
-        // else
-        // {
-        //     connection.Close();
-        //     return false;
-        // }
-        return false;
+        return _context.DayInPlans.Where(x => x.PlanId == planId);
+    }
+    
+    public Plan? GetPlanById(int planId)
+    {
+        return _context.Plans.FirstOrDefault(x => x.Id == planId);
     }
 
-    public void JoinPlan(int accountID, int planID)
+    #endregion
+
+    #region Add
+
+    /// <summary>
+    /// Присоединяет к плану
+    /// </summary>
+    /// <param name="accountId"></param>
+    /// <param name="planId"></param>
+    public void JoinPlan(int accountId, int planId)
     {
-        // connection.Open();
-        // query = "UPDATE [User] " +
-        //         "SET FK_User_PlanID = " + planID + ", " +
-        //         "PlanJoiningDate = CONVERT(date, GETDATE()) " +
-        //         "WHERE [User].PK_UserID = " + accountID;
-        //
-        // command = new SqlCommand(query, connection);
-        // dataReader = command.ExecuteReader();
-        // dataReader.Close();
-        //
-        // query = "INSERT INTO JoinedPlan (FK_JoinedPlan_UserID, DayNumber) VALUES (@userID, 1)";
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@userID", accountID);
-        // dataReader = command.ExecuteReader();
-        //
-        // connection.Close();
+        var user = GetUserById(accountId);
+        var plan = GetPlanById(planId);
+        var person = GetPersonByUserId(accountId);
+        
+        if(user == null || plan == null || person == null) return;
+        
+        var joinedPlan = new JoinedPlan();
+
+        joinedPlan.Person = person;
+        joinedPlan.PersonId = person.Id;
+
+        joinedPlan.Plan = plan;
+        joinedPlan.PlanId = plan.Id;
+
+        _context.JoinedPlans.Add(joinedPlan);
+        _context.SaveChanges();
     }
 
-    public void UnjoinPlan(int accountID)
+    #endregion
+
+    #region Leave
+
+    public void LeavePlan(int accountId, int planId)
     {
+        
         // connection.Open();
         // query = "UPDATE [User] " +
         //         "SET FK_User_PlanID = NULL, " +
@@ -507,46 +481,23 @@ public class Database
         // connection.Close();
     }
 
+    #endregion
+
     #region Joined Plan
 
-    public int GetJoinedPlanID(int accountID)
+    #region Get
+
+    public IEnumerable<Plan> GetJoinedPlanByUserId(int userId)
     {
-        // connection.Open();
-        //
-        // query = "SELECT FK_User_PlanID " +
-        //         "FROM [User] " +
-        //         "WHERE PK_UserID = @accountID";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@accountID", accountID);
-        // int planID = (int)command.ExecuteScalar();
-        //
-        // connection.Close();
-        //
-        // return planID;
-        return 0;
+        return _context.JoinedPlans.Where(x => x.Person.UserId == userId).Select(x => x.Plan);
     }
 
-    public string GetJoinedPlanName(int accountID)
+    public IEnumerable<Plan> GetJoinedPlanByName(string name)
     {
-        // connection.Open();
-        //
-        // query = "SELECT Name " +
-        //         "FROM [Plan] INNER JOIN [User] " +
-        //         "ON PK_PlanID = FK_User_PlanID " +
-        //         "WHERE PK_UserID = @userID";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@userID", accountID);
-        // string planName = (string)command.ExecuteScalar();
-        //
-        // connection.Close();
-        //
-        // return planName;
-        return null;
+        return _context.JoinedPlans.Where(x => x.Plan.Name == name).Select(x => x.Plan);
     }
 
-    public int GetJoinedPlanDayNumber(int accountID)
+    public int GetJoinedPlanDayNumber(int userId)
     {
         // connection.Open();
         //
@@ -565,8 +516,9 @@ public class Database
         return 0;
     }
 
-
-    public string GetDayBreakfastDescription(int accountID)
+    #endregion
+    
+    public string GetDayBreakfastDescription(int userId)
     {
         // connection.Open();
         //
@@ -587,7 +539,7 @@ public class Database
         return null;
     }
 
-    public string GetDayLunchDescription(int accountID)
+    public string GetDayLunchDescription(int userId)
     {
         // connection.Open();
         //
@@ -608,7 +560,7 @@ public class Database
         return null;
     }
 
-    public string GetDayDinnerDescription(int accountID)
+    public string GetDayDinnerDescription(int userId)
     {
         // connection.Open();
         //
@@ -629,7 +581,7 @@ public class Database
         return null;
     }
 
-    public string GetDayWorkoutDescription(int accountID)
+    public string GetDayWorkoutDescription(int userId)
     {
         // connection.Open();
         //
@@ -649,9 +601,9 @@ public class Database
         // return WorkoutDescription;
         return null;
     }
-
-
-    public bool GetDayBreakfastStatus(int accountID)
+    
+    
+    public bool GetDayBreakfastStatus(int userId)
     {
         // connection.Open();
         //
@@ -672,7 +624,7 @@ public class Database
         return false;
     }
 
-    public bool GetDayLunchStatus(int accountID)
+    public bool GetDayLunchStatus(int userId)
     {
         // connection.Open();
         //
@@ -693,7 +645,7 @@ public class Database
         return false;
     }
 
-    public bool GetDayDinnerStatus(int accountID)
+    public bool GetDayDinnerStatus(int userId)
     {
         // connection.Open();
         //
@@ -714,7 +666,7 @@ public class Database
         return false;
     }
 
-    public bool GetDayWorkoutStatus(int accountID)
+    public bool GetDayWorkoutStatus(int userId)
     {
         // connection.Open();
         //
@@ -734,9 +686,9 @@ public class Database
         // return isWorkoutsChecked;
         return false;
     }
-
-
-    public void UpdatePlanDayNumber(int accountID, int dayNumber)
+    
+    
+    public void UpdatePlanDayNumber(int userId, int dayNumber)
     {
         // connection.Open();
         //
@@ -767,7 +719,7 @@ public class Database
         // connection.Close();
     }
 
-    public void UpdateDayBreakfastStatus(bool checkedBreakfast, int accountID)
+    public void UpdateDayBreakfastStatus(bool checkedBreakfast, int userId)
     {
         // connection.Open();
         //
@@ -783,7 +735,7 @@ public class Database
         // connection.Close();
     }
 
-    public void UpdateDayLunchStatus(bool checkedLunch, int accountID)
+    public void UpdateDayLunchStatus(bool checkedLunch, int userId)
     {
         // connection.Open();
         //
@@ -799,7 +751,7 @@ public class Database
         // connection.Close();
     }
 
-    public void UpdateDayDinnerStatus(bool checkedDinner, int accountID)
+    public void UpdateDayDinnerStatus(bool checkedDinner, int userId)
     {
         // connection.Open();
         //
@@ -815,7 +767,7 @@ public class Database
         // connection.Close();
     }
 
-    public void UpdateDayWorkoutStatus(bool checkedWorkout, int accountID)
+    public void UpdateDayWorkoutStatus(bool checkedWorkout, int userId)
     {
         // int planDay = GetJoinedPlanDayNumber(accountID);
         //
@@ -839,28 +791,28 @@ public class Database
 
     #region Persons
 
-    public void AddPerson(Person person)
-    {
-        Context.Persons.Add(person);
-        Context.SaveChanges();
-    }
-
-    public void AddPerson(string firstName, string lastName)
-    {
-        Context.Persons.Add(new Person
-        {
-            FirstName = firstName,
-            LastName = lastName,
-        });
-        Context.SaveChanges();
-    }
+    #region Get
 
     public Person? GetPersonByUserId(int userId)
     {
-        return Context.Persons.FirstOrDefault(x => x.User.Id == userId);
+        return _context.Persons.FirstOrDefault(x => x.User.Id == userId);
     }
 
-    public void UpdatePersonProfile(User? currentUser)
+    #endregion
+    
+    #region Add
+
+    public void AddPerson(Person person)
+    {
+        _context.Persons.Add(person);
+        _context.SaveChanges();
+    }
+
+    #endregion
+
+    #region Update
+
+    public void UpdatePersonProfile(Person? currentUser)
     {
         // connection.Open();
         //
@@ -899,30 +851,25 @@ public class Database
 
     #endregion
 
+    #endregion
+
     #region Workout
+
+    #region Get
 
     public IEnumerable<Workout> GetWorkouts()
     {
-        return Context.Workouts;
+        return _context.Workouts;
+    }
+    
+    public IEnumerable<Workout> GetWorkoutsById(int workoutId)
+    {
+        return _context.Workouts.Where(x => x.Id == workoutId);
     }
 
-    public int GetWorkoutById(string workoutName)
-    {
-        // connection.Open();
-        //
-        // query = "SELECT PK_WorkoutID " +
-        //         "FROM [Workout] " +
-        //         "WHERE Name = @name;";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@name", workoutName);
-        // int id = (int)command.ExecuteScalar();
-        //
-        // connection.Close();
-        //
-        // return id;
-        return 0;
-    }
+    #endregion
+
+    #region Add
 
     public void AddWorkout(string workoutName, double duration, User? currentUser)
     {
@@ -956,25 +903,77 @@ public class Database
         // connection.Close();
     }
 
+    #endregion
+
     #endregion Workout
 
     #region Food
 
-    public IEnumerable<Food> GetAllFood()
+    #region Get
+
+    /// <summary>
+    /// Получить все "продукты" из базы данных
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<Food> GetFoods()
     {
-        return Context.Foods;
+        return _context.Foods;
     }
 
+    /// <summary>
+    /// Получить "продукт" по идентификатору
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public Food? GetFoodById(int id)
     {
-        return Context.Foods.FirstOrDefault(x => x.Id == id);
+        return _context.Foods.FirstOrDefault(x => x.Id == id);
     }
 
+    /// <summary>
+    /// Получить "продукт" по имени
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public Food? GetFoodByName(string name)
     {
-        return Context.Foods.FirstOrDefault(x => x.Name == name);
+        return _context.Foods.FirstOrDefault(x => x.Name == name);
     }
 
+    /// <summary>
+    /// Получить все записи из таблицы "Продукты" по идентификатору
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public IEnumerable<Food> GetFoodsById(int id)
+    {
+        return _context.Foods.Where(x => x.Id == id);
+    }
+    
+    /// <summary>
+    /// Получить все записи из таблицы "Продукты" по имени
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public IEnumerable<Food> GetFoodsByName(string name)
+    {
+        return _context.Foods.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+    }
+
+    #endregion
+
+    #region Add
+
+    /// <summary>
+    /// Добавляет запись в таблицу "Продукты"
+    /// </summary>
+    /// <param name="food"></param>
+    public void AddFood(Food food)
+    {
+        _context.Foods.Add(food);
+        _context.SaveChanges();
+    }
+    
     public void AddFood(string foodName, double quantity, int accountId)
     {
         // int foodID = GetFoodID(foodName);
@@ -1017,9 +1016,22 @@ public class Database
         // connection.Close();
     }
 
+    #endregion
+
     #endregion Food
 
     #region Feedback
+
+    #region Get
+
+    public IEnumerable<Feedback> GetFeedbacks()
+    {
+        return _context.Feedbacks.OrderByDescending(x => x.Id);
+    }
+
+    #endregion
+    
+    #region Add
 
     public void SaveFeedback(int userId, int rating, string feedback)
     {
@@ -1037,10 +1049,9 @@ public class Database
         // connection.Close();
     }
 
-    public IEnumerable<Feedback> GetFeedbacks()
-    {
-        return Context.Feedbacks.OrderByDescending(x => x.Id);
-    }
+    #endregion
+
+    #region Delete
 
     public void DeleteFeedback(string feedbackBody)
     {
@@ -1056,23 +1067,25 @@ public class Database
         // connection.Close();
     }
 
+    #endregion
+
     #endregion Feedback
 
     public bool IsEmailTaken(string email)
     {
-        return Context.Persons.Any(x => x.Email == email);
+        return _context.Persons.Any(x => x.Email == email);
     }
 
     ///////////////////////////// Weight Functions /////////////////////////////
 
     public IEnumerable<double> GetWeightValues(int accountId)
     {
-        return Context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.Weight);
+        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.Weight);
     }
     
     public IEnumerable<DateTime> GetWeightDates(int accountId)
     {
-        return Context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.DateTime);
+        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.DateTime);
     }
 
     public List<string> GetWeightDateValues(int accountId)
@@ -1106,10 +1119,10 @@ public class Database
 
     public void AddNewWeight(double newWeight, int accountId)
     {
-        var user = Context.Users.FirstOrDefault(x => x.Id == accountId);
+        var user = _context.Users.FirstOrDefault(x => x.Id == accountId);
         if (user == null) return;
 
-        var person = Context.Persons.FirstOrDefault(x => x.User.Id == accountId);
+        var person = _context.Persons.FirstOrDefault(x => x.User.Id == accountId);
         if (person == null) return;
 
         person.Weight = newWeight;
@@ -1122,8 +1135,8 @@ public class Database
             Weight = newWeight
         };
 
-        Context.PersonWeights.Add(personWeight);
-        Context.SaveChanges();
+        _context.PersonWeights.Add(personWeight);
+        _context.SaveChanges();
     }
 
     public double GetTotalWeightLostPerDuration(int accountId, string duration)
@@ -1137,15 +1150,15 @@ public class Database
         {
             case "WEEK":
                 var dateWeek = dateNow.Subtract(new TimeSpan(7,0,0,0));
-                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateWeek).Select(x => x.Weight).ToList();
+                weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateWeek).Select(x => x.Weight).ToList();
                 break;
             case "MONTH":
                 var dateMonth = dateNow.Subtract(new TimeSpan(30,0,0,0));
-                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateMonth).Select(x => x.Weight).ToList();
+                weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateMonth).Select(x => x.Weight).ToList();
                 break;
             case "YEAR":
                 var dateYear = dateNow.Subtract(new TimeSpan(365,0,0,0));
-                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateYear).Select(x => x.Weight).ToList();
+                weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateYear).Select(x => x.Weight).ToList();
                 break;
             default:
                 return 0;
@@ -1167,15 +1180,15 @@ public class Database
         {
             case "WEEK":
                 var dateWeek = dateNow.Subtract(new TimeSpan(7,0,0,0));
-                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateWeek).Select(x => x.Weight).ToList();
+                weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateWeek).Select(x => x.Weight).ToList();
                 break;
             case "MONTH":
                 var dateMonth = dateNow.Subtract(new TimeSpan(30,0,0,0));
-                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateMonth).Select(x => x.Weight).ToList();
+                weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateMonth).Select(x => x.Weight).ToList();
                 break;
             case "YEAR":
                 var dateYear = dateNow.Subtract(new TimeSpan(365,0,0,0));
-                weights = Context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateYear).Select(x => x.Weight).ToList();
+                weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId && x.DateTime >= dateYear).Select(x => x.Weight).ToList();
                 break;
             default:
                 return 0;
@@ -1348,7 +1361,7 @@ public class Database
 
     public IEnumerable<int> GetAppRatingValues()
     {
-        return Context.Feedbacks.Select(x => x.Rating);
+        return _context.Feedbacks.Select(x => x.Rating);
         //
         // connection.Open();
         //
@@ -1374,7 +1387,7 @@ public class Database
 
     public int GetAppUsersNumber()
     {
-        return Context.Users.Count(x => x.Access == 0);
+        return _context.Users.Count(x => x.Access == 0);
     }
 
     public bool IsNewAdmin(int accountID)

@@ -95,7 +95,7 @@ public class SigningViewModel : ObservableObject
 
     private void OnSignInCommandExecuted()
     {
-        bool isAccountFound = Global.Database.IsUserExists(Login, Password);
+        bool isAccountFound = Global.Database.UserExists(Login, Password);
 
         if (isAccountFound)
         {
