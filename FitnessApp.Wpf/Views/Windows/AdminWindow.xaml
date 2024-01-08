@@ -8,6 +8,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:scv="clr-namespace:StratumUi.Wpf.Core.Converters;assembly=StratumUi.Wpf.Core"
     xmlns:wpf="clr-namespace:StratumUi.Wpf.Core.AttachedProperties;assembly=StratumUi.Wpf.Core"
+    xmlns:sc="clr-namespace:StratumUi.Wpf.Core.Controls;assembly=StratumUi.Wpf.Core"
     Title="Fitness App"
     Width="1080"
     Height="720"
@@ -28,14 +29,16 @@
     <Grid>
         <Grid>
             <!--  Side Menu  -->
-            <Border Padding="5" Panel.ZIndex="999">
+            <Border Panel.ZIndex="999">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="White" />
                         <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="BorderThickness" Value="0,0,1,0" />
+                        <Setter Property="BorderBrush" Value="{StaticResource Lg3}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Value="True">
-                                <Setter Property="Width" Value="220" />
+                                <Setter Property="Width" Value="240" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Value="False">
                                 <Setter Property="Width" Value="40" />
@@ -46,14 +49,20 @@
                 <Grid>
                     <!--  Menu rows and columns  -->
                     <Grid.RowDefinitions>
+                        <!--  0  -->
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="5" />
+                        <!--  2  -->
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="15" />
+                        <!--  4  -->
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="15" />
+                        <!--  6  -->
                         <RowDefinition Height="auto" />
+                        <!--  7  -->
                         <RowDefinition Height="*" />
+                        <!--  8  -->
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
@@ -62,6 +71,7 @@
                         Grid.Row="0"
                         Width="30"
                         Height="30"
+                        Margin="5"
                         Padding="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
@@ -90,29 +100,32 @@
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BtnText}">
                                 <Setter Property="HorizontalContentAlignment" Value="Left" />
                                 <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Padding" Value="10" />
+                                <Setter Property="Height" Value="40" />
                             </Style>
-                            <Style TargetType="materialDesign:PackIcon" BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
-                                <Setter Property="Width" Value="20" />
-                                <Setter Property="Height" Value="20" />
+                            <Style TargetType="sc:Icon" BasedOn="{StaticResource {x:Type sc:Icon}}">
+                                <Setter Property="Width" Value="18" />
+                                <Setter Property="Height" Value="18" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="Fill" Value="{StaticResource Dg2}" />
                             </Style>
                             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                                 <Setter Property="Margin" Value="15,0,0,0" />
                                 <Setter Property="FontSize" Value="15" />
-                                <Setter Property="FontFamily" Value="{StaticResource ProductSans}" />
                                 <Setter Property="Visibility" Value="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <Setter Property="VerticalAlignment" Value="Center" />
                             </Style>
                         </StackPanel.Resources>
                         <Button HorizontalContentAlignment="Left" Command="{Binding MoveOnHomeCommand}">
                             <Button.Content>
-                                <Grid Margin="5,0" HorizontalAlignment="Left">
+                                <Grid HorizontalAlignment="Left">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <materialDesign:PackIcon Grid.Column="0" Kind="Home" />
+                                    <sc:Icon Grid.Column="0" Kind="Home" />
 
                                     <TextBlock Grid.Column="1" Text="Home" />
                                 </Grid>
@@ -122,13 +135,13 @@
                         <!--  Setup a Challenge Button  -->
                         <Button Command="{Binding MoveOnChallengesSetupCommand}">
                             <Button.Content>
-                                <Grid Margin="5,0">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <materialDesign:PackIcon Grid.Column="0" Kind="PlaylistAdd" />
+                                    <sc:Icon Grid.Column="0" Kind="PlaylistAdd" />
 
                                     <TextBlock Grid.Column="1" Text="Setup a Challenge" />
                                 </Grid>
@@ -138,13 +151,13 @@
                         <!--  Settings Button  -->
                         <Button Command="{Binding MoveOnSettingsCommand}">
                             <Button.Content>
-                                <Grid Margin="5,0">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <materialDesign:PackIcon Grid.Column="0" Kind="Settings" />
+                                    <sc:Icon Grid.Column="0" Kind="Settings" />
 
                                     <TextBlock Grid.Column="1" Text="Settings" />
                                 </Grid>
@@ -159,13 +172,13 @@
                         Command="{Binding LogoutCommand}"
                         Style="{StaticResource BtnText}">
                         <Button.Content>
-                            <Grid Margin="5,0">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Grid.Column="0" Kind="LogoutVariant" />
+                                <sc:Icon Grid.Column="0" Kind="LogoutVariant" />
 
                                 <TextBlock
                                     Grid.Column="1"

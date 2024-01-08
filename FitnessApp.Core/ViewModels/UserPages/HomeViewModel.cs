@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Core.Interfaces;
 using FitnessApp.Models;
 using LiveCharts;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessApp.Core.ViewModels.UserPages;
 
@@ -13,7 +14,8 @@ public class HomeViewModel : ObservableObject
 {
     #region Private Properties
 
-    private IOpenView _openViewService;
+    private readonly IOpenView _openViewService;
+    private readonly IAlertService _alertService;
 
     #endregion Private Properties
     
@@ -76,6 +78,7 @@ public class HomeViewModel : ObservableObject
     private double _todayWeightValue;
 
     /// <summary> Вес сегодняшний </summary>
+    [Range(20.0, 300.0)]
     public double TodayWeightValue
     {
         get => _todayWeightValue;
@@ -219,7 +222,7 @@ public class HomeViewModel : ObservableObject
 
     private void OnOpenAddFoodCommandExecuted()
     {
-        _openViewService.OpenFood();
+        _openViewService.OpenFoodAdd();
     }
 
     private bool CanOpenAddFoodCommandExecute() => true;
@@ -233,7 +236,7 @@ public class HomeViewModel : ObservableObject
 
     private void OnOpenAddWorkoutCommandExecuted()
     {
-        _openViewService.OpenWorkout();
+        _openViewService.OpenWorkoutAdd();
     }
 
     private bool CanOpenAddWorkoutCommandExecute() => true;
@@ -247,7 +250,7 @@ public class HomeViewModel : ObservableObject
 
     private void OnCloseAddFoodCommandExecuted()
     {
-        _openViewService.CloseFood();
+        _openViewService.CloseFoodAdd();
     }
 
     private bool CanCloseAddFoodCommandExecute() => true;
@@ -261,7 +264,7 @@ public class HomeViewModel : ObservableObject
 
     private void OnCloseAddWorkoutCommandExecuted()
     {
-        _openViewService.CloseWorkout();
+        _openViewService.CloseWorkoutAdd();
     }
 
     private bool CanCloseAddWorkoutCommandExecute() => true;
@@ -275,46 +278,20 @@ public class HomeViewModel : ObservableObject
 
     private void OnSaveNewWeightCommandExecuted()
     {
-        if (TodayWeightValue == 0)
-            return;
-            // UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Please enter your weight!");
-        else
+        if (TodayWeightValue is 0 or < 20 or > 300)
         {
-            // Update User Model Weight Porperty with the latest weight
-            // UserWindow.signedInUser.Weight = double.Parse(TodaysWeightTextBox.Text);
-        
-            // Update Weight in Database
-            Global.Database.AddNewWeight(TodayWeightValue, CurrentPerson.User.Id);
-        
-            // Update User Weight Line Series:
-            // TOOD Add one value and remove another to keep the number of values 10
-            // WeightChart.Series[1].Values.Add(double.Parse(TodaysWeightTextBox.Text));
-            // if (WeightChart.Series[1].Values.Count > 10)
-            //     WeightChart.Series[1].Values.RemoveAt(0);
-        
-            // Confirmation Message
-            // UserWindow.UserWindowObject.MessagesSnackbar.MessageQueue.Enqueue("Weight added successfully");
-        
-            // Reset TextBox
-            TodayWeightValue = 0;
-        
-            // Refresh Weight-Related Cards
-            LoadWeightChart();
-            LoadTotalWeightLostCard();
-            LoadAverageWeightLostCard();
-        
-            // Refresh Calories Card and Chart
-            // TODO CaloriesChart.DataContext = null;
-            LoadCaloriesCard();
-        
-            // Refresh CaloriesCalculatorPage DataContext
-            // UserWindow.CaloriesCalculatorPageObject.DataContext = null;
-            // UserWindow.CaloriesCalculatorPageObject.DataContext = UserWindow.SignedInUser;
-        
-            // Refresh SettingsPage DataContext
-            // UserWindow.SettingsPageObject.DataContext = null;
-            // UserWindow.SettingsPageObject.DataContext = UserWindow.SignedInUser;
+            _alertService.Error("Не корректное значение!");
+            return;
         }
+
+        // Update Weight in Database
+        Global.Database.AddNewWeight(TodayWeightValue, CurrentPerson.User.Id);
+        TodayWeightValue = 0;
+        
+        LoadWeightChart();
+        LoadTotalWeightLostCard();
+        LoadAverageWeightLostCard();
+        LoadCaloriesCard();
     }
 
     private bool CanSaveNewWeightCommandExecute() => true;
@@ -383,18 +360,19 @@ public class HomeViewModel : ObservableObject
 
     #endregion CompletedChallenge
 
-    // private void JoinPlanButton_Click(object sender, RoutedEventArgs e)
-    // {
-    //     // UserWindow.UserWindowObject.UserWindowPagesListBox.SelectedIndex = 2;
-    // }
-    //
-    // private void DismissPlanButton_Click(object sender, RoutedEventArgs e)
-    // {
-    //     Global.Database.UnjoinPlan(CurrentPerson.User.Id);
-    //     LoadJoinedPlanCard();
-    //
-    //     // UserWindow.PlansPageObject.LoadAllPlansCards();
-    // }
+    #region JoinPlanCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand JoinPlanCommand { get; set; }
+
+    private void OnJoinPlanCommandExecuted()
+    {
+
+    }
+
+    private bool CanJoinPlanCommandExecute() => true;
+
+    #endregion JoinPlan
     
     #endregion
 
@@ -402,10 +380,12 @@ public class HomeViewModel : ObservableObject
     /// Домашняя страница для пользователей
     /// </summary>
     /// <param name="openViewService"></param>
+    /// <param name="alertService"></param>
     /// <param name="selectedPerson"></param>
-    public HomeViewModel(IOpenView openViewService, Person selectedPerson)
+    public HomeViewModel(IOpenView openViewService, IAlertService alertService, Person selectedPerson)
     {
         _openViewService = openViewService;
+        _alertService = alertService;
         
         OpenAddFoodCommand = new RelayCommand(OnOpenAddFoodCommandExecuted, CanOpenAddFoodCommandExecute);
         OpenAddWorkoutCommand = new RelayCommand(OnOpenAddWorkoutCommandExecuted, CanOpenAddWorkoutCommandExecute);
@@ -416,11 +396,9 @@ public class HomeViewModel : ObservableObject
         LoadedCommand = new RelayCommand(OnLoadedCommandExecuted, CanLoadedCommandExecute);
         CloseAddFoodCommand = new RelayCommand(OnCloseAddFoodCommandExecuted, CanCloseAddFoodCommandExecute);
         CloseAddWorkoutCommand = new RelayCommand(OnCloseAddWorkoutCommandExecuted, CanCloseAddWorkoutCommandExecute);
+        JoinPlanCommand = new RelayCommand(OnJoinPlanCommandExecuted, CanJoinPlanCommandExecute);
         
         CurrentPerson = selectedPerson;
-
-        // FoodComboBox.ItemsSource = Global.Database.GetAllFood().ToList();
-        // WorkoutsComboBox.ItemsSource = Global.Database.GetWorkouts().ToList();
     }
 
     public void LoadWeightChart()
@@ -443,13 +421,6 @@ public class HomeViewModel : ObservableObject
 
         return CurrentPerson.Height - 100 + (CurrentPerson.Height - 100) * 0.15;
     }
-
-    // private void DecimalNumbersOnlyFieldValidation(object sender, TextCompositionEventArgs e)
-    // {
-    //     var s = sender as TextBox;
-    //     var text = s.Text.Insert(s.SelectionStart, e.Text);
-    //     e.Handled = !double.TryParse(text, out double d);
-    // }
 
     public void LoadTotalWeightLostCard()
     {
@@ -474,17 +445,7 @@ public class HomeViewModel : ObservableObject
     public void LoadJoinedChallengesCards()
     {
         var challenges = Global.Database.GetJoinedChallenges(Global.Database.AccountId);
-
         HaveChallenges = challenges.Any();
-
-        // ChallengesViewModel joinedChallengesDataContext = new ChallengesViewModel();
-        // joinedChallengesDataContext.JoinedChallengesViewModel(CurrentPerson.User.Id);
-        // CompletedJoinedChallengesListBox.DataContext = joinedChallengesDataContext;
-        //
-        // ChallengesViewModel uncompletedJoinedChallengesDataContext = new ChallengesViewModel();
-        // uncompletedJoinedChallengesDataContext.JoinedChallengesViewModel(CurrentPerson.User.Id);
-        // UncompletedJoinedChallengesListBox.DataContext = uncompletedJoinedChallengesDataContext;
-        // ControlNoChallengesCard(joinedChallengesDataContext);
     }
 
     private void ControlNoChallengesCard(ChallengesViewModel challengesViewModel)

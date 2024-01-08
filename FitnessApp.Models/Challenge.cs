@@ -10,7 +10,9 @@ public class Challenge
     public string Name { get; set; }
     public string? Description { get; set; }
     public int TargetMinutes { get; set; }
+    /// <summary> Награда </summary>
     public string Reward { get; set; }
+    /// <summary> Состояние </summary>
     public string Condition { get; set; }
     public byte[] Photo { get; set; }
     public Workout Workout { get; set; }

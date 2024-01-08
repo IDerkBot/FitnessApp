@@ -29,10 +29,12 @@ public interface IOpenView
     void OpenSettingsView();
     void CloseSettingsView();
 
-    void OpenWorkout();
-    void CloseWorkout();
-    void OpenFood();
-    void CloseFood();
+    void OpenWorkoutAdd();
+    void CloseWorkoutAdd();
+    void OpenFoodAdd();
+    void CloseFoodAdd();
+    void OpenChallengeAdd();
+    void CloseChallengeAdd();
     
     void Logout(bool isAdmin);
     void Shutdown();

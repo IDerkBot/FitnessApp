@@ -194,6 +194,7 @@ public class UserViewModel : ObservableObject
 
     private void OnLogoutCommandExecuted()
     {
+        _openView.Logout(false);
     }
 
     private bool CanLogoutCommandExecute() => true;
@@ -220,7 +221,8 @@ public class UserViewModel : ObservableObject
 
     /// <summary>  </summary>
     /// <param name="openView"></param>
-    public UserViewModel(IOpenView openView)
+    /// <param name="alertService"></param>
+    public UserViewModel(IOpenView openView, IAlertService alertService)
     {
         _openView = openView;
 
@@ -238,7 +240,7 @@ public class UserViewModel : ObservableObject
         CurrentPerson = Global.Database.GetPersonByUserId(Global.Database.AccountId)!;
 
         // Initialize View Models
-        HomeVm = new HomeViewModel(_openView, CurrentPerson);
+        HomeVm = new HomeViewModel(_openView, alertService, CurrentPerson);
         ChallengesVm = new ChallengesViewModel(CurrentPerson);
         PlansVm = new PlansViewModel(CurrentPerson);
         CaloriesCalculatorVm = new CaloriesCalculatorViewModel(CurrentPerson);

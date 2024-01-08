@@ -57,13 +57,13 @@ public class AdminViewModel : ObservableObject
 
     #region AdminChallengesSetupVm : ChallengesSetupViewModel - Description
 
-    private ChallengesSetupViewModel _adminChallengesSetupVm;
+    private AdminChallengesViewModel _adminAdminChallengesVm;
 
     /// <summary> Description </summary>
-    public ChallengesSetupViewModel AdminChallengesSetupVm
+    public AdminChallengesViewModel AdminAdminChallengesVm
     {
-        get => _adminChallengesSetupVm;
-        set => SetProperty(ref _adminChallengesSetupVm, value);
+        get => _adminAdminChallengesVm;
+        set => SetProperty(ref _adminAdminChallengesVm, value);
     }
 
     #endregion AdminChallengesSetupVm
@@ -128,7 +128,7 @@ public class AdminViewModel : ObservableObject
     private void OnMoveOnChallengesSetupCommandExecuted()
     {
         _openView.OpenChallengesSetupView();
-        CurrentContext = AdminChallengesSetupVm;
+        CurrentContext = AdminAdminChallengesVm;
     }
 
     private bool CanMoveOnChallengesSetupCommandExecute()
@@ -194,7 +194,7 @@ public class AdminViewModel : ObservableObject
         // Initialize AdminWindowPages Objects
 
         AdminHomeVm = new AdminHomeViewModel();
-        AdminChallengesSetupVm = new ChallengesSetupViewModel();
+        AdminAdminChallengesVm = new AdminChallengesViewModel(openView);
         AdminSettingsVm = new AdminSettingsViewModel();
 
         // Intialize MessagesQueue and Assign it to MessagesSnackbar's MessageQueue

@@ -12,10 +12,24 @@
     mc:Ignorable="d">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
-
             <!--  Main Grid  -->
             <Grid Margin="15" HorizontalAlignment="Center">
-
+                <Grid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10" />
+                        <Setter Property="BorderBrush" Value="{StaticResource Lg3}" />
+                        <Setter Property="Background" Value="{StaticResource CleanW}" />
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect
+                                    Direction="0"
+                                    ShadowDepth="0"
+                                    BlurRadius="15"
+                                    Color="{StaticResource ColorLg4}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="15" />
@@ -24,7 +38,6 @@
 
                 <!--  Left cards grid  -->
                 <Grid Grid.Column="0">
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="15" />
@@ -41,7 +54,6 @@
                         Width="500"
                         Padding="10">
                         <Grid>
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="15" />
@@ -55,7 +67,6 @@
                                 Text="Оценка приложения" />
 
                             <Grid Grid.Row="2">
-
                                 <lvc:CartesianChart
                                     Width="450"
                                     Height="200"
@@ -71,7 +82,6 @@
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis Title="Пользователи" LabelFormatter="{Binding Formatter}" />
                                     </lvc:CartesianChart.AxisY>
-
                                 </lvc:CartesianChart>
                             </Grid>
                         </Grid>
@@ -80,7 +90,6 @@
                     <!--  User feedbacks ListBox  -->
                     <Border Grid.Row="2" Width="500">
                         <Grid>
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="auto" />
@@ -452,13 +461,11 @@
 
                             <!--  New Admin's email Feild  -->
                             <Grid Grid.Row="5" Grid.Column="1">
-
                                 <materialDesign:PackIcon Margin="0,20,0,0" Kind="AccountPlus" />
                                 <TextBox
                                     x:Name="NewAdminEmailTextBox"
                                     Margin="25,0,0,0"
                                     materialDesign:HintAssist.Hint="Admin's email" />
-
                             </Grid>
 
                             <Button

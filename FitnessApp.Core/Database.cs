@@ -193,6 +193,11 @@ public class Database
         return _context.JoinedChallenges.Where(x => x.PersonId == userId).Select(x => x.Challenge);
     }
 
+    public IEnumerable<Challenge> GetChallenges()
+    {
+        return _context.Challenges;
+    }
+
     #endregion
 
     #region Add
@@ -222,6 +227,11 @@ public class Database
         // command.ExecuteReader();
         //
         // connection.Close();
+    }
+    
+    public void AddNewChallenge(Challenge challenge)
+    {
+        _context.Challenges.Add(challenge);
     }
 
     #endregion

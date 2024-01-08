@@ -71,7 +71,7 @@
         <SubType>Designer</SubType>
         <Generator>MSBuild:Compile</Generator>
       </Page>
-      <Page Update="Views\AdminPages\ChallengesSetupPage.xaml">
+      <Page Update="Views\AdminPages\AdminChallengesPage.xaml">
         <SubType>Designer</SubType>
         <Generator>MSBuild:Compile</Generator>
       </Page>

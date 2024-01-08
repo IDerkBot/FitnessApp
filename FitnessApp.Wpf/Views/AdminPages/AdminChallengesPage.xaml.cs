@@ -1,7 +1,7 @@
 ﻿namespace FitnessApp.Wpf.Views.AdminPages;
 
 /// <summary> Interaction logic for ChallengesSetupPage.xaml </summary>
-public partial class ChallengesSetupPage
+public partial class AdminChallengesPage
 {
-    public ChallengesSetupPage() => InitializeComponent();
+    public AdminChallengesPage() => InitializeComponent();
 }

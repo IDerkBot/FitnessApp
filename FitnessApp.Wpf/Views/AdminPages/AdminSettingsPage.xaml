@@ -8,18 +8,12 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DataContext="{d:DesignInstance vm:AdminSettingsViewModel}"
     mc:Ignorable="d">
-
     <Grid Margin="15">
-
-        <materialDesign:Card Width="750" Background="{DynamicResource MaterialDesignBackground}">
-
+        <Border Width="750" Background="{DynamicResource MaterialDesignBackground}">
             <StackPanel>
-
-                <Expander x:Name="AccountExpander" Header="Account">
+                <Expander Header="Account">
                     <!--  Expanded="Expander_Expanded"  -->
-
                     <Grid Width="400" HorizontalAlignment="Center">
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="15" />
                             <RowDefinition Height="auto" />
@@ -42,23 +36,20 @@
                                 x:Name="FirstNameTextBox"
                                 Grid.Column="0"
                                 materialDesign:HintAssist.Hint="First Name"
-                                Text="{Binding FirstName}"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                Text="{Binding FirstName}" />
 
                             <TextBox
                                 x:Name="LastNameTextBox"
                                 Grid.Column="2"
                                 materialDesign:HintAssist.Hint="Last Name"
-                                Text="{Binding LastName}"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                Text="{Binding LastName}" />
                         </Grid>
 
                         <TextBox
                             x:Name="EmailTextBox"
                             Grid.Row="3"
                             materialDesign:HintAssist.Hint="Email"
-                            Text="{Binding Email}"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                            Text="{Binding Email}" />
 
                         <!--  Update Account Button  -->
                         <Button
@@ -66,24 +57,19 @@
                             Grid.Row="5"
                             HorizontalAlignment="Right"
                             FontSize="14"
-                            Style="{StaticResource MaterialDesignRaisedButton}">
+                            Content="Update Account"
+                            Style="{StaticResource BtnFilled}">
                             <!--  Click="UpdateAccountButton_Click"  -->
-                            Update Account
                         </Button>
-
                     </Grid>
-
                 </Expander>
 
 
-                <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" />
+                <Border Height="1" />
 
 
-                <Expander x:Name="SecurityExpander" Header="Security">
-                    <!--  Expanded="Expander_Expanded"  -->
-
+                <Expander Header="Security">
                     <Grid Width="400" HorizontalAlignment="Center">
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="15" />
                             <RowDefinition Height="auto" />
@@ -100,20 +86,17 @@
                         <PasswordBox
                             x:Name="OldPasswordTextBox"
                             Grid.Row="1"
-                            materialDesign:HintAssist.Hint="Old Password"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                            materialDesign:HintAssist.Hint="Old Password" />
 
                         <PasswordBox
                             x:Name="NewPasswordTextBox"
                             Grid.Row="3"
-                            materialDesign:HintAssist.Hint="New Password"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                            materialDesign:HintAssist.Hint="New Password" />
 
                         <PasswordBox
                             x:Name="ConfirmNewPasswordTextBox"
                             Grid.Row="5"
-                            materialDesign:HintAssist.Hint="Confirm New Password"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                            materialDesign:HintAssist.Hint="Confirm New Password" />
 
                         <!--  Update Password Button  -->
                         <Button
@@ -121,40 +104,22 @@
                             Grid.Row="7"
                             HorizontalAlignment="Right"
                             FontSize="14"
-                            Style="{StaticResource MaterialDesignRaisedButton}">
+                            Content="Update Password"
+                            Style="{StaticResource BtnFilled}">
                             <!--  Click="UpdatePasswordButton_Click"  -->
-                            Update Password
                         </Button>
-
                     </Grid>
-
                 </Expander>
 
+                <Border Height="1" />
 
-                <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" />
-
-
-                <Expander x:Name="HelpExpander" Header="Help">
-                    <!--  Expanded="Expander_Expanded"  -->
-
+                <Expander Header="Help">
                     <TextBlock
                         Margin="25,15"
                         TextWrapping="Wrap"
-                        Opacity="0.75">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
-                    </TextBlock>
-
+                        Opacity="0.75" />
                 </Expander>
-
             </StackPanel>
-
-        </materialDesign:Card>
-
+        </Border>
     </Grid>
 </Page>

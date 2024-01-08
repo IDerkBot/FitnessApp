@@ -22,7 +22,7 @@ public class OpenWindowService : IOpenView
     internal SettingsPage? SettingsPage { get; set; }
     internal AdminHomePage? AdminHomePage { get; set; }
     internal AdminSettingsPage? AdminSettingsPage { get; set; }
-    internal ChallengesSetupPage? ChallengesSetupPage { get; set; }
+    internal AdminChallengesPage? ChallengesSetupPage { get; set; }
 
     #region AdminView
 
@@ -82,7 +82,8 @@ public class OpenWindowService : IOpenView
 
     public void OpenAdminSettingsView()
     {
-        throw new NotImplementedException();
+        AdminSettingsPage ??= new AdminSettingsPage();
+        AdminWindow?.DialogFrame.NavigationService.Navigate(AdminSettingsPage);
     }
 
     public void CloseAdminSettingsView()
@@ -96,7 +97,8 @@ public class OpenWindowService : IOpenView
 
     public void OpenChallengesSetupView()
     {
-        throw new NotImplementedException();
+        ChallengesSetupPage ??= new AdminChallengesPage();
+        AdminWindow?.DialogFrame.NavigationService.Navigate(ChallengesSetupPage);
     }
 
     public void CloseChallengesSetupView()
@@ -193,32 +195,43 @@ public class OpenWindowService : IOpenView
     }
 
     public void CloseSettingsView() { }
-    public void OpenWorkout()
+    public void OpenWorkoutAdd()
     {
         if(HomePage == null) return;
         HomePage.AddWorkoutDialogBox.Visibility = 
             HomePage.PopupBorder.Visibility = Visibility.Visible;
     }
 
-    public void CloseWorkout()
+    public void CloseWorkoutAdd()
     {
         if(HomePage == null) return;
         HomePage.AddWorkoutDialogBox.Visibility = 
             HomePage.PopupBorder.Visibility = Visibility.Collapsed;
     }
 
-    public void OpenFood()
+    public void OpenFoodAdd()
     {
         if(HomePage == null) return;
         HomePage.AddFoodDialogBox.Visibility = 
             HomePage.PopupBorder.Visibility = Visibility.Visible;
     }
 
-    public void CloseFood()
+    public void CloseFoodAdd()
     {
         if(HomePage == null) return;
-        HomePage.AddFoodDialogBox.Visibility = 
-            HomePage.PopupBorder.Visibility = Visibility.Collapsed;
+        HomePage.AddFoodDialogBox.Visibility = HomePage.PopupBorder.Visibility = Visibility.Collapsed;
+    }
+
+    public void OpenChallengeAdd()
+    {
+        if(ChallengesSetupPage == null) return;
+        ChallengesSetupPage.AddChallengeDialogBox.Visibility = Visibility.Visible;
+    }
+
+    public void CloseChallengeAdd()
+    {
+        if(ChallengesSetupPage == null) return;
+        ChallengesSetupPage.AddChallengeDialogBox.Visibility = Visibility.Collapsed;
     }
 
     #endregion
