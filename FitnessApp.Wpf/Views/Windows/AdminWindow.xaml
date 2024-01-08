@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:scv="clr-namespace:StratumUi.Wpf.Core.Converters;assembly=StratumUi.Wpf.Core"
+    xmlns:wpf="clr-namespace:StratumUi.Wpf.Core.AttachedProperties;assembly=StratumUi.Wpf.Core"
     Title="Fitness App"
     Width="1080"
     Height="720"
@@ -37,7 +38,7 @@
                                 <Setter Property="Width" Value="220" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Value="False">
-                                <Setter Property="Width" Value="60" />
+                                <Setter Property="Width" Value="40" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -57,24 +58,24 @@
                     </Grid.RowDefinitions>
 
                     <ToggleButton
+                        x:Name="MenuToggleButton"
                         Grid.Row="0"
-                        Width="25"
-                        Height="25"
+                        Width="30"
+                        Height="30"
+                        Padding="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Background="Red"
-                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                        wpf:Button.Icon="HamburgerMenu"
+                        Style="{StaticResource TglText}" />
 
                     <!--  Admin's name and Email  -->
-                    <StackPanel Grid.Row="2">
+                    <StackPanel Grid.Row="2" Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock
-                            FontFamily="{StaticResource ProductSans}"
                             FontWeight="Bold"
                             FontSize="18"
                             Text="{Binding FullName}" />
 
                         <TextBlock
-                            FontFamily="{StaticResource ProductSans}"
                             FontWeight="Light"
                             FontSize="14"
                             Text="{Binding Email}"
@@ -83,35 +84,37 @@
 
                     <Separator Grid.Row="3" />
 
-                    <StackPanel Grid.Row="4">
+                    <StackPanel Grid.Row="4" HorizontalAlignment="Stretch">
+                        <!--  Home Button  -->
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BtnText}">
                                 <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                            <Style TargetType="materialDesign:PackIcon" BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
+                                <Setter Property="Width" Value="20" />
+                                <Setter Property="Height" Value="20" />
                             </Style>
                             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Margin" Value="15,0,0,0" />
                                 <Setter Property="FontSize" Value="15" />
                                 <Setter Property="FontFamily" Value="{StaticResource ProductSans}" />
+                                <Setter Property="Visibility" Value="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
                             </Style>
                         </StackPanel.Resources>
-
-                        <!--  Home Button  -->
-                        <Button Command="{Binding MoveOnHomeCommand}">
+                        <Button HorizontalContentAlignment="Left" Command="{Binding MoveOnHomeCommand}">
                             <Button.Content>
-                                <Grid Margin="5,0">
+                                <Grid Margin="5,0" HorizontalAlignment="Left">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <materialDesign:PackIcon
-                                        Grid.Column="0"
-                                        Margin="0,0,15,0"
-                                        Kind="Home" />
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="Home" />
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Text="Home" />
+                                    <TextBlock Grid.Column="1" Text="Home" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -125,15 +128,9 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <materialDesign:PackIcon
-                                        Grid.Column="0"
-                                        Margin="0,0,15,0"
-                                        Kind="PlaylistAdd" />
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="PlaylistAdd" />
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Text="Setup a Challenge" />
+                                    <TextBlock Grid.Column="1" Text="Setup a Challenge" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -147,15 +144,9 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <materialDesign:PackIcon
-                                        Grid.Column="0"
-                                        Margin="0,0,15,0"
-                                        Kind="Settings" />
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="Settings" />
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Text="Settings" />
+                                    <TextBlock Grid.Column="1" Text="Settings" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -164,6 +155,7 @@
                     <!--  Logout Button  -->
                     <Button
                         Grid.Row="8"
+                        Padding="0"
                         Command="{Binding LogoutCommand}"
                         Style="{StaticResource BtnText}">
                         <Button.Content>
@@ -179,7 +171,6 @@
                                     Grid.Column="1"
                                     Text="Выход"
                                     Visibility="{Binding ElementName=MenuToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="15" />
                             </Grid>
                         </Button.Content>
@@ -189,7 +180,7 @@
             </Border>
 
             <!--  User Main Window  -->
-            <Grid DataContext="{Binding CurrentContext}">
+            <Grid Margin="40,0,0,0" DataContext="{Binding CurrentContext}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
@@ -214,13 +205,6 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
-
-                        <!--  Menu Toogle Button  -->
-                        <ToggleButton
-                            x:Name="MenuToggleButton"
-                            Grid.Column="0"
-                            Width="25"
-                            Height="25" />
 
                         <!--  Page Header  -->
                         <TextBlock
@@ -276,44 +260,31 @@
                     <!--  Card Header  -->
                     <TextBlock
                         Grid.Row="0"
-                        FontFamily="{StaticResource ProductSans}"
                         FontSize="18"
                         Text="Welcome" />
 
                     <TextBlock
                         Grid.Row="2"
-                        FontFamily="{StaticResource ProductSans}"
                         FontSize="18"
                         Text="Update your password" />
 
                     <TextBlock
                         Grid.Row="4"
-                        FontFamily="{StaticResource Roboto}"
                         FontSize="14"
                         Text="You need to update your password because this is the first time you are signing in."
                         TextWrapping="Wrap" />
 
                     <!--  Password Fields  -->
-                    <PasswordBox
-                        Grid.Row="6"
-                        materialDesign:HintAssist.Hint="Old Password"
-                        FontFamily="{StaticResource Roboto}" />
+                    <PasswordBox Grid.Row="6" materialDesign:HintAssist.Hint="Old Password" />
 
-                    <PasswordBox
-                        Grid.Row="8"
-                        materialDesign:HintAssist.Hint="New Password"
-                        FontFamily="{StaticResource Roboto}" />
+                    <PasswordBox Grid.Row="8" materialDesign:HintAssist.Hint="New Password" />
 
-                    <PasswordBox
-                        Grid.Row="10"
-                        materialDesign:HintAssist.Hint="Confirm New Password"
-                        FontFamily="{StaticResource Roboto}" />
+                    <PasswordBox Grid.Row="10" materialDesign:HintAssist.Hint="Confirm New Password" />
 
                     <!--  Update Password Button  -->
                     <Button
                         Grid.Row="12"
                         Content="Update Password"
-                        FontFamily="{StaticResource ProductSans}"
                         FontSize="14">
                         <!--  Click="UpdatePasswordButton_Click"  -->
                     </Button>

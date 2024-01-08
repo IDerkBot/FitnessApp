@@ -817,39 +817,7 @@ public class Database
 
     public void UpdatePersonProfile(Person? currentUser)
     {
-        // connection.Open();
-        //
-        //
-        // query = "UPDATE [User] " +
-        //         "SET Photo = @Photo, " +
-        //         "Height = @Height, " +
-        //         "KilosToLosePerWeek = @KilosToLosePerWeek, " +
-        //         "WorkoutsPerWeek = @WorkoutsPerWeek, " +
-        //         "TargetWeight = @TargetWeight, " +
-        //         "WorkoutHoursPerDay = @WorkoutHoursPerDay " +
-        //         "WHERE PK_UserID = @UserId";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@Photo", currentUser.ProfilePhoto.ByteArray);
-        // command.Parameters.AddWithValue("@Height", currentUser.Height);
-        // command.Parameters.AddWithValue("@TargetWeight", currentUser.TargetWeight);
-        // command.Parameters.AddWithValue("@KilosToLosePerWeek", currentUser.KilosToLosePerWeek);
-        // command.Parameters.AddWithValue("@WorkoutsPerWeek", currentUser.WorkoutsPerWeek);
-        // command.Parameters.AddWithValue("@WorkoutHoursPerDay", currentUser.WorkoutHoursPerDay);
-        // command.Parameters.AddWithValue("@UserId", currentUser.Id);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // query = "INSERT INTO [UserWeight] " +
-        //         "VALUES (@UserId, @AddedWeight, GETDATE())";
-        //
-        // command = new SqlCommand(query, connection);
-        // command.Parameters.AddWithValue("@userID", currentUser.Id);
-        // command.Parameters.AddWithValue("@AddedWeight", currentUser.Weight);
-        // command.ExecuteNonQuery();
-        //
-        //
-        // connection.Close();
+        _context.SaveChanges();
     }
 
     #endregion
@@ -1083,7 +1051,9 @@ public class Database
 
     public IEnumerable<double> GetWeightValues(int accountId)
     {
-        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.Weight);
+        var weights = _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime)
+            .Select(x => x.Weight);
+        return weights;
     }
     
     public IEnumerable<DateTime> GetWeightDates(int accountId)
@@ -1091,33 +1061,9 @@ public class Database
         return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.DateTime);
     }
 
-    public List<string> GetWeightDateValues(int accountId)
+    public IEnumerable<string> GetWeightDateValues(int accountId)
     {
-        // List<string> dateValues = new List<string>();
-        //
-        // connection.Open();
-        //
-        // SqlCommand CommandString =
-        //     new SqlCommand(
-        //         "SELECT FORMAT(Timestamp, 'MMM yy') AS [Timestamp] FROM UserWeight WHERE FK_UserWeight_UserID = @userID ORDER BY Timestamp DESC",
-        //         connection);
-        // CommandString.CommandType = CommandType.Text;
-        // CommandString.Parameters.AddWithValue("@userID", accountID);
-        //
-        // dataReader = CommandString.ExecuteReader();
-        //
-        // for (int i = 0; dataReader.Read() && i < 10; i++)
-        // {
-        //     dateValues.Add((string)dataReader["Timestamp"]);
-        // }
-        //
-        // connection.Close();
-        //
-        // // Reverse List
-        // dateValues.Reverse();
-        //
-        // return dateValues;
-        return null;
+        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => $"{x.DateTime.Day}.{x.DateTime.Month}.{x.DateTime.Year} {x.DateTime.Hour}:{x.DateTime.Minute}");
     }
 
     public void AddNewWeight(double newWeight, int accountId)
@@ -1198,8 +1144,8 @@ public class Database
         }
 
         if (weights.Count == 0) return 0;
-        
-        return Math.Round(weights.Sum() / weights.Count, 2);
+        var weightLost = (weights.Max() - weights.Last()) / 2;
+        return Math.Round(weightLost, 2);
     }
 
     ///////////////////////////// Motivational Quote Functions /////////////////////////////

@@ -51,7 +51,6 @@
                             <!--  Card Header  -->
                             <TextBlock
                                 Grid.Row="0"
-                                FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
                                 Text="Оценка приложения" />
 
@@ -100,7 +99,6 @@
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
                                 Text="Отзывы пользователей" />
 
@@ -130,7 +128,6 @@
                                             <TextBlock
                                                 Grid.Column="0"
                                                 HorizontalAlignment="Left"
-                                                FontFamily="{StaticResource ProductSans}"
                                                 FontWeight="Regular"
                                                 FontSize="15"
                                                 Foreground="Black"
@@ -142,7 +139,6 @@
                                                 Grid.Column="0"
                                                 Margin="0,20,0,0"
                                                 HorizontalAlignment="Left"
-                                                FontFamily="{StaticResource Roboto}"
                                                 FontWeight="Regular"
                                                 FontSize="14"
                                                 Foreground="Black"
@@ -201,7 +197,6 @@
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
                                 Text="Количество пользователей" />
 
@@ -213,7 +208,6 @@
 
                                 <TextBlock
                                     VerticalAlignment="Bottom"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontWeight="Bold"
                                     FontSize="40"
                                     Text="{Binding TotalUsers}"
@@ -223,7 +217,6 @@
                                     Width="100"
                                     Margin="0,5"
                                     VerticalAlignment="Bottom"
-                                    FontFamily="{StaticResource Roboto}"
                                     FontSize="14"
                                     Text="Пользователей"
                                     TextAlignment="Center"
@@ -256,7 +249,6 @@
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
                                 Text="Удаление пользователей" />
 
@@ -275,15 +267,13 @@
                                     <TextBox
                                         x:Name="UserSearchTextBox"
                                         Margin="25,0,0,0"
-                                        materialDesign:HintAssist.Hint="User's Name or Email"
-                                        FontFamily="{StaticResource Roboto}" />
+                                        materialDesign:HintAssist.Hint="User's Name or Email" />
                                 </Grid>
 
                                 <!--  Search Button  -->
                                 <Button
                                     x:Name="UserSearchButton"
                                     Grid.Column="2"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="14"
                                     Content="Поиск">
                                     <!--  Click="UserSearchButton_Click"  -->
@@ -368,7 +358,6 @@
                                                 <TextBlock
                                                     Grid.Row="0"
                                                     HorizontalAlignment="Left"
-                                                    FontFamily="{StaticResource ProductSans}"
                                                     FontWeight="Regular"
                                                     FontSize="15"
                                                     Foreground="Black"
@@ -379,7 +368,6 @@
                                                 <TextBlock
                                                     Grid.Row="2"
                                                     HorizontalAlignment="Left"
-                                                    FontFamily="{StaticResource Roboto}"
                                                     FontWeight="Regular"
                                                     FontSize="14"
                                                     Foreground="Black"
@@ -434,7 +422,6 @@
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                FontFamily="{StaticResource ProductSans}"
                                 FontSize="18"
                                 Text="Add a new Admin" />
 
@@ -454,14 +441,12 @@
                                     <TextBox
                                         x:Name="FirstNameTextBox"
                                         Grid.Column="0"
-                                        materialDesign:HintAssist.Hint="First Name"
-                                        FontFamily="{StaticResource Roboto}" />
+                                        materialDesign:HintAssist.Hint="First Name" />
 
                                     <TextBox
                                         x:Name="LastNameTextBox"
                                         Grid.Column="2"
-                                        materialDesign:HintAssist.Hint="Last Name"
-                                        FontFamily="{StaticResource Roboto}" />
+                                        materialDesign:HintAssist.Hint="Last Name" />
                                 </Grid>
                             </Grid>
 
@@ -472,8 +457,7 @@
                                 <TextBox
                                     x:Name="NewAdminEmailTextBox"
                                     Margin="25,0,0,0"
-                                    materialDesign:HintAssist.Hint="Admin's email"
-                                    FontFamily="{StaticResource Roboto}" />
+                                    materialDesign:HintAssist.Hint="Admin's email" />
 
                             </Grid>
 
@@ -482,7 +466,6 @@
                                 Grid.Row="7"
                                 Grid.Column="1"
                                 HorizontalAlignment="Center"
-                                FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
                                 Content="Add">
                                 <!--  Click="AddNewAdminButton_Click"  -->

@@ -5,128 +5,105 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:vm="clr-namespace:FitnessApp.Core.ViewModels.UserPages;assembly=FitnessApp.Core"
     xmlns:models="clr-namespace:FitnessApp.Models;assembly=FitnessApp.Models"
+    xmlns:scv="clr-namespace:StratumUi.Wpf.Core.Converters;assembly=StratumUi.Wpf.Core"
+    xmlns:wpf="clr-namespace:StratumUi.Wpf.Core.AttachedProperties;assembly=StratumUi.Wpf.Core"
     d:DataContext="{d:DesignInstance vm:HomeViewModel}"
     mc:Ignorable="d">
-
-    <materialDesign:DialogHost x:Name="DialogBox">
-        <materialDesign:DialogHost.DialogContent>
-            <Grid>
-
-                <StackPanel
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Page.Resources>
+        <scv:BooleanToVisibilityConverter
+            x:Key="BooleanToVisibilityConverter"
+            TrueValue="Visible"
+            FalseValue="Collapsed" />
+        <scv:BooleanToVisibilityConverter
+            x:Key="InvertedBooleanToVisibilityConverter"
+            TrueValue="Collapsed"
+            FalseValue="Visible" />
+    </Page.Resources>
+    <Grid>
+        <Border
+            x:Name="PopupBorder"
+            Panel.ZIndex="999"
+            Background="#a0000000"
+            Visibility="Collapsed">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--  ADD FOOD  -->
+                <Border
                     x:Name="AddFoodDialogBox"
-                    Width="200"
-                    Margin="15"
+                    Padding="15"
+                    CornerRadius="10"
+                    Background="White"
                     Visibility="Collapsed">
-
-                    <TextBlock>
-                        Add a new Food
-                    </TextBlock>
-
-                    <ComboBox
-                        x:Name="FoodComboBox"
-                        Margin="0,15,0,0"
-                        HorizontalAlignment="Stretch"
-                        materialDesign:HintAssist.Hint="Search"
-                        materialDesign:HintAssist.HintOpacity="0.25"
-                        IsEditable="True" />
-
-
-                    <TextBox
-                        x:Name="FoodQuantityTextBox"
-                        Margin="0,10,0,0"
-                        materialDesign:HintAssist.Hint="Quantity (grams)"
-                        FontFamily="{StaticResource Roboto}" />
-                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
-
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-
-                        <Button
-                            x:Name="DialogBoxAddFoodButton"
-                            Margin="0,15,15,0"
-                            FontFamily="{StaticResource ProductSans}"
-                            FontSize="14">
-                            <!--  Click="DialogBoxAddFoodButton_Click"  -->
-                            Add
-                        </Button>
-
-                        <Button
-                            x:Name="DialogBoxCancelFoodButton"
+                    <StackPanel Width="200" Margin="15">
+                        <TextBlock Text="Add a new Food" />
+                        <ComboBox
+                            x:Name="FoodComboBox"
                             Margin="0,15,0,0"
-                            FontFamily="{StaticResource ProductSans}"
-                            FontSize="14">
-                            <!--  Click="DialogBoxCancelButton_Click"  -->
-                            Cancel
-                        </Button>
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Search"
+                            materialDesign:HintAssist.HintOpacity="0.25"
+                            IsEditable="True" />
+                        <TextBox
+                            x:Name="FoodQuantityTextBox"
+                            Margin="0,10,0,0"
+                            materialDesign:HintAssist.Hint="Quantity (grams)" />
+                        <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Margin="0,15,15,0" Content="Add" />
 
+                            <Button
+                                Margin="0,15,0,0"
+                                Command="{Binding CloseAddFoodCommand}"
+                                Content="Cancel" />
+                        </StackPanel>
                     </StackPanel>
+                </Border>
 
-                </StackPanel>
-
-                <StackPanel
+                <!--  ADD WORKOUT  -->
+                <Border
                     x:Name="AddWorkoutDialogBox"
-                    Width="200"
-                    Margin="15"
+                    Padding="15"
+                    CornerRadius="10"
+                    Background="White"
                     Visibility="Collapsed">
-
-                    <TextBlock>
-                        Add a new Workout
-                    </TextBlock>
-
-                    <ComboBox
-                        x:Name="WorkoutsComboBox"
-                        Margin="0,15,0,0"
-                        HorizontalAlignment="Stretch"
-                        materialDesign:HintAssist.Hint="Search"
-                        materialDesign:HintAssist.HintOpacity="0.25"
-                        IsEditable="True" />
-
-                    <TextBox
-                        x:Name="WorkoutsDurationTextBox"
-                        Margin="0,10,0,0"
-                        materialDesign:HintAssist.Hint="Duration (minuites)"
-                        FontFamily="{StaticResource Roboto}" />
-                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
-
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-
-                        <Button
-                            x:Name="DialogBoxAddWorkoutButton"
-                            Margin="0,15,15,0"
-                            FontFamily="{StaticResource ProductSans}"
-                            FontSize="14"
-                            Foreground="{DynamicResource PrimaryHueMidBrush}">
-                            <!--  Click="DialogBoxAddWorkoutButton_Click"  -->
-                            Add
-                        </Button>
-
-                        <Button
-                            x:Name="DialogBoxCancelWorkoutButton"
+                    <StackPanel Width="200" Margin="15">
+                        <TextBlock Text="Add a new Workout" />
+                        <ComboBox
+                            x:Name="WorkoutsComboBox"
                             Margin="0,15,0,0"
-                            FontFamily="{StaticResource ProductSans}"
-                            FontSize="14"
-                            Foreground="{DynamicResource PrimaryHueMidBrush}">
-                            <!--  Click="DialogBoxCancelButton_Click"  -->
-                            Cancel
-                        </Button>
-
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Search"
+                            materialDesign:HintAssist.HintOpacity="0.25"
+                            IsEditable="True" />
+                        <TextBox
+                            x:Name="WorkoutsDurationTextBox"
+                            Margin="0,10,0,0"
+                            materialDesign:HintAssist.Hint="Duration (minuites)" />
+                        <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Margin="0,15,15,0" Content="Add" />
+                            <Button
+                                Margin="0,15,0,0"
+                                Command="{Binding CloseAddWorkoutCommand}"
+                                Content="Cancel" />
+                        </StackPanel>
                     </StackPanel>
-
-                </StackPanel>
-
+                </Border>
             </Grid>
+        </Border>
 
-        </materialDesign:DialogHost.DialogContent>
-
-        <Grid>
-
+        <Grid Panel.ZIndex="1">
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
-
                 <!--  Main Grid  -->
                 <Grid Margin="15" HorizontalAlignment="Center">
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="15" />
@@ -135,7 +112,22 @@
 
                     <!--  Left cards grid  -->
                     <Grid Grid.Column="0">
-
+                        <Grid.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10" />
+                                <Setter Property="BorderBrush" Value="{StaticResource Lg3}" />
+                                <Setter Property="Background" Value="{StaticResource CleanW}" />
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            Direction="0"
+                                            ShadowDepth="0"
+                                            BlurRadius="15"
+                                            Color="{StaticResource ColorLg4}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="15" />
@@ -172,7 +164,6 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Вес" />
 
@@ -213,14 +204,12 @@
                                     <TextBox
                                         Grid.Column="0"
                                         materialDesign:HintAssist.Hint="Сегодняшний вес в кг"
-                                        Text="{Binding TodayWeightValue}"
-                                        FontFamily="{StaticResource Roboto}" />
+                                        Text="{Binding TodayWeightValue}" />
                                     <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
 
                                     <Button
                                         Grid.Column="2"
                                         Command="{Binding SaveNewWeightCommand}"
-                                        FontFamily="{StaticResource ProductSans}"
                                         FontSize="12"
                                         Content="Сохранить"
                                         Style="{StaticResource BtnFilled}" />
@@ -251,7 +240,6 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Потерянно веса" />
 
@@ -280,7 +268,6 @@
                                         <TextBlock
                                             Width="80"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Кг/Неделя"
                                             TextAlignment="Center"
@@ -297,7 +284,6 @@
                                     <StackPanel Grid.Column="2">
 
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
@@ -307,7 +293,6 @@
                                         <TextBlock
                                             Width="80"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Кг/Месяц"
                                             TextAlignment="Center"
@@ -324,7 +309,6 @@
                                     <StackPanel Grid.Column="4">
 
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
@@ -334,7 +318,6 @@
                                         <TextBlock
                                             Width="80"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Кг/Год"
                                             TextAlignment="Center"
@@ -368,7 +351,6 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Средняя потеря веса" />
 
@@ -388,7 +370,6 @@
                                     <StackPanel Grid.Column="0">
 
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             FontSize="28"
@@ -398,7 +379,6 @@
                                         <TextBlock
                                             Width="80"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Кг/Неделя"
                                             TextAlignment="Center"
@@ -415,7 +395,6 @@
                                     <StackPanel Grid.Column="2">
 
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             Text="{Binding AverageWeightLostPerMonth}"
@@ -425,7 +404,6 @@
                                         <TextBlock
                                             Width="80"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Кг/Месяц"
                                             TextAlignment="Center"
@@ -442,7 +420,6 @@
                                     <StackPanel Grid.Column="4">
 
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="{StaticResource Pr500}"
                                             FontWeight="Bold"
                                             Text="{Binding AverageWeightLostPerYear}"
@@ -452,7 +429,6 @@
                                         <TextBlock
                                             Width="80"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Кг/Год"
                                             TextAlignment="Center"
@@ -469,15 +445,14 @@
                             Grid.Row="6"
                             Padding="-8"
                             materialDesign:RippleAssist.IsDisabled="True"
+                            Visibility="{Binding HaveChallenges, Converter={StaticResource BooleanToVisibilityConverter}}"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Foreground="Transparent">
                             <!--  ItemsSource="{Binding UncompletedJoinedChallengeModels}"  -->
 
                             <!--  Challenge Item Template  -->
                             <ListBox.ItemTemplate>
-
                                 <DataTemplate DataType="{x:Type models:Challenge}">
-
                                     <Border Width="500" Padding="0">
                                         <Grid>
 
@@ -517,7 +492,6 @@
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 HorizontalAlignment="Left"
-                                                FontFamily="{StaticResource ProductSans}"
                                                 FontWeight="Bold"
                                                 FontSize="18"
                                                 Foreground="Black"
@@ -548,7 +522,6 @@
 
                                                     <TextBlock
                                                         Grid.Column="2"
-                                                        FontFamily="{StaticResource ProductSans}"
                                                         FontSize="13"
                                                         Foreground="Black"
                                                         Text="{Binding DueDate}" />
@@ -571,7 +544,6 @@
 
                                                     <TextBlock
                                                         Grid.Column="2"
-                                                        FontFamily="{StaticResource ProductSans}"
                                                         FontSize="13"
                                                         Foreground="Black"
                                                         Text="{Binding StyledTargetMinutes}" />
@@ -594,7 +566,6 @@
 
                                                     <TextBlock
                                                         Grid.Column="2"
-                                                        FontFamily="{StaticResource ProductSans}"
                                                         FontSize="13"
                                                         Foreground="Black"
                                                         Text="{Binding Reward}"
@@ -610,23 +581,17 @@
                                                 Grid.Column="1"
                                                 Maximum="{Binding TargetMinutes}"
                                                 Value="{Binding Progress}" />
-
                                         </Grid>
-
                                     </Border>
-
                                 </DataTemplate>
-
                             </ListBox.ItemTemplate>
-
                         </ListBox>
 
                         <!--  No Challenge Card  -->
                         <Border
-                            x:Name="NoChallengesCard"
                             Grid.Row="6"
-                            Width="500">
-
+                            Width="500"
+                            Visibility="{Binding HaveChallenges, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                             <Grid>
 
                                 <Grid.RowDefinitions>
@@ -647,7 +612,6 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Принятые вызовы" />
 
@@ -656,14 +620,12 @@
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         Text="Вы еще не присоединились ни к одному вызову!"
-                                        FontFamily="{StaticResource Roboto}"
                                         Opacity="0.5" />
 
                                     <Button
                                         x:Name="JoinChallengeButton"
                                         Margin="0,5,0,0"
                                         HorizontalAlignment="Center"
-                                        FontFamily="{StaticResource ProductSans}"
                                         FontSize="14"
                                         Content="Принять вызов"
                                         Foreground="{DynamicResource Pr500}"
@@ -671,11 +633,8 @@
                                         <!--  Click="JoinChallengeButton_Click"  -->
 
                                     </Button>
-
                                 </StackPanel>
-
                             </Grid>
-
                         </Border>
 
                         <!--  Completed Joined Challenges Cards ListBox  -->
@@ -684,6 +643,7 @@
                             Grid.Row="8"
                             Padding="-8"
                             materialDesign:RippleAssist.IsDisabled="True"
+                            Visibility="{Binding HaveChallenges, Converter={StaticResource BooleanToVisibilityConverter}}"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Foreground="Transparent">
                             <!--  ItemsSource="{Binding CompletedJoinedChallengeModels}"  -->
@@ -713,7 +673,6 @@
                                                 <!--  Challenge Name  -->
                                                 <TextBlock
                                                     HorizontalAlignment="Center"
-                                                    FontFamily="{StaticResource ProductSans}"
                                                     FontWeight="Regular"
                                                     FontSize="18"
                                                     Foreground="Black"
@@ -725,27 +684,36 @@
                                                     x:Name="CompletedChallengeButton"
                                                     Margin="0,5,0,0"
                                                     HorizontalAlignment="Center"
-                                                    FontFamily="{StaticResource ProductSans}"
                                                     FontSize="18">
                                                     <!--  Click="CompletedChallengeButton_Click"  -->
                                                     Completed
                                                 </Button>
                                             </StackPanel>
                                         </Grid>
-
                                     </Border>
-
                                 </DataTemplate>
-
                             </ListBox.ItemTemplate>
-
                         </ListBox>
-
                     </Grid>
 
                     <!--  Right cards grid  -->
                     <Grid Grid.Column="2">
-
+                        <Grid.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10" />
+                                <Setter Property="BorderBrush" Value="{StaticResource Lg3}" />
+                                <Setter Property="Background" Value="{StaticResource CleanW}" />
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            Direction="0"
+                                            ShadowDepth="0"
+                                            BlurRadius="15"
+                                            Color="{StaticResource ColorLg3}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="15" />
@@ -758,7 +726,8 @@
                         <Border
                             x:Name="JoinedPlanCard"
                             Grid.Row="0"
-                            Width="500">
+                            Width="500"
+                            Visibility="{Binding HavePlans, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Grid>
 
                                 <Grid.RowDefinitions>
@@ -780,7 +749,6 @@
                                     x:Name="PlanHeaderTextBlock"
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     TextWrapping="Wrap"
                                     Text="Plan Name | Day #1" />
@@ -790,7 +758,7 @@
                                     Grid.Row="3"
                                     Grid.Column="1">
 
-                                    <Expander Header="Breakfast" FontFamily="{StaticResource ProductSans}">
+                                    <Expander Header="Breakfast">
 
                                         <Grid Margin="24,8,24,16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
@@ -803,7 +771,6 @@
                                             <TextBlock
                                                 x:Name="BreakfastDescriptionTextBlock"
                                                 Grid.Column="0"
-                                                FontFamily="{StaticResource Roboto}"
                                                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                                 TextWrapping="Wrap" />
 
@@ -815,7 +782,7 @@
 
                                     </Expander>
 
-                                    <Expander Header="Lunch" FontFamily="{StaticResource ProductSans}">
+                                    <Expander Header="Lunch">
 
                                         <Grid Margin="24,8,24,16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
@@ -828,7 +795,6 @@
                                             <TextBlock
                                                 x:Name="LunchDescriptionTextBlock"
                                                 Grid.Column="0"
-                                                FontFamily="{StaticResource Roboto}"
                                                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                                 TextWrapping="Wrap" />
 
@@ -840,7 +806,7 @@
 
                                     </Expander>
 
-                                    <Expander Header="Dinner" FontFamily="{StaticResource ProductSans}">
+                                    <Expander Header="Dinner">
 
                                         <Grid Margin="24,8,24,16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
@@ -853,7 +819,6 @@
                                             <TextBlock
                                                 x:Name="DinnerDescriptionTextBlock"
                                                 Grid.Column="0"
-                                                FontFamily="{StaticResource Roboto}"
                                                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                                 TextWrapping="Wrap" />
 
@@ -865,7 +830,7 @@
 
                                     </Expander>
 
-                                    <Expander Header="Workouts" FontFamily="{StaticResource ProductSans}">
+                                    <Expander Header="Workouts">
 
                                         <Grid Margin="24,8,24,16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
@@ -878,7 +843,6 @@
                                             <TextBlock
                                                 x:Name="WorkoutsDescriptionTextBlock"
                                                 Grid.Column="0"
-                                                FontFamily="{StaticResource Roboto}"
                                                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                                 TextWrapping="Wrap" />
 
@@ -905,7 +869,8 @@
                         <Border
                             Grid.Row="0"
                             Width="500"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Visibility="{Binding HavePlans, Converter={StaticResource BooleanToVisibilityConverter}}">
 
                             <Grid>
 
@@ -927,16 +892,11 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Congratulations!" />
 
                                 <StackPanel Grid.Row="3" Grid.Column="1">
-
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        FontFamily="{StaticResource Roboto}"
-                                        Opacity="0.5">
+                                    <TextBlock HorizontalAlignment="Center" Opacity="0.5">
                                         You have Completed your Fitness Plan!
                                     </TextBlock>
 
@@ -944,24 +904,20 @@
                                         x:Name="DismissPlanButton"
                                         Margin="0,5,0,0"
                                         HorizontalAlignment="Center"
-                                        FontFamily="{StaticResource ProductSans}"
                                         FontSize="14">
                                         <!--  Click="DismissPlanButton_Click"  -->
                                         Dismiss
                                     </Button>
-
                                 </StackPanel>
-
                             </Grid>
-
                         </Border>
 
                         <!--  No Plan Card  -->
                         <Border
                             Grid.Row="0"
                             Width="500"
-                            VerticalAlignment="Top">
-
+                            VerticalAlignment="Top"
+                            Visibility="{Binding HavePlans, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                             <Grid>
 
                                 <Grid.RowDefinitions>
@@ -982,34 +938,26 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Принятый тренировочный план" />
 
                                 <StackPanel Grid.Row="3" Grid.Column="1">
-
                                     <TextBlock
                                         HorizontalAlignment="Center"
-                                        FontFamily="{StaticResource Roboto}"
                                         Opacity="0.5"
                                         Text="Вы еще не присоединились ни к какому плану!" />
 
                                     <Button
                                         Margin="0,5,0,0"
                                         HorizontalAlignment="Center"
-                                        FontFamily="{StaticResource ProductSans}"
                                         FontSize="14"
                                         Content="Присоединиться к тренировочному плану"
                                         Foreground="{StaticResource Pr500}"
                                         Style="{StaticResource BtnText}">
                                         <!--  Click="JoinPlanButton_Click"  -->
-
                                     </Button>
-
                                 </StackPanel>
-
                             </Grid>
-
                         </Border>
 
                         <!--  Motivational Quotes Card  -->
@@ -1037,7 +985,6 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Сегодняшняя мотивация" />
 
@@ -1045,15 +992,12 @@
                                     Grid.Row="3"
                                     Grid.Column="1"
                                     HorizontalAlignment="Center"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontWeight="Bold"
                                     FontSize="24"
                                     Text="Все будет хорошо"
                                     TextAlignment="Center"
                                     TextWrapping="Wrap" />
-
                             </Grid>
-
                         </Border>
 
                         <!--  Calories Card  -->
@@ -1080,7 +1024,6 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontFamily="{StaticResource ProductSans}"
                                     FontSize="18"
                                     Text="Калории" />
 
@@ -1099,7 +1042,6 @@
 
                                     <StackPanel Grid.Column="0">
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="Red"
                                             FontWeight="Bold"
                                             FontSize="28"
@@ -1107,7 +1049,6 @@
                                         <TextBlock
                                             Width="120"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Количество набранных калорий"
                                             TextAlignment="Center"
@@ -1122,14 +1063,12 @@
 
                                     <StackPanel Grid.Column="2">
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             FontWeight="Bold"
                                             FontSize="28"
                                             TextAlignment="Center" />
                                         <TextBlock
                                             Width="120"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Необходимые калории"
                                             TextAlignment="Center"
@@ -1144,7 +1083,6 @@
 
                                     <StackPanel Grid.Column="4">
                                         <TextBlock
-                                            FontFamily="{StaticResource ProductSans}"
                                             Foreground="ForestGreen"
                                             FontWeight="Bold"
                                             FontSize="28"
@@ -1152,7 +1090,6 @@
                                         <TextBlock
                                             Width="120"
                                             Margin="0,5"
-                                            FontFamily="{StaticResource Roboto}"
                                             FontSize="14"
                                             Text="Потерянные калории"
                                             TextAlignment="Center"
@@ -1174,7 +1111,6 @@
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis LabelFormatter="{Binding Formatter}" />
                                     </lvc:CartesianChart.AxisY>
-
                                 </lvc:CartesianChart>
                             </Grid>
                         </Border>
@@ -1182,31 +1118,49 @@
                 </Grid>
             </ScrollViewer>
 
+            <ToggleButton
+                x:Name="AddPopup"
+                Width="60"
+                Height="60"
+                Margin="10"
+                Padding="0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                wpf:Button.Icon="Plus"
+                wpf:Hint.CornerRadius="40"
+                Style="{StaticResource TglText}" />
+
             <!--  Floating PopUp Button  -->
             <Border
-                x:Name="AddPopupBox"
-                Margin="25"
+                Margin="0,0,15,80"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Bottom">
-
+                VerticalAlignment="Bottom"
+                Visibility="{Binding ElementName=AddPopup, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel>
-
-                    <Button ToolTip="Add Food">
+                    <Button
+                        Width="50"
+                        Height="50"
+                        Margin="0,0,0,10"
+                        Padding="0"
+                        wpf:Hint.CornerRadius="30"
+                        Command="{Binding OpenAddFoodCommand}"
+                        ToolTip="Add Food">
                         <!--  Click="AddFoodButton_Click"  -->
                         <materialDesign:PackIcon Kind="FoodApple" />
                     </Button>
 
-                    <Button ToolTip="Add a Workout">
+                    <Button
+                        Width="50"
+                        Height="50"
+                        Padding="0"
+                        wpf:Hint.CornerRadius="30"
+                        Command="{Binding OpenAddWorkoutCommand}"
+                        ToolTip="Add a Workout">
                         <!--  Click="AddWorkoutButton_Click"  -->
                         <materialDesign:PackIcon Kind="RunFast" />
                     </Button>
-
                 </StackPanel>
-
             </Border>
-
         </Grid>
-
-    </materialDesign:DialogHost>
-
+    </Grid>
 </Page>

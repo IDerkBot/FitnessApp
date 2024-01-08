@@ -8,16 +8,25 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
     mc:Ignorable="d">
-
-    <ScrollViewer VerticalScrollBarVisibility="Hidden">
-
+    <ScrollViewer
+        Width="1035"
+        HorizontalAlignment="Center"
+        VerticalScrollBarVisibility="Hidden">
         <Grid Margin="15">
-
-            <materialDesign:Card Width="750" Background="{DynamicResource MaterialDesignBackground}">
-
+            <Border>
                 <StackPanel>
-
-                    <Expander x:Name="ProfileExpander" Header="Profile">
+                    <StackPanel.Resources>
+                        <Style TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="BorderBrush" Value="{StaticResource Lg3}" />
+                            <Setter Property="Margin" Value="0,5" />
+                        </Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="TextAlignment" Value="Left" />
+                            <Setter Property="Padding" Value="5,0" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Expander IsExpanded="True" Header="Profile">
                         <!--  Expanded="Expander_Expanded"  -->
 
                         <Grid Width="400">
@@ -41,18 +50,25 @@
                                 <Ellipse Width="150" Height="150">
                                     <Ellipse.Fill>
                                         <ImageBrush
-                                            x:Name="UserProfilePhoto"
-                                            ImageSource="{Binding ProfilePhoto.Source}"
-                                            Stretch="UniformToFill" />
+                                            AlignmentX="Center"
+                                            AlignmentY="Center"
+                                            Stretch="UniformToFill">
+                                            <ImageBrush.ImageSource>
+                                                <Binding Path="CurrentPerson.ProfilePhoto">
+                                                    <Binding.TargetNullValue>
+                                                        <ImageSource>pack://application:,,,/FitnessApp.Wpf;component/Resources/Images/AccountCircleDefaultIcon.png</ImageSource>
+                                                    </Binding.TargetNullValue>
+                                                </Binding>
+                                            </ImageBrush.ImageSource>
+                                        </ImageBrush>
                                     </Ellipse.Fill>
                                 </Ellipse>
 
                                 <Button
-                                    x:Name="UpdateUserProfilePhotoButton"
                                     Width="120"
                                     Height="120"
                                     Opacity="0"
-                                    Style="{StaticResource MaterialDesignFloatingActionButton}" />
+                                    Style="{StaticResource BtnText}" />
                                 <!--  Click="UpdateUserProfilePhotoButton_Click"  -->
 
                             </Grid>
@@ -65,23 +81,17 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox
-                                    x:Name="WeightTextBox"
-                                    Grid.Column="0"
-                                    materialDesign:HintAssist.Hint="Weight"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding Weight}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                                <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Вес:" />
+                                    <TextBox Text="{Binding CurrentPerson.Weight}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                </StackPanel>
 
-                                <TextBox
-                                    x:Name="HeightTextBox"
-                                    Grid.Column="2"
-                                    materialDesign:HintAssist.Hint="Height"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding Height}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                                <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Рост:" />
+                                    <TextBox Text="{Binding CurrentPerson.Height}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                </StackPanel>
 
                             </Grid>
 
@@ -94,23 +104,17 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox
-                                    x:Name="TargetWeightTextBox"
-                                    Grid.Column="0"
-                                    materialDesign:HintAssist.Hint="Target Weight"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding TargetWeight}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                                <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Цель веса:" />
+                                    <TextBox Text="{Binding CurrentPerson.TargetWeight}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                </StackPanel>
 
-                                <TextBox
-                                    x:Name="KilosToLosePerWeekTextBox"
-                                    Grid.Column="2"
-                                    materialDesign:HintAssist.Hint="Kilos to lose/week"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding KilosToLosePerWeek}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                                <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Kilos to lose/week:" />
+                                    <TextBox Text="{Binding CurrentPerson.KilosToLosePerWeek}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                </StackPanel>
 
                             </Grid>
 
@@ -122,48 +126,35 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox
-                                    x:Name="WorkoutsPerWeekTextBox"
-                                    Grid.Column="0"
-                                    materialDesign:HintAssist.Hint="Workouts/week"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding WorkoutsPerWeek}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                                <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Workouts/week:" />
+                                    <TextBox Text="{Binding CurrentPerson.WorkoutsPerWeek}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                </StackPanel>
 
-                                <TextBox
-                                    x:Name="WorkoutHoursPerDayTextBox"
-                                    Grid.Column="2"
-                                    materialDesign:HintAssist.Hint="Workout Hours/Day"
-                                    FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding WorkoutHoursPerDay}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                                <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Workout Hours/Day:" />
+                                    <TextBox Text="{Binding CurrentPerson.WorkoutHoursPerDay}" />
+                                    <!--  PreviewTextInput="DecimalNumbersOnlyFieldValidation"  -->
+                                </StackPanel>
                             </Grid>
 
                             <!--  Update Profile Button  -->
                             <Button
-                                x:Name="UpdateProfileButton"
                                 Grid.Row="9"
                                 HorizontalAlignment="Right"
+                                Content="Update Profile"
+                                Command="{Binding UpdateProfileCommand}"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
-                                Style="{StaticResource MaterialDesignRaisedButton}">
-                                <!--  Click="UpdateProfileButton_Click"  -->
-                                Update Profile
-                            </Button>
-
+                                Style="{StaticResource BtnFilled}" />
                         </Grid>
-
                     </Expander>
 
+                    <Border Height="1" />
 
-                    <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" />
-
-
-                    <Expander x:Name="AccountExpander" Header="Account">
+                    <Expander Header="Account">
                         <!--  Expanded="Expander_Expanded"  -->
-
                         <Grid Width="400" HorizontalAlignment="Center">
 
                             <Grid.RowDefinitions>
@@ -189,16 +180,14 @@
                                     Grid.Column="0"
                                     materialDesign:HintAssist.Hint="First Name"
                                     FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding FirstName}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                    Text="{Binding CurrentPerson.FirstName}" />
 
                                 <TextBox
                                     x:Name="LastNameTextBox"
                                     Grid.Column="2"
                                     materialDesign:HintAssist.Hint="Last Name"
                                     FontFamily="{StaticResource Roboto}"
-                                    Text="{Binding LastName}"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                    Text="{Binding CurrentPerson.LastName}" />
                             </Grid>
 
                             <TextBox
@@ -206,8 +195,7 @@
                                 Grid.Row="3"
                                 materialDesign:HintAssist.Hint="Email"
                                 FontFamily="{StaticResource Roboto}"
-                                Text="{Binding Email}"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                Text="{Binding CurrentPerson.Email}" />
 
                             <!--  Update Account Button  -->
                             <Button
@@ -216,7 +204,7 @@
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
-                                Style="{StaticResource MaterialDesignRaisedButton}">
+                                Style="{StaticResource BtnFilled}">
                                 <!--  Click="UpdateAccountButton_Click"  -->
                                 Update Account
                             </Button>
@@ -251,22 +239,19 @@
                                 x:Name="OldPasswordTextBox"
                                 Grid.Row="1"
                                 materialDesign:HintAssist.Hint="Old Password"
-                                FontFamily="{StaticResource Roboto}"
-                                Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                                FontFamily="{StaticResource Roboto}" />
 
                             <PasswordBox
                                 x:Name="NewPasswordTextBox"
                                 Grid.Row="3"
                                 materialDesign:HintAssist.Hint="New Password"
-                                FontFamily="{StaticResource Roboto}"
-                                Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                                FontFamily="{StaticResource Roboto}" />
 
                             <PasswordBox
                                 x:Name="ConfirmNewPasswordTextBox"
                                 Grid.Row="5"
                                 materialDesign:HintAssist.Hint="Confirm New Password"
-                                FontFamily="{StaticResource Roboto}"
-                                Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                                FontFamily="{StaticResource Roboto}" />
 
                             <!--  Update Password Button  -->
                             <Button
@@ -275,7 +260,7 @@
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
-                                Style="{StaticResource MaterialDesignRaisedButton}">
+                                Style="{StaticResource BtnFilled}">
                                 <!--  Click="UpdatePasswordButton_Click"  -->
                                 Update Password
                             </Button>
@@ -327,7 +312,7 @@
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource ProductSans}"
                                 FontSize="14"
-                                Style="{StaticResource MaterialDesignRaisedButton}">
+                                Style="{StaticResource BtnFilled}">
                                 <!--  Click="SubmitFeedbackButton_Click"  -->
                                 Submit
                             </Button>
@@ -340,11 +325,12 @@
                     <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" />
 
 
-                    <Expander x:Name="AboutExpander" Header="About">
+                    <Expander Header="About">
                         <!--  Expanded="Expander_Expanded"  -->
 
                         <TextBlock
                             Margin="25,15"
+                            TextAlignment="Justify"
                             TextWrapping="Wrap"
                             Opacity="0.75">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -368,6 +354,7 @@
                         <TextBlock
                             Margin="25,15"
                             TextWrapping="Wrap"
+                            TextAlignment="Justify"
                             Opacity="0.75">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -377,15 +364,9 @@
                             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                             culpa qui officia deserunt mollit anim id est laborum.
                         </TextBlock>
-
                     </Expander>
-
                 </StackPanel>
-
-            </materialDesign:Card>
-
+            </Border>
         </Grid>
-
     </ScrollViewer>
-
 </Page>

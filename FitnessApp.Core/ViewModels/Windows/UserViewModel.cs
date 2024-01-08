@@ -236,7 +236,7 @@ public class UserViewModel : ObservableObject
         CurrentPerson = Global.Database.GetPersonByUserId(_signedInUser.Id)!;
 
         // Initialize View Models
-        HomeVm = new HomeViewModel(CurrentPerson);
+        HomeVm = new HomeViewModel(_openView, CurrentPerson);
         ChallengesVm = new ChallengesViewModel(CurrentPerson);
         PlansVm = new PlansViewModel(CurrentPerson);
         CaloriesCalculatorVm = new CaloriesCalculatorViewModel(CurrentPerson);

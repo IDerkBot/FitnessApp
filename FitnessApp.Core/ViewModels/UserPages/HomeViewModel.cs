@@ -13,17 +13,51 @@ public class HomeViewModel : ObservableObject
 {
     #region Private Properties
 
-    ////////// All Weight Cards Functions/Event Handlers //////////
+    private IOpenView _openViewService;
 
-    // Weight Chart Properties
-    public SeriesCollection WeightsSeriesCollection { get; set; }
-    public List<string> Labels { get; set; }
-    public Func<double, string> YFormatter { get; set; }
-
-    #endregion
-
+    #endregion Private Properties
+    
     #region Properties
 
+    #region Labels : List<string> - Description
+
+    private List<string> _labels;
+
+    /// <summary> Description </summary>
+    public List<string> Labels
+    {
+        get => _labels;
+        set => SetProperty(ref _labels, value);
+    }
+
+    #endregion Labels
+
+    #region YFormatter : Func<double, string> - Description
+
+    private Func<double, string> _yFormatter;
+
+    /// <summary> Description </summary>
+    public Func<double, string> YFormatter
+    {
+        get => _yFormatter;
+        set => SetProperty(ref _yFormatter, value);
+    }
+
+    #endregion YFormatter
+    
+    #region WeightsSeriesCollection : SeriesCollection - Description
+
+    private SeriesCollection _weightsSeriesCollection;
+
+    /// <summary> Description </summary>
+    public SeriesCollection WeightsSeriesCollection
+    {
+        get => _weightsSeriesCollection;
+        set => SetProperty(ref _weightsSeriesCollection, value);
+    }
+
+    #endregion WeightsSeriesCollection
+    
     #region CurrentPerson : Person - Корректный пользователь
 
     private Person _currentPerson;
@@ -157,6 +191,26 @@ public class HomeViewModel : ObservableObject
     #endregion
 
     #region Commands
+
+    #region LoadedCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand LoadedCommand { get; set; }
+
+    private void OnLoadedCommandExecuted()
+    {
+        LoadWeightChart();
+        LoadTotalWeightLostCard();
+        LoadAverageWeightLostCard();
+        LoadJoinedChallengesCards();
+        LoadJoinedPlanCard();
+        LoadMotivationalQuoteCard();
+        LoadCaloriesCard();
+    }
+
+    private bool CanLoadedCommandExecute() => true;
+
+    #endregion Loaded
     
     #region OpenAddFoodCommand : Description
 
@@ -165,8 +219,7 @@ public class HomeViewModel : ObservableObject
 
     private void OnOpenAddFoodCommandExecuted()
     {
-        // DialogBox.IsOpen = true;
-        // AddFoodDialogBox.Visibility = Visibility.Visible;
+        _openViewService.OpenFood();
     }
 
     private bool CanOpenAddFoodCommandExecute() => true;
@@ -180,13 +233,40 @@ public class HomeViewModel : ObservableObject
 
     private void OnOpenAddWorkoutCommandExecuted()
     {
-        // DialogBox.IsOpen = true;
-        // AddWorkoutDialogBox.Visibility = Visibility.Visible;
+        _openViewService.OpenWorkout();
     }
 
     private bool CanOpenAddWorkoutCommandExecute() => true;
 
     #endregion OpenAddWorkout
+
+    #region CloseAddFoodCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand CloseAddFoodCommand { get; set; }
+
+    private void OnCloseAddFoodCommandExecuted()
+    {
+        _openViewService.CloseFood();
+    }
+
+    private bool CanCloseAddFoodCommandExecute() => true;
+
+    #endregion CloseAddFood
+
+    #region CloseAddWorkoutCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand CloseAddWorkoutCommand { get; set; }
+
+    private void OnCloseAddWorkoutCommandExecuted()
+    {
+        _openViewService.CloseWorkout();
+    }
+
+    private bool CanCloseAddWorkoutCommandExecute() => true;
+
+    #endregion CloseAddWorkout
 
     #region SaveNewWeightCommand : Description
 
@@ -219,6 +299,7 @@ public class HomeViewModel : ObservableObject
             TodayWeightValue = 0;
         
             // Refresh Weight-Related Cards
+            LoadWeightChart();
             LoadTotalWeightLostCard();
             LoadAverageWeightLostCard();
         
@@ -317,24 +398,26 @@ public class HomeViewModel : ObservableObject
     
     #endregion
 
-    public HomeViewModel(Person selectedPerson)
+    /// <summary>
+    /// Домашняя страница для пользователей
+    /// </summary>
+    /// <param name="openViewService"></param>
+    /// <param name="selectedPerson"></param>
+    public HomeViewModel(IOpenView openViewService, Person selectedPerson)
     {
+        _openViewService = openViewService;
+        
         OpenAddFoodCommand = new RelayCommand(OnOpenAddFoodCommandExecuted, CanOpenAddFoodCommandExecute);
         OpenAddWorkoutCommand = new RelayCommand(OnOpenAddWorkoutCommandExecuted, CanOpenAddWorkoutCommandExecute);
         SaveNewWeightCommand = new RelayCommand(OnSaveNewWeightCommandExecuted, CanSaveNewWeightCommandExecute);
         JoinedChallengeCommand = new RelayCommand(OnJoinedChallengeCommandExecuted, CanJoinedChallengeCommandExecute);
         LeaveChallengeCommand = new RelayCommand(OnLeaveChallengeCommandExecuted, CanLeaveChallengeCommandExecute);
         CompletedChallengeCommand = new RelayCommand(OnCompletedChallengeCommandExecuted, CanCompletedChallengeCommandExecute);
-
+        LoadedCommand = new RelayCommand(OnLoadedCommandExecuted, CanLoadedCommandExecute);
+        CloseAddFoodCommand = new RelayCommand(OnCloseAddFoodCommandExecuted, CanCloseAddFoodCommandExecute);
+        CloseAddWorkoutCommand = new RelayCommand(OnCloseAddWorkoutCommandExecuted, CanCloseAddWorkoutCommandExecute);
+        
         CurrentPerson = selectedPerson;
-
-        LoadWeightChart();
-        LoadTotalWeightLostCard();
-        LoadAverageWeightLostCard();
-        LoadJoinedChallengesCards();
-        LoadJoinedPlanCard();
-        LoadMotivationalQuoteCard();
-        LoadCaloriesCard();
 
         // FoodComboBox.ItemsSource = Global.Database.GetAllFood().ToList();
         // WorkoutsComboBox.ItemsSource = Global.Database.GetWorkouts().ToList();
@@ -349,8 +432,8 @@ public class HomeViewModel : ObservableObject
         
         WeightsSeriesCollection = chartCreator.GetWeight(idealWeight, CurrentPerson);
 
-        Labels = Global.Database.GetWeightDateValues(CurrentPerson.User.Id);
-        YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " kg";
+        Labels = Global.Database.GetWeightDateValues(CurrentPerson.User.Id).ToList();
+        YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " кг";
     }
 
     private double CalculateIdealWeight()
@@ -391,7 +474,9 @@ public class HomeViewModel : ObservableObject
     public void LoadJoinedChallengesCards()
     {
         var challenges = Global.Database.GetJoinedChallenges(Global.Database.AccountId);
-        
+
+        HaveChallenges = challenges.Any();
+
         // ChallengesViewModel joinedChallengesDataContext = new ChallengesViewModel();
         // joinedChallengesDataContext.JoinedChallengesViewModel(CurrentPerson.User.Id);
         // CompletedJoinedChallengesListBox.DataContext = joinedChallengesDataContext;
@@ -415,6 +500,8 @@ public class HomeViewModel : ObservableObject
     public void LoadJoinedPlanCard()
     {
         bool checkJoinedInPlan = Global.Database.HavePlans(CurrentPerson.User.Id);
+
+        HavePlans = checkJoinedInPlan;
 
         // NoPlanCard.Visibility = Visibility.Visible;
         // JoinedPlanCard.Visibility = Visibility.Visible;

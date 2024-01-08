@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Models;
 
 namespace FitnessApp.Core.ViewModels.UserPages;
@@ -22,9 +24,30 @@ public class SettingsViewModel : ObservableObject
 
     #endregion
 
+    #region Commands
+
+    #region UpdateProfileCommand : Description
+
+    /// <summary> Description </summary>
+    public ICommand UpdateProfileCommand { get; set; }
+
+    private void OnUpdateProfileCommandExecuted()
+    {
+        Global.Database.UpdatePersonProfile(CurrentPerson);
+    }
+
+    private bool CanUpdateProfileCommandExecute() => true;
+
+    #endregion UpdateProfile
+
+    #endregion Commands
+    
     public SettingsViewModel(Person selectedPerson)
     {
         CurrentPerson = selectedPerson;
+        
+        UpdateProfileCommand = new RelayCommand(OnUpdateProfileCommandExecuted, CanUpdateProfileCommandExecute);
+        
         // UserWindow.SettingsPageObject = this;
 
         // Initialize Profile Expander to be expanded

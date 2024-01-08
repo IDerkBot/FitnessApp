@@ -8,16 +8,14 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DataContext="{d:DesignInstance vm:CaloriesCalculatorViewModel}"
     mc:Ignorable="d">
-
     <Grid Margin="15">
-
-        <materialDesign:Card
+        <Border
             Width="750"
             VerticalAlignment="Center"
-            Background="{StaticResource MaterialDesignBackground}">
-
+            BorderBrush="{StaticResource Lg3}"
+            BorderThickness="1"
+            CornerRadius="10">
             <Grid>
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="auto" />
@@ -44,7 +42,6 @@
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
-                    FontFamily="{StaticResource Roboto}"
                     FontWeight="Regular"
                     TextWrapping="Wrap"
                     FontSize="14">
@@ -65,7 +62,6 @@
                     <ComboBox
                         Margin="30,0,0,0"
                         materialDesign:HintAssist.Hint="Gender"
-                        FontFamily="{StaticResource Roboto}"
                         SelectedItem="{Binding CurrentPerson.Gender}">
                         <ComboBoxItem Content="Male" />
                         <ComboBoxItem Content="Female" />
@@ -85,9 +81,7 @@
                     <TextBox
                         Margin="30,0,0,0"
                         materialDesign:HintAssist.Hint="Age"
-                        FontFamily="{StaticResource Roboto}"
-                        Text="{Binding Age}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        Text="{Binding Age}" />
 
                 </Grid>
 
@@ -103,9 +97,7 @@
                     <TextBox
                         Margin="30,0,0,0"
                         materialDesign:HintAssist.Hint="Weight in kg"
-                        FontFamily="{StaticResource Roboto}"
-                        Text="{Binding CurrentPerson.Weight}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        Text="{Binding CurrentPerson.Weight}" />
 
                 </Grid>
 
@@ -121,9 +113,7 @@
                     <TextBox
                         Margin="30,0,0,0"
                         materialDesign:HintAssist.Hint="Height in cm"
-                        FontFamily="{StaticResource Roboto}"
-                        Text="{Binding CurrentPerson.Height}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        Text="{Binding CurrentPerson.Height}" />
 
                 </Grid>
 
@@ -134,9 +124,7 @@
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Content="Calculate"
-                    FontFamily="{StaticResource ProductSans}"
                     FontSize="14"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
                     Command="{Binding CalculateCommand}" />
 
                 <!--  Result TextBlock  -->
@@ -146,14 +134,13 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Text="{Binding ResultCalculating}"
-                    FontFamily="{StaticResource ProductSans}"
                     Foreground="{StaticResource PrimaryHueMidBrush}"
                     FontWeight="Bold"
                     FontSize="18" />
 
             </Grid>
 
-        </materialDesign:Card>
+        </Border>
 
     </Grid>
 

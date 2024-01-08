@@ -193,6 +193,33 @@ public class OpenWindowService : IOpenView
     }
 
     public void CloseSettingsView() { }
+    public void OpenWorkout()
+    {
+        if(HomePage == null) return;
+        HomePage.AddWorkoutDialogBox.Visibility = 
+            HomePage.PopupBorder.Visibility = Visibility.Visible;
+    }
+
+    public void CloseWorkout()
+    {
+        if(HomePage == null) return;
+        HomePage.AddWorkoutDialogBox.Visibility = 
+            HomePage.PopupBorder.Visibility = Visibility.Collapsed;
+    }
+
+    public void OpenFood()
+    {
+        if(HomePage == null) return;
+        HomePage.AddFoodDialogBox.Visibility = 
+            HomePage.PopupBorder.Visibility = Visibility.Visible;
+    }
+
+    public void CloseFood()
+    {
+        if(HomePage == null) return;
+        HomePage.AddFoodDialogBox.Visibility = 
+            HomePage.PopupBorder.Visibility = Visibility.Collapsed;
+    }
 
     #endregion
 
