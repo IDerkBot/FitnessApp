@@ -30,11 +30,13 @@ public class Database
 
         var config = builder.Build();
         var connectionString = config.GetConnectionString("TestConnection");
+        // var connectionString = config.GetConnectionString("MySqlConnection");
 
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
         optionsBuilder.LogTo(message => System.Diagnostics.Debug.WriteLine(message));
 
         var options = optionsBuilder.UseSqlServer(connectionString).Options;
+        // var options = optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8,0,35))).Options;
 
         _context = new ApplicationContext(options);
         IsConnected = _context.IsConnected;
