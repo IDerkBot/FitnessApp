@@ -25,6 +25,7 @@ public partial class App : Application
                     .AddSingleton<IOpenView, OpenWindowService>()
                     .AddSingleton<IChartCreator, ChartCreator>()
                     .AddSingleton<IAlertService, AlertService>()
+                    .AddSingleton<IOpenLocalData, OpenLocalData>()
                     .AddSingleton<SigningViewModel>()
                     .AddSingleton<SignUpViewModel>()
                     .AddSingleton<UserViewModel>()

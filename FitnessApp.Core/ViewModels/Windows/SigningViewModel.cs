@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FitnessApp.Core.Interfaces;
 using FitnessApp.Core.ViewModels.SignUpPages;
+using FitnessApp.Models;
 
 namespace FitnessApp.Core.ViewModels.Windows;
 
@@ -10,8 +11,9 @@ public class SigningViewModel : ObservableObject
 {
     #region Private Properties
 
-    private IOpenView _openViewService;
-    private IAlertService _alertService;
+    private readonly IOpenView _openViewService;
+    private readonly IAlertService _alertService;
+    private readonly IOpenLocalData _openLocalData;
 
     #endregion
 
@@ -56,11 +58,11 @@ public class SigningViewModel : ObservableObject
 
     #endregion SignUpVm
 
-    #region IsCreateNewAccount : bool - Description
+    #region IsCreateNewAccount : bool - Указывает что в режиме создания
 
     private bool _isCreateNewAccount;
 
-    /// <summary> Description </summary>
+    /// <summary> Указывает что в режиме создания </summary>
     public bool IsCreateNewAccount
     {
         get => _isCreateNewAccount;
@@ -68,6 +70,19 @@ public class SigningViewModel : ObservableObject
     }
 
     #endregion IsCreateNewAccount
+
+    #region IsRememberMe : bool - Description
+
+    private bool _isRememberMe;
+
+    /// <summary> Description </summary>
+    public bool IsRememberMe
+    {
+        get => _isRememberMe;
+        set => SetProperty(ref _isRememberMe, value);
+    }
+
+    #endregion IsRememberMe
     
     #endregion
 
@@ -102,9 +117,9 @@ public class SigningViewModel : ObservableObject
 
     #endregion CancelCreateAccount
 
-    #region LoadedCommand : Загрузка окна
+    #region LoadedCommand : Загрузка представления
 
-    /// <summary> Загрузка окна </summary>
+    /// <summary> Загрузка представления </summary>
     public ICommand LoadedCommand { get; set; }
 
     private void OnLoadedCommandExecuted()
@@ -113,7 +128,10 @@ public class SigningViewModel : ObservableObject
         {
             _alertService.Error("Нет подключения к базе данных! Попробуйте войти позднее");
             _openViewService.Shutdown();
+            return;
         }
+
+        LoadLocalData();
     }
 
     private bool CanLoadedCommandExecute() => true;
@@ -131,8 +149,17 @@ public class SigningViewModel : ObservableObject
 
         if (isAccountFound)
         {
+            
             var user = Global.Database.GetUserByLogin(Login)!;
             Global.Database.Authorization(user);
+            
+            if (IsRememberMe)
+            {
+                _openLocalData.SaveData(new LocalData
+                {
+                    User = user
+                });
+            }
 
             if (Global.Database.AccountType == AccountAccess.User)
             {
@@ -163,10 +190,11 @@ public class SigningViewModel : ObservableObject
 
     #region Constructor
 
-    public SigningViewModel(IOpenView openView, IAlertService alertService)
+    public SigningViewModel(IOpenView openView, IAlertService alertService, IOpenLocalData openLocalData)
     {
         _openViewService = openView;
         _alertService = alertService;
+        _openLocalData = openLocalData;
         
         LoadedCommand = new RelayCommand(OnLoadedCommandExecuted, CanLoadedCommandExecute);
         CreateAccountCommand = new RelayCommand(OnCreateAccountCommandExecuted, CanCreateAccountCommandExecute);
@@ -177,4 +205,23 @@ public class SigningViewModel : ObservableObject
     }
 
     #endregion
+
+    #region Private Methods
+
+    private void LoadLocalData()
+    {
+        var data = _openLocalData.OpenData();
+
+        if (data == null)
+        {
+            data = new LocalData();
+            return;
+        }
+
+        Login = data.User.Login;
+        Password = data.User.Password;
+        IsRememberMe = true;
+    }
+
+    #endregion Private Methods
 }

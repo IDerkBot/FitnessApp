@@ -12,7 +12,6 @@ public class UserViewModel : ObservableObject
     #region Private Properties
 
     private readonly IOpenView _openView;
-    private static User _signedInUser = null!;
 
     #endregion
 
@@ -113,9 +112,9 @@ public class UserViewModel : ObservableObject
 
     #region Commands
 
-    #region MoveOnHomeCommand : Description
+    #region MoveOnHomeCommand : Перемещение на домашнюю страницу
 
-    /// <summary> Description </summary>
+    /// <summary> Перемещение на домашнюю страницу </summary>
     public ICommand MoveOnHomeCommand { get; set; }
 
     private void OnMoveOnHomeCommandExecuted()
@@ -128,9 +127,9 @@ public class UserViewModel : ObservableObject
 
     #endregion MoveOnHome
 
-    #region MoveOnChallengesCommand : Description
+    #region MoveOnChallengesCommand : Перемещение на страницу "Вызовы"
 
-    /// <summary> Description </summary>
+    /// <summary> Перемещение на страницу "Вызовы" </summary>
     public ICommand MoveOnChallengesCommand { get; set; }
 
     private void OnMoveOnChallengesCommandExecuted()
@@ -143,9 +142,9 @@ public class UserViewModel : ObservableObject
 
     #endregion MoveOnChallenges
 
-    #region MoveOnCaloriesCalculatorCommand : Description
+    #region MoveOnCaloriesCalculatorCommand : Перемещение на страницу "Калькулятор калорий"
 
-    /// <summary> Description </summary>
+    /// <summary> Перемещение на страницу "Калькулятор калорий" </summary>
     public ICommand MoveOnCaloriesCalculatorCommand { get; set; }
 
     private void OnMoveOnCaloriesCalculatorCommandExecuted()
@@ -158,9 +157,9 @@ public class UserViewModel : ObservableObject
 
     #endregion MoveOnCaloriesCalculator
 
-    #region MoveOnPlansCommand : Description
+    #region MoveOnPlansCommand : Перемещение на страницу "Тренировочные планы"
 
-    /// <summary> Description </summary>
+    /// <summary> Перемещение на страницу "Тренировочные планы" </summary>
     public ICommand MoveOnPlansCommand { get; set; }
 
     private void OnMoveOnPlansCommandExecuted()
@@ -173,9 +172,9 @@ public class UserViewModel : ObservableObject
 
     #endregion MoveOnPlans
 
-    #region MoveOnSettingsCommand : Description
+    #region MoveOnSettingsCommand : Перемещение на страницу "Настройки"
 
-    /// <summary> Description </summary>
+    /// <summary> Перемещение на страницу "Настройки" </summary>
     public ICommand MoveOnSettingsCommand { get; set; }
 
     private void OnMoveOnSettingsCommandExecuted()
@@ -188,9 +187,9 @@ public class UserViewModel : ObservableObject
 
     #endregion MoveOnSettings
 
-    #region LogoutCommand : Description
+    #region LogoutCommand : Выход из аккаунта
 
-    /// <summary> Description </summary>
+    /// <summary> Выход из аккаунта </summary>
     public ICommand LogoutCommand { get; set; }
 
     private void OnLogoutCommandExecuted()
@@ -201,9 +200,9 @@ public class UserViewModel : ObservableObject
 
     #endregion Logout
 
-    #region LoadedCommand : Description
+    #region LoadedCommand : Загрузка отображения
 
-    /// <summary> Description </summary>
+    /// <summary> Загрузка отображения </summary>
     public ICommand LoadedCommand { get; set; }
 
     private void OnLoadedCommandExecuted()
@@ -217,6 +216,10 @@ public class UserViewModel : ObservableObject
 
     #endregion
 
+    #region Constructor
+
+    /// <summary>  </summary>
+    /// <param name="openView"></param>
     public UserViewModel(IOpenView openView)
     {
         _openView = openView;
@@ -232,8 +235,7 @@ public class UserViewModel : ObservableObject
         LogoutCommand = new RelayCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
 
         // Initialize User Model
-        _signedInUser = Global.Database.GetUserById(Global.Database.AccountId)!;
-        CurrentPerson = Global.Database.GetPersonByUserId(_signedInUser.Id)!;
+        CurrentPerson = Global.Database.GetPersonByUserId(Global.Database.AccountId)!;
 
         // Initialize View Models
         HomeVm = new HomeViewModel(_openView, CurrentPerson);
@@ -242,4 +244,6 @@ public class UserViewModel : ObservableObject
         CaloriesCalculatorVm = new CaloriesCalculatorViewModel(CurrentPerson);
         SettingsVm = new SettingsViewModel(CurrentPerson);
     }
+
+    #endregion Constructor
 }

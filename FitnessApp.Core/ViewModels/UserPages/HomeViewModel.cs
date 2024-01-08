@@ -432,7 +432,7 @@ public class HomeViewModel : ObservableObject
         
         WeightsSeriesCollection = chartCreator.GetWeight(idealWeight, CurrentPerson);
 
-        Labels = Global.Database.GetWeightDateValues(CurrentPerson.User.Id).ToList();
+        Labels = Global.Database.GetWeightDates(CurrentPerson.User.Id).ToList();
         YFormatter = value => value.ToString(CultureInfo.InvariantCulture) + " кг";
     }
 

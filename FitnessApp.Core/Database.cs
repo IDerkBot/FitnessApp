@@ -30,13 +30,13 @@ public class Database
 
         var config = builder.Build();
         var connectionString = config.GetConnectionString("TestConnection");
-        // var connectionString = config.GetConnectionString("MySqlConnection");
+        // var connectionString = config.GetConnectionString("Server");
 
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
         optionsBuilder.LogTo(message => System.Diagnostics.Debug.WriteLine(message));
 
         var options = optionsBuilder.UseSqlServer(connectionString).Options;
-        // var options = optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8,0,35))).Options;
+        // var options = optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(5,5,62))).Options;
 
         _context = new ApplicationContext(options);
         IsConnected = _context.IsConnected;
@@ -1057,15 +1057,10 @@ public class Database
             .Select(x => x.Weight);
         return weights;
     }
-    
-    public IEnumerable<DateTime> GetWeightDates(int accountId)
-    {
-        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => x.DateTime);
-    }
 
-    public IEnumerable<string> GetWeightDateValues(int accountId)
+    public IEnumerable<string> GetWeightDates(int accountId)
     {
-        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => $"{x.DateTime.Day}.{x.DateTime.Month}.{x.DateTime.Year} {x.DateTime.Hour}:{x.DateTime.Minute}");
+        return _context.PersonWeights.Where(x => x.Person.UserId == accountId).OrderBy(x => x.DateTime).Select(x => $"{x.DateTime.Day:D2}.{x.DateTime.Month:D2}.{x.DateTime.Year} {x.DateTime.Hour:D2}:{x.DateTime.Minute:D2}");
     }
 
     public void AddNewWeight(double newWeight, int accountId)

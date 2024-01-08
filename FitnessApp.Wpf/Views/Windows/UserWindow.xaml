@@ -243,6 +243,7 @@
                         Padding="10"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
+                        Command="{Binding LogoutCommand}"
                         Style="{StaticResource BtnText}">
                         <Button.Content>
                             <Grid>
