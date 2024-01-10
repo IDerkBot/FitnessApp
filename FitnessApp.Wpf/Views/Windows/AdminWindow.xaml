@@ -127,7 +127,7 @@
 
                                     <sc:Icon Grid.Column="0" Kind="Home" />
 
-                                    <TextBlock Grid.Column="1" Text="Home" />
+                                    <TextBlock Grid.Column="1" Text="Главная" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -143,7 +143,39 @@
 
                                     <sc:Icon Grid.Column="0" Kind="PlaylistAdd" />
 
-                                    <TextBlock Grid.Column="1" Text="Setup a Challenge" />
+                                    <TextBlock Grid.Column="1" Text="Вызовы" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+
+                        <!--  Workouts Button  -->
+                        <Button Command="{Binding MoveOnSettingsCommand}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <sc:Icon Grid.Column="0" Kind="Work" />
+
+                                    <TextBlock Grid.Column="1" Text="Тренировки" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+
+                        <!--  Foods Button  -->
+                        <Button Command="{Binding MoveOnSettingsCommand}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <sc:Icon Grid.Column="0" Kind="Food" />
+
+                                    <TextBlock Grid.Column="1" Text="Еда" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -159,7 +191,7 @@
 
                                     <sc:Icon Grid.Column="0" Kind="Settings" />
 
-                                    <TextBlock Grid.Column="1" Text="Settings" />
+                                    <TextBlock Grid.Column="1" Text="Настройки" />
                                 </Grid>
                             </Button.Content>
                         </Button>
